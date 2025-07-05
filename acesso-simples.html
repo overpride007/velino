@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velino Premium - Acesso Direto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 500px;
+            background: #2a2a2a;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .info {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 3px solid #333;
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Velino Premium</h1>
+        <p>Acesso direto à área premium das extensões.</p>
+        
+        <button class="btn" onclick="acessarDireto()">
+            🚀 Acessar Agora
+        </button>
+        
+        <button class="btn" style="background: #666;" onclick="acessarNovaAba()">
+            🔗 Abrir em Nova Aba
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Redirecionando...</p>
+        </div>
+        
+        <div class="info">
+            <strong>📋 Informações:</strong><br>
+            • Produto premium da Kirvano<br>
+            • Acesso automático com sua chave<br>
+            • Válido até 31/12/2025<br>
+            • Sessão de 2 horas por acesso
+        </div>
+    </div>
+
+    <script>
+        // URL completa com todos os parâmetros de acesso
+        const ACCESS_URL = 'https://3a2f7fc9.overpridex.pages.dev/?token=velino_premium_auth_2025&access=premium&key=validated&t=' + Date.now();
+        
+        function acessarDireto() {
+            document.getElementById('loading').style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = ACCESS_URL;
+            }, 1500);
+        }
+        
+        function acessarNovaAba() {
+            window.open(ACCESS_URL, '_blank');
+        }
+        
+        // Acesso rápido com Enter
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                acessarDireto();
+            }
+        });
+        
+        // Auto-focus no primeiro botão
+        document.querySelector('.btn').focus();
+    </script>
+</body>
+</html>
