@@ -596,9 +596,16 @@
                     console.log('Debug - Versão:', version);
                     console.log('Debug - Session ID:', sessionId);
                     
+                    // DEBUG: Mostrar URL completa
+                    console.log('Debug - URL completa:', window.location.href);
+                    
                     // Verificar se os parâmetros básicos existem
                     if (!authToken || !timestamp || !version || !sessionId) {
                         console.log('Debug - Parâmetros ausentes, bloqueando acesso');
+                        console.log('Debug - authToken presente:', !!authToken);
+                        console.log('Debug - timestamp presente:', !!timestamp);
+                        console.log('Debug - version presente:', !!version);
+                        console.log('Debug - sessionId presente:', !!sessionId);
                         blockAccess('Acesso negado: Parâmetros de autenticação ausentes.');
                         return false;
                     }
@@ -658,7 +665,10 @@
                             throw new Error('Inconsistência de timestamp detectada');
                         }
                         
-                        if (!decodedToken.salt.startsWith(decodedToken.saltCheck)) {
+                        // Verificar se o salt check está contido no salt completo (mais flexível)
+                        if (!decodedToken.salt.includes(decodedToken.saltCheck)) {
+                            console.log('Debug - Salt original:', decodedToken.salt);
+                            console.log('Debug - Salt check:', decodedToken.saltCheck);
                             throw new Error('Inconsistência de salt detectada');
                         }
                         

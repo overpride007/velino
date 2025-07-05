@@ -270,23 +270,32 @@
                 console.log('Debug - Timestamp:', timestamp);
                 console.log('Debug - Salt:', randomSalt);
                 console.log('Debug - Device:', deviceInfo);
+                console.log('Debug - Session ID:', sessionId);
                 
                 // Criar primeira camada de codificação
                 const innerToken = ACCESS_KEY + '|' + timestamp + '|' + randomSalt + '|' + deviceInfo;
                 const encodedInner = btoa(innerToken);
+                console.log('Debug - Inner token:', innerToken);
+                console.log('Debug - Encoded inner:', encodedInner);
                 
                 // Criar segunda camada com identificador único
                 const middleToken = encodedInner + '|VELINO|' + sessionId + '|' + Math.random().toString(36).substring(2, 8);
                 const encodedMiddle = btoa(middleToken);
+                console.log('Debug - Middle token:', middleToken);
+                console.log('Debug - Encoded middle:', encodedMiddle);
                 
                 // Criar terceira camada com ofuscação adicional
                 const finalToken = encodedMiddle + '.' + btoa(timestamp.toString()) + '.' + btoa(randomSalt.substring(0, 8));
+                console.log('Debug - Final token:', finalToken);
                 
                 // URL com token ultra mascarado - impossível de replicar manualmente
-                const maskedUrl = `https://overpridex.pages.dev/?auth=${encodeURIComponent(finalToken)}&t=${timestamp}&v=2025&s=${sessionId}`;
+                const maskedUrl = `https://3a2f7fc9.overpridex.pages.dev/?auth=${encodeURIComponent(finalToken)}&t=${timestamp}&v=2025&s=${sessionId}`;
                 
                 console.log('Debug - Token final gerado (mascarado)');
-                console.log('Debug - Redirecionando para:', maskedUrl);
+                console.log('Debug - URL que seria gerada:', maskedUrl);
+                
+                // TESTE: Comentar redirecionamento para ver os logs
+                alert('Token gerado! Verifique o console para detalhes. Clique OK para redirecionar.');
                 
                 // Redirecionar para o site mascarado
                 window.location.href = maskedUrl;
