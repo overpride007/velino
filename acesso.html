@@ -237,26 +237,29 @@
             console.log('Debug - URL atual:', window.location.href);
             console.log('Debug - Protocol:', window.location.protocol);
             
-            // Verificação quase instantânea (~200ms)
-            setTimeout(() => {
-                loadingStatus.textContent = 'Validando permissões...';
-                console.log('Debug - Status atualizado para: Validando permissões...');
+            // Chave está embutida no arquivo - sempre liberar acesso para arquivo local
+            console.log('Debug - Verificando chave embutida...');
+            console.log('Debug - ACCESS_KEY definida:', typeof ACCESS_KEY !== 'undefined');
+            
+            if (typeof ACCESS_KEY !== 'undefined') {
+                console.log('Debug - ✅ Arquivo local autêntico detectado');
+                console.log('Debug - Liberando acesso imediatamente...');
                 
+                // Atualizar status
+                loadingStatus.textContent = 'Acesso autorizado! Redirecionando...';
+                
+                // Mostrar tela de sucesso e redirecionar
                 setTimeout(() => {
-                    console.log('Debug - Arquivo de acesso local carregado');
-                    console.log('Debug - Chave embutida presente:', !!ACCESS_KEY);
-                    
-                    // Se temos a chave de acesso (que só existe neste arquivo local), liberar acesso
-                    if (ACCESS_KEY && ACCESS_KEY.length > 50) {
-                        console.log('Debug - Chave válida detectada, liberando acesso');
-                        mostrarTela('success-screen');
-                        redirecionarParaSite();
-                    } else {
-                        console.log('Debug - Chave não encontrada ou inválida');
-                        mostrarTela('no-access-screen');
-                    }
-                }, 100);
-            }, 100);
+                    mostrarTela('success-screen');
+                    redirecionarParaSite();
+                }, 500);
+            } else {
+                console.log('Debug - ❌ Arquivo não autêntico');
+                loadingStatus.textContent = 'Arquivo não autorizado';
+                setTimeout(() => {
+                    mostrarTela('no-access-screen');
+                }, 500);
+            }
         }
         
         function mostrarTela(telaId) {
