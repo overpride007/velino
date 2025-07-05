@@ -613,30 +613,80 @@
                 // Decodificar o token
                 let decodedToken;
                 try {
-                    // Reverter a codificação do token (múltiplas camadas)
-                    let step1 = atob(authToken); // Base64 decode
-                    let step2 = step1.split('').reverse().join(''); // Reverter string
-                    let step3 = decodeURIComponent(step2); // Decode URI
+                    // Reverter a codificação do token (3 camadas - igual ao acesso.html)
+                    console.log('🔍 Decodificando token de 3 camadas...');
                     
-                    decodedToken = JSON.parse(step3);
-                    console.log('✅ Token decodificado com sucesso');
+                    // Primeira decodificação - separar token principal e dados auxiliares
+                    const tokenParts = decodeURIComponent(authToken).split('.');
+                    if (tokenParts.length !== 3) {
+                        console.warn('❌ Estrutura do token inválida (não tem 3 partes)');
+                        blockAccess('Token com estrutura inválida');
+                        return;
+                    }
+                    
+                    const mainToken = tokenParts[0];
+                    const timestampCheck = atob(tokenParts[1]);
+                    const saltCheck = atob(tokenParts[2]);
+                    
+                    console.log('🔍 Token principal:', mainToken);
+                    console.log('🔍 Timestamp check:', timestampCheck);
+                    console.log('🔍 Salt check:', saltCheck);
+                    
+                    // Segunda decodificação - extrair camada média
+                    const middleDecoded = atob(mainToken);
+                    const middleParts = middleDecoded.split('|');
+                    if (middleParts.length !== 4 || middleParts[1] !== 'VELINO') {
+                        console.warn('❌ Camada média do token inválida');
+                        blockAccess('Token com assinatura inválida');
+                        return;
+                    }
+                    
+                    // Terceira decodificação - extrair dados finais
+                    const innerDecoded = atob(middleParts[0]);
+                    const finalParts = innerDecoded.split('|');
+                    if (finalParts.length !== 4) {
+                        console.warn('❌ Camada interna do token inválida');
+                        blockAccess('Token com dados incompletos');
+                        return;
+                    }
+                    
+                    decodedToken = {
+                        key: finalParts[0],
+                        timestamp: parseInt(finalParts[1]),
+                        salt: finalParts[2],
+                        deviceInfo: finalParts[3],
+                        sessionId: middleParts[2],
+                        timestampCheck: parseInt(timestampCheck),
+                        saltCheck: saltCheck
+                    };
+                    
+                    console.log('✅ Token decodificado:', decodedToken);
+                    
+                    // Validar consistência interna
+                    if (decodedToken.timestamp !== decodedToken.timestampCheck) {
+                        console.warn('❌ Timestamps internos não coincidem');
+                        blockAccess('Token com timestamps inconsistentes');
+                        return;
+                    }
+                    
+                    // Verificar se o salt check está contido no salt completo (mais flexível)
+                    if (!decodedToken.salt.includes(decodedToken.saltCheck)) {
+                        console.warn('❌ Verificação de salt falhou');
+                        blockAccess('Token com salt inválido');
+                        return;
+                    }
+                    
                 } catch (e) {
                     console.error('❌ Erro ao decodificar token:', e);
                     blockAccess('Token inválido ou corrompido');
                     return;
                 }
                 
-                // Verificar estrutura do token
-                if (!decodedToken.key || !decodedToken.timestamp || !decodedToken.salt || 
-                    !decodedToken.deviceInfo || !decodedToken.sessionId || !decodedToken.extra) {
-                    console.warn('❌ Estrutura do token incompleta');
-                    blockAccess('Token com estrutura inválida');
-                    return;
-                }
-                
                 // Verificar a chave de acesso
                 if (decodedToken.key !== expectedKey) {
                     console.warn('❌ Chave de acesso inválida');
+                    console.log('🔍 Chave esperada:', expectedKey);
+                    console.log('🔍 Chave recebida:', decodedToken.key);
                     blockAccess('Chave de acesso incorreta');
                     return;
                 }
@@ -646,6 +696,9 @@
                 const tokenTimestamp = parseInt(decodedToken.timestamp);
                 if (Math.abs(urlTimestamp - tokenTimestamp) > 1000) { // Permitir 1 segundo de diferença
                     console.warn('❌ Timestamps inconsistentes');
+                    console.log('🔍 URL timestamp:', urlTimestamp);
+                    console.log('🔍 Token timestamp:', tokenTimestamp);
+                    console.log('🔍 Diferença:', Math.abs(urlTimestamp - tokenTimestamp), 'ms');
                     blockAccess('Timestamps não coincidem');
                     return;
                 }
@@ -653,6 +706,8 @@
                 // Verificar consistência do sessionId
                 if (decodedToken.sessionId !== sessionId) {
                     console.warn('❌ Session IDs inconsistentes');
+                    console.log('🔍 URL sessionId:', sessionId);
+                    console.log('🔍 Token sessionId:', decodedToken.sessionId);
                     blockAccess('Session IDs não coincidem');
                     return;
                 }
