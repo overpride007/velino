@@ -1,7 +1,357 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velino Extensions - Extensões Tachiyomi</title>
+    <meta name="description" content="Lista completa de extensões para Tachiyomi com análises, avaliações e guias de instalação.">
+    <meta name="keywords" content="tachiyomi, extensões, manga, anime, leitura, android">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Sistema de Proteção com Chave de Acesso -->
+    <script>
+        // Chave de acesso válida
+        const CHAVE_ACESSO_VALIDA = "d#Di2^kV8@iwlhY2rIl!eAELLNrFy%HIH@6hins!9usIc7oW#i";
+        
+        // Verificar se o usuário já está autenticado
+        function verificarAutenticacao() {
+            const chaveArmazenada = localStorage.getItem('velino_access_key');
+            const timestampAuth = localStorage.getItem('velino_auth_timestamp');
+            const agora = Date.now();
+            
+            // Verificar se a autenticação expirou (24 horas)
+            if (chaveArmazenada && timestampAuth && (agora - parseInt(timestampAuth)) < 86400000) {
+                if (chaveArmazenada === CHAVE_ACESSO_VALIDA) {
+                    return true;
+                }
+            }
+            
+            // Limpar dados expirados
+            localStorage.removeItem('velino_access_key');
+            localStorage.removeItem('velino_auth_timestamp');
+            return false;
+        }
+        
+        // Função para validar e liberar acesso
+        function validarChaveAcesso() {
+            const inputChave = document.getElementById('chave-acesso-input');
+            const chaveDigitada = inputChave.value.trim();
+            const msgErro = document.getElementById('erro-chave');
+            const btnValidar = document.getElementById('btn-validar-chave');
+            
+            // Limpar mensagem de erro anterior
+            msgErro.style.display = 'none';
+            btnValidar.disabled = true;
+            btnValidar.textContent = 'Validando...';
+            
+            // Simular delay de validação
+            setTimeout(() => {
+                if (chaveDigitada === CHAVE_ACESSO_VALIDA) {
+                    // Salvar autenticação
+                    localStorage.setItem('velino_access_key', chaveDigitada);
+                    localStorage.setItem('velino_auth_timestamp', Date.now().toString());
+                    
+                    // Mostrar feedback de sucesso
+                    btnValidar.textContent = 'Acesso Liberado!';
+                    btnValidar.style.backgroundColor = '#22c55e';
+                    
+                    // Remover tela de bloqueio após 1 segundo
+                    setTimeout(() => {
+                        document.getElementById('tela-bloqueio').style.display = 'none';
+                        document.getElementById('conteudo-principal').style.display = 'block';
+                        
+                        // Mostrar notificação de acesso liberado
+                        mostrarNotificacaoAcesso();
+                    }, 1000);
+                } else {
+                    // Chave incorreta
+                    msgErro.textContent = 'Chave de acesso inválida! Verifique e tente novamente.';
+                    msgErro.style.display = 'block';
+                    btnValidar.disabled = false;
+                    btnValidar.textContent = 'Validar Chave';
+                    inputChave.value = '';
+                    inputChave.focus();
+                }
+            }, 1500);
+        }
+        
+        // Mostrar notificação de acesso liberado
+        function mostrarNotificacaoAcesso() {
+            const notificacao = document.createElement('div');
+            notificacao.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; background: #22c55e; color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); z-index: 10000; font-family: 'Segoe UI', Arial, sans-serif; animation: slideInFromRight 0.5s ease-out;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 20px;">🔓</span>
+                        <span style="font-weight: bold;">Acesso Liberado!</span>
+                    </div>
+                    <div style="font-size: 14px; margin-top: 4px; opacity: 0.9;">
+                        Bem-vindo ao Velino Extensions
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notificacao);
+            
+            // Remover após 4 segundos
+            setTimeout(() => {
+                notificacao.style.animation = 'slideOutToRight 0.5s ease-in forwards';
+                setTimeout(() => notificacao.remove(), 500);
+            }, 4000);
+        }
+        
+        // Função para fazer logout
+        function fazerLogout() {
+            if (confirm('Tem certeza que deseja sair? Será necessário inserir a chave novamente.')) {
+                localStorage.removeItem('velino_access_key');
+                localStorage.removeItem('velino_auth_timestamp');
+                location.reload();
+            }
+        }
+        
+        // Verificar parâmetros da URL para autenticação automática
+        function verificarAutenticacaoURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const chaveURL = urlParams.get('access_key');
+            const autoAuth = urlParams.get('auto_auth');
+            
+            if (chaveURL && autoAuth === 'true') {
+                if (chaveURL === CHAVE_ACESSO_VALIDA) {
+                    // Salvar autenticação automática
+                    localStorage.setItem('velino_access_key', chaveURL);
+                    localStorage.setItem('velino_auth_timestamp', Date.now().toString());
+                    
+                    // Mostrar notificação de acesso automático
+                    setTimeout(() => {
+                        mostrarNotificacaoAcessoAutomatico();
+                    }, 1000);
+                    
+                    // Limpar parâmetros da URL
+                    const novaURL = window.location.origin + window.location.pathname;
+                    window.history.replaceState({}, document.title, novaURL);
+                    
+                    return true;
+                } else {
+                    console.warn('Chave de acesso inválida recebida via URL');
+                }
+            }
+            
+            return false;
+        }
+        
+        // Mostrar notificação de acesso automático
+        function mostrarNotificacaoAcessoAutomatico() {
+            const notificacao = document.createElement('div');
+            notificacao.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; background: #22c55e; color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); z-index: 10000; font-family: 'Segoe UI', Arial, sans-serif; animation: slideInFromRight 0.5s ease-out;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 20px;">🚀</span>
+                        <span style="font-weight: bold;">Acesso Automático!</span>
+                    </div>
+                    <div style="font-size: 14px; margin-top: 4px; opacity: 0.9;">
+                        Autenticado automaticamente via redirecionamento
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notificacao);
+            
+            // Remover após 5 segundos
+            setTimeout(() => {
+                notificacao.style.animation = 'slideOutToRight 0.5s ease-in forwards';
+                setTimeout(() => notificacao.remove(), 500);
+            }, 5000);
+        }
+        
+        // Verificar autenticação ao carregar a página
+        window.addEventListener('DOMContentLoaded', function() {
+            // Primeiro verificar se há chave na URL
+            const autenticadoViaURL = verificarAutenticacaoURL();
+            
+            if (!autenticadoViaURL && !verificarAutenticacao()) {
+                document.getElementById('tela-bloqueio').style.display = 'flex';
+                document.getElementById('conteudo-principal').style.display = 'none';
+                
+                // Focar no input após um pequeno delay
+                setTimeout(() => {
+                    document.getElementById('chave-acesso-input').focus();
+                }, 500);
+            } else {
+                document.getElementById('tela-bloqueio').style.display = 'none';
+                document.getElementById('conteudo-principal').style.display = 'block';
+            }
+        });
+        
+        // Permitir validação ao pressionar Enter
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputChave = document.getElementById('chave-acesso-input');
+            if (inputChave) {
+                inputChave.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        validarChaveAcesso();
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <style>
+        /* Animações para a notificação */
+        @keyframes slideInFromRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutToRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* Estilos da tela de bloqueio */
+        #tela-bloqueio {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1f2937 50%, #111827 100%);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .card-bloqueio {
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            text-align: center;
+            animation: fadeInScale 0.6s ease-out;
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .logo-bloqueio {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .titulo-bloqueio {
+            color: #f3f4f6;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .subtitulo-bloqueio {
+            color: #9ca3af;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .input-chave {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            background: rgba(17, 24, 39, 0.8);
+            color: #f3f4f6;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .input-chave:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input-chave::placeholder {
+            color: #6b7280;
+        }
+        
+        .btn-validar {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .btn-validar:hover:not(:disabled) {
+            background: linear-gradient(45deg, #2563eb, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-validar:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .erro-chave {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .rodape-bloqueio {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .card-bloqueio {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .logo-bloqueio {
+                font-size: 3rem;
+            }
+            
+            .titulo-bloqueio {
+                font-size: 1.5rem;
+            }
+            
+            .subtitulo-bloqueio {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+    
     <style>
       #pixButtonIcon {
         width: 42px !important;
@@ -575,6 +925,59 @@
     </style>
 </head>
 <body class="p-4">
+    <!-- Tela de Bloqueio com Chave de Acesso -->
+    <div id="tela-bloqueio">
+        <div class="card-bloqueio">
+            <div class="logo-bloqueio">🔐</div>
+            <h1 class="titulo-bloqueio">Acesso Restrito</h1>
+            <p class="subtitulo-bloqueio">
+                Esta área requer uma chave de acesso válida.<br>
+                Insira sua chave para continuar.
+            </p>
+            
+            <div>
+                <input 
+                    type="password" 
+                    id="chave-acesso-input" 
+                    class="input-chave" 
+                    placeholder="Digite sua chave de acesso..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+                
+                <div id="erro-chave" class="erro-chave"></div>
+                
+                <button 
+                    id="btn-validar-chave" 
+                    class="btn-validar" 
+                    onclick="validarChaveAcesso()"
+                >
+                    🔓 Validar Chave
+                </button>
+            </div>
+            
+            <div class="rodape-bloqueio">
+                <p>🛡️ Sistema de Proteção Ativo</p>
+                <small>Desenvolvido por OverPrideX</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal (será exibido após autenticação) -->
+    <div id="conteudo-principal" style="display: none;">
+        <!-- Botão de Logout (canto superior direito) -->
+        <div style="position: fixed; top: 20px; right: 20px; z-index: 9998;">
+            <button 
+                onclick="fazerLogout()" 
+                style="background: rgba(239, 68, 68, 0.9); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; transition: all 0.3s ease;"
+                onmouseover="this.style.background='rgba(220, 38, 38, 0.9)'"
+                onmouseout="this.style.background='rgba(239, 68, 68, 0.9)'"
+                title="Sair e bloquear acesso"
+            >
+                🚪 Sair
+            </button>
+        </div>
+
     <!-- Notificação de Modo de Usar (Flutuante, Premium Design) -->
     <div id="usageNotification" class="usage-notification shadow-2xl border-4 border-blue-500 bg-gradient-to-br from-blue-900 via-gray-900 to-blue-800 flex flex-col items-center z-50" style="display: block;">
         <div class="flex items-center gap-3 mb-4">
@@ -4544,6 +4947,9 @@ document.addEventListener('DOMContentLoaded', function() {
     <script>
         let currentExtensaoId = '';
         let userFingerprint = '';
+        
+        // URL da API para comentários (defina aqui sua URL real da API)
+        const API_URL = 'https://sua-api-comentarios.com/api'; // Substitua pela URL real da sua API
 
         // Gerar fingerprint único do usuário
         function generateUserFingerprint() {
@@ -5418,8 +5824,10 @@ document.addEventListener('DOMContentLoaded', function() {
         async function carregarComentariosInline(extensaoId) {
             // Esta função agora apenas redireciona para o carregamento do card
             console.log('Redirecionando para carregamento do card de comentários');
-            carregarComentariosCard(extensaoId);
+            return carregarComentariosCard(extensaoId);
         }
     </script>
+    
+    </div> <!-- Fim do conteúdo principal -->
 </body>
 </html>

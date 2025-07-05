@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionando para Velino Extensions...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1f2937 50%, #111827 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: fadeInScale 0.6s ease-out;
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .titulo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f3f4f6;
+        }
+        
+        .subtitulo {
+            font-size: 1rem;
+            margin-bottom: 30px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .countdown {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3b82f6;
+            margin: 20px 0;
+        }
+        
+        .info {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .manual-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .manual-link:hover {
+            background: linear-gradient(45deg, #2563eb, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .titulo {
+                font-size: 1.5rem;
+            }
+            
+            .subtitulo {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🚀</div>
+        <h1 class="titulo">Velino Extensions</h1>
+        <p class="subtitulo">
+            Redirecionando automaticamente para a página principal...<br>
+            Aguarde, autenticação em andamento.
+        </p>
+        
+        <div class="loading">
+            <div class="spinner"></div>
+            <span>Carregando...</span>
+        </div>
+        
+        <div class="countdown" id="countdown">
+            Redirecionando em <span id="timer">3</span> segundos
+        </div>
+        
+        <div class="info">
+            <p>🔐 <strong>Acesso Automático Ativado</strong></p>
+            <p>Você será redirecionado com autenticação automática</p>
+            
+            <a href="#" id="manual-redirect" class="manual-link" style="display: none;">
+                🔗 Ir Manualmente
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Configurações
+        const URL_DESTINO = 'https://overpridex.pages.dev';
+        const CHAVE_ACESSO = 'd#Di2^kV8@iwlhY2rIl!eAELLNrFy%HIH@6hins!9usIc7oW#i';
+        const TEMPO_REDIRECT = 3; // segundos
+        
+        // Codificar a chave para URL
+        const chaveCodeificada = encodeURIComponent(CHAVE_ACESSO);
+        
+        // Construir URL com parâmetros
+        const urlComChave = `${URL_DESTINO}?access_key=${chaveCodeificada}&auto_auth=true&timestamp=${Date.now()}`;
+        
+        // Elementos
+        const timerElement = document.getElementById('timer');
+        const manualLink = document.getElementById('manual-redirect');
+        
+        // Configurar link manual
+        manualLink.href = urlComChave;
+        
+        // Contador regressivo
+        let tempoRestante = TEMPO_REDIRECT;
+        
+        function atualizarContador() {
+            timerElement.textContent = tempoRestante;
+            
+            if (tempoRestante <= 0) {
+                // Redirecionar automaticamente
+                window.location.href = urlComChave;
+                return;
+            }
+            
+            tempoRestante--;
+        }
+        
+        // Iniciar contador
+        atualizarContador();
+        const intervalo = setInterval(atualizarContador, 1000);
+        
+        // Mostrar link manual após 5 segundos
+        setTimeout(() => {
+            manualLink.style.display = 'inline-block';
+        }, 5000);
+        
+        // Fallback: redirecionar mesmo se algo der errado
+        setTimeout(() => {
+            if (window.location.href.includes('redirect.html')) {
+                window.location.href = urlComChave;
+            }
+        }, (TEMPO_REDIRECT + 2) * 1000);
+        
+        // Log para debug
+        console.log('🔗 URL de destino:', urlComChave);
+        console.log('🔐 Chave de acesso:', CHAVE_ACESSO);
+        console.log('⏰ Redirecionando em:', TEMPO_REDIRECT, 'segundos');
+        
+        // Detectar se está sendo executado localmente
+        if (window.location.protocol === 'file:') {
+            console.log('📁 Executando arquivo local - redirecionamento ativo');
+        }
+    </script>
+</body>
+</html>
