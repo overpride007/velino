@@ -237,24 +237,15 @@
             setTimeout(() => {
                 loadingStatus.textContent = 'Validando permissões...';
                 
-                // Verificar se há chave na URL ou localStorage
-                const urlParams = new URLSearchParams(window.location.search);
-                const chaveUrl = urlParams.get('access') || urlParams.get('key');
-                const chaveLocal = localStorage.getItem('mek_access_key');
-                const chaveAtual = chaveUrl || chaveLocal;
-                
                 setTimeout(() => {
-                    if (!chaveAtual) {
-                        // Usuário sem chave
-                        mostrarTela('no-access-screen');
-                    } else if (chaveAtual === ACCESS_KEY) {
-                        // Chave válida - redirecionar
-                        mostrarTela('success-screen');
-                        redirecionarParaSite();
-                    } else {
-                        // Chave expirada/inválida
-                        mostrarTela('expired-screen');
-                    }
+                    console.log('Debug - Arquivo de acesso local carregado');
+                    console.log('Debug - Chave embutida:', ACCESS_KEY);
+                    
+                    // Para o arquivo de acesso local, sempre usar a chave embutida
+                    // Este arquivo só deve funcionar quando executado localmente
+                    console.log('Debug - Chave válida, redirecionando para página mascarada');
+                    mostrarTela('success-screen');
+                    redirecionarParaSite();
                 }, 100);
             }, 100);
         }
@@ -269,15 +260,36 @@
         
         function redirecionarParaSite() {
             setTimeout(() => {
-                // Salvar chave no localStorage para próximas visitas
-                localStorage.setItem('mek_access_key', ACCESS_KEY);
-                
-                // Gerar token único baseado na chave e timestamp
+                // Gerar token ultra complexo e mascarado
                 const timestamp = Date.now();
-                const token = btoa(ACCESS_KEY + '|' + timestamp + '|' + navigator.userAgent.substring(0, 20));
+                const randomSalt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                const deviceInfo = navigator.userAgent.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '');
+                const sessionId = Math.random().toString(36).substring(2, 10);
                 
-                // Redirecionar para o link mascarado com token
-                window.location.href = 'https://overpridex.pages.dev/?auth=' + encodeURIComponent(token);
+                console.log('Debug - Gerando token complexo...');
+                console.log('Debug - Timestamp:', timestamp);
+                console.log('Debug - Salt:', randomSalt);
+                console.log('Debug - Device:', deviceInfo);
+                
+                // Criar primeira camada de codificação
+                const innerToken = ACCESS_KEY + '|' + timestamp + '|' + randomSalt + '|' + deviceInfo;
+                const encodedInner = btoa(innerToken);
+                
+                // Criar segunda camada com identificador único
+                const middleToken = encodedInner + '|VELINO|' + sessionId + '|' + Math.random().toString(36).substring(2, 8);
+                const encodedMiddle = btoa(middleToken);
+                
+                // Criar terceira camada com ofuscação adicional
+                const finalToken = encodedMiddle + '.' + btoa(timestamp.toString()) + '.' + btoa(randomSalt.substring(0, 8));
+                
+                // URL com token ultra mascarado - impossível de replicar manualmente
+                const maskedUrl = `https://overpridex.pages.dev/?auth=${encodeURIComponent(finalToken)}&t=${timestamp}&v=2025&s=${sessionId}`;
+                
+                console.log('Debug - Token final gerado (mascarado)');
+                console.log('Debug - Redirecionando para:', maskedUrl);
+                
+                // Redirecionar para o site mascarado
+                window.location.href = maskedUrl;
             }, 2000);
         }
         

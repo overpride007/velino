@@ -575,6 +575,236 @@
     </style>
 </head>
 <body class="p-4">
+    <!-- Script de Validação de Acesso Seguro -->
+    <script>
+        (function() {
+            console.log('Debug - Sistema de validação iniciado');
+            
+            // Chave esperada (deve coincidir com acesso.html)
+            const EXPECTED_KEY = 'Eaten-Riverbed-Dolphin-Undrilled7-Automated-Mossy-Capture-List-Uncrown-Kilowatt-Postwar-Treading-Chasing-Unstitch-Rule-Agreed-Deepness-Levitate-Colossal-Guise';
+            
+            function validateAccess() {
+                try {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const authToken = urlParams.get('auth');
+                    const timestamp = urlParams.get('t');
+                    const version = urlParams.get('v');
+                    const sessionId = urlParams.get('s');
+                    
+                    console.log('Debug - Token recebido:', authToken);
+                    console.log('Debug - Timestamp:', timestamp);
+                    console.log('Debug - Versão:', version);
+                    console.log('Debug - Session ID:', sessionId);
+                    
+                    // Verificar se os parâmetros básicos existem
+                    if (!authToken || !timestamp || !version || !sessionId) {
+                        console.log('Debug - Parâmetros ausentes, bloqueando acesso');
+                        blockAccess('Acesso negado: Parâmetros de autenticação ausentes.');
+                        return false;
+                    }
+                    
+                    // Verificar versão
+                    if (version !== '2025') {
+                        console.log('Debug - Versão inválida:', version);
+                        blockAccess('Acesso negado: Versão de token inválida.');
+                        return false;
+                    }
+                    
+                    // Decodificar o token complexo (nova estrutura com 3 camadas)
+                    let decodedToken;
+                    try {
+                        // Primeira decodificação - separar token principal e dados auxiliares
+                        const tokenParts = decodeURIComponent(authToken).split('.');
+                        if (tokenParts.length !== 3) {
+                            throw new Error('Formato de token inválido - estrutura incorreta');
+                        }
+                        
+                        const mainToken = tokenParts[0];
+                        const timestampCheck = atob(tokenParts[1]);
+                        const saltCheck = atob(tokenParts[2]);
+                        
+                        console.log('Debug - Token principal:', mainToken);
+                        console.log('Debug - Timestamp check:', timestampCheck);
+                        console.log('Debug - Salt check:', saltCheck);
+                        
+                        // Segunda decodificação - extrair camada média
+                        const middleDecoded = atob(mainToken);
+                        const middleParts = middleDecoded.split('|');
+                        if (middleParts.length !== 4 || middleParts[1] !== 'VELINO') {
+                            throw new Error('Token inválido - assinatura VELINO não encontrada');
+                        }
+                        
+                        // Terceira decodificação - extrair dados finais
+                        const innerDecoded = atob(middleParts[0]);
+                        const finalParts = innerDecoded.split('|');
+                        if (finalParts.length !== 4) {
+                            throw new Error('Estrutura de token inválida - dados internos corrompidos');
+                        }
+                        
+                        decodedToken = {
+                            key: finalParts[0],
+                            timestamp: parseInt(finalParts[1]),
+                            salt: finalParts[2],
+                            device: finalParts[3],
+                            sessionId: middleParts[2],
+                            timestampCheck: parseInt(timestampCheck),
+                            saltCheck: saltCheck
+                        };
+                        
+                        console.log('Debug - Token decodificado:', decodedToken);
+                        
+                        // Validar consistência interna
+                        if (decodedToken.timestamp !== decodedToken.timestampCheck) {
+                            throw new Error('Inconsistência de timestamp detectada');
+                        }
+                        
+                        if (!decodedToken.salt.startsWith(decodedToken.saltCheck)) {
+                            throw new Error('Inconsistência de salt detectada');
+                        }
+                        
+                    } catch (error) {
+                        console.log('Debug - Erro ao decodificar token:', error);
+                        blockAccess('Acesso negado: Token corrompido ou inválido.');
+                        return false;
+                    }
+                    
+                    // Verificar chave embutida
+                    if (decodedToken.key !== EXPECTED_KEY) {
+                        console.log('Debug - Chave incorreta no token');
+                        blockAccess('Acesso negado: Chave de autenticação inválida.');
+                        return false;
+                    }
+                    
+                    // Verificar timestamp (válido por 1 hora)
+                    const now = Date.now();
+                    const tokenAge = now - decodedToken.timestamp;
+                    const oneHour = 60 * 60 * 1000; // 1 hora em milissegundos
+                    
+                    console.log('Debug - Idade do token (ms):', tokenAge);
+                    console.log('Debug - Limite (1 hora):', oneHour);
+                    
+                    if (tokenAge > oneHour) {
+                        console.log('Debug - Token expirado');
+                        blockAccess('Acesso negado: Token de acesso expirado. Gere um novo token através do arquivo de acesso.');
+                        return false;
+                    }
+                    
+                    // Verificar consistência da sessão ID
+                    const urlSessionId = urlParams.get('s');
+                    if (decodedToken.sessionId !== urlSessionId) {
+                        console.log('Debug - Session ID não coincide');
+                        blockAccess('Acesso negado: Inconsistência de sessão detectada.');
+                        return false;
+                    }
+                    
+                    // Verificar timestamp da URL (deve coincidir aproximadamente)
+                    const urlTimestamp = parseInt(timestamp);
+                    const timestampDiff = Math.abs(decodedToken.timestamp - urlTimestamp);
+                    
+                    if (timestampDiff > 5000) { // Diferença máxima de 5 segundos
+                        console.log('Debug - Timestamps não coincidem');
+                        blockAccess('Acesso negado: Inconsistência temporal detectada.');
+                        return false;
+                    }
+                    
+                    console.log('Debug - Validação bem-sucedida!');
+                    
+                    // Limpar URL após validação bem-sucedida
+                    const cleanUrl = window.location.href.split('?')[0];
+                    window.history.replaceState({}, document.title, cleanUrl);
+                    
+                    return true;
+                    
+                } catch (error) {
+                    console.log('Debug - Erro geral na validação:', error);
+                    blockAccess('Acesso negado: Erro interno de validação.');
+                    return false;
+                }
+            }
+            
+            function blockAccess(message) {
+                // Criar tela de bloqueio
+                document.body.innerHTML = `
+                    <div style="
+                        position: fixed; 
+                        top: 0; 
+                        left: 0; 
+                        width: 100%; 
+                        height: 100%; 
+                        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 999999;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    ">
+                        <div style="
+                            text-align: center;
+                            background: rgba(30, 41, 59, 0.9);
+                            backdrop-filter: blur(10px);
+                            padding: 40px;
+                            border-radius: 20px;
+                            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+                            border: 2px solid #ef4444;
+                            max-width: 600px;
+                            margin: 20px;
+                        ">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">🔒</div>
+                            <h1 style="color: #ef4444; font-size: 2.5rem; margin-bottom: 20px;">Acesso Negado</h1>
+                            <p style="font-size: 1.2rem; margin: 20px 0; line-height: 1.6; color: #e2e8f0;">
+                                ${message}
+                            </p>
+                            <div style="
+                                background: rgba(239, 68, 68, 0.1);
+                                border: 1px solid #ef4444;
+                                border-radius: 12px;
+                                padding: 20px;
+                                margin: 25px 0;
+                                text-align: left;
+                            ">
+                                <h3 style="color: #fca5a5; margin: 0 0 15px 0;">🚀 Para acessar legitimamente:</h3>
+                                <ol style="color: #fecaca; margin: 0; line-height: 1.7;">
+                                    <li>Vá na <strong>Kirvano</strong> e faça login 🏪</li>
+                                    <li>Acesse a aba <strong>"Compras"</strong> 🛒</li>
+                                    <li>Baixe o arquivo HTML do produto 📥</li>
+                                    <li>Abra o arquivo de acesso localmente 🌐</li>
+                                </ol>
+                            </div>
+                            <a href="https://kirvano.com/" target="_blank" style="
+                                display: inline-block;
+                                background: linear-gradient(135deg, #22c55e, #16a34a);
+                                color: white;
+                                padding: 15px 30px;
+                                border-radius: 12px;
+                                text-decoration: none;
+                                font-weight: 600;
+                                font-size: 1.1rem;
+                                margin-top: 20px;
+                                transition: all 0.3s;
+                            ">🏪 Acessar Kirvano</a>
+                        </div>
+                    </div>
+                `;
+                
+                // Impedir qualquer ação adicional
+                document.addEventListener('contextmenu', e => e.preventDefault());
+                document.addEventListener('keydown', e => {
+                    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+            
+            // Executar validação imediatamente
+            if (!validateAccess()) {
+                return; // Parar execução se o acesso for negado
+            }
+            
+            console.log('Debug - Acesso autorizado, carregando página...');
+        })();
+    </script>
+
     <!-- Notificação de Modo de Usar (Flutuante, Premium Design) -->
     <div id="usageNotification" class="usage-notification shadow-2xl border-4 border-blue-500 bg-gradient-to-br from-blue-900 via-gray-900 to-blue-800 flex flex-col items-center z-50" style="display: block;">
         <div class="flex items-center gap-3 mb-4">
