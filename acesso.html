@@ -233,19 +233,28 @@
         function verificarAcesso() {
             const loadingStatus = document.getElementById('loading-status');
             
+            console.log('Debug - Iniciando verificação de acesso');
+            console.log('Debug - URL atual:', window.location.href);
+            console.log('Debug - Protocol:', window.location.protocol);
+            
             // Verificação quase instantânea (~200ms)
             setTimeout(() => {
                 loadingStatus.textContent = 'Validando permissões...';
+                console.log('Debug - Status atualizado para: Validando permissões...');
                 
                 setTimeout(() => {
                     console.log('Debug - Arquivo de acesso local carregado');
-                    console.log('Debug - Chave embutida:', ACCESS_KEY);
+                    console.log('Debug - Chave embutida presente:', !!ACCESS_KEY);
                     
-                    // Para o arquivo de acesso local, sempre usar a chave embutida
-                    // Este arquivo só deve funcionar quando executado localmente
-                    console.log('Debug - Chave válida, redirecionando para página mascarada');
-                    mostrarTela('success-screen');
-                    redirecionarParaSite();
+                    // Se temos a chave de acesso (que só existe neste arquivo local), liberar acesso
+                    if (ACCESS_KEY && ACCESS_KEY.length > 50) {
+                        console.log('Debug - Chave válida detectada, liberando acesso');
+                        mostrarTela('success-screen');
+                        redirecionarParaSite();
+                    } else {
+                        console.log('Debug - Chave não encontrada ou inválida');
+                        mostrarTela('no-access-screen');
+                    }
                 }, 100);
             }, 100);
         }
