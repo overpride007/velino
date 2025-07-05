@@ -580,6 +580,28 @@
         (function() {
             console.log('Debug - Sistema de validação iniciado');
             
+            // TESTE TEMPORÁRIO - PERMITIR ACESSO DIRETO
+            console.log('Debug - MODO DEBUG: Permitindo acesso direto para teste');
+            
+            // Verificar se há parâmetros de token na URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const authToken = urlParams.get('auth');
+            
+            if (authToken) {
+                console.log('Debug - Token detectado na URL, validando...');
+                // Tentar validar normalmente
+                if (!validateAccess()) {
+                    console.log('Debug - Validação falhou, mas permitindo acesso para debug');
+                    // Limpar URL mesmo que a validação falhe
+                    const cleanUrl = window.location.href.split('?')[0];
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+            } else {
+                console.log('Debug - Nenhum token na URL - acesso direto permitido para teste');
+            }
+            
+            console.log('Debug - Acesso autorizado, carregando página...');
+            
             // Chave esperada (deve coincidir com acesso.html)
             const EXPECTED_KEY = 'Eaten-Riverbed-Dolphin-Undrilled7-Automated-Mossy-Capture-List-Uncrown-Kilowatt-Postwar-Treading-Chasing-Unstitch-Rule-Agreed-Deepness-Levitate-Colossal-Guise';
             
@@ -601,19 +623,17 @@
                     
                     // Verificar se os parâmetros básicos existem
                     if (!authToken || !timestamp || !version || !sessionId) {
-                        console.log('Debug - Parâmetros ausentes, bloqueando acesso');
+                        console.log('Debug - Parâmetros ausentes');
                         console.log('Debug - authToken presente:', !!authToken);
                         console.log('Debug - timestamp presente:', !!timestamp);
                         console.log('Debug - version presente:', !!version);
                         console.log('Debug - sessionId presente:', !!sessionId);
-                        blockAccess('Acesso negado: Parâmetros de autenticação ausentes.');
                         return false;
                     }
                     
                     // Verificar versão
                     if (version !== '2025') {
                         console.log('Debug - Versão inválida:', version);
-                        blockAccess('Acesso negado: Versão de token inválida.');
                         return false;
                     }
                     
@@ -674,14 +694,12 @@
                         
                     } catch (error) {
                         console.log('Debug - Erro ao decodificar token:', error);
-                        blockAccess('Acesso negado: Token corrompido ou inválido.');
                         return false;
                     }
                     
                     // Verificar chave embutida
                     if (decodedToken.key !== EXPECTED_KEY) {
                         console.log('Debug - Chave incorreta no token');
-                        blockAccess('Acesso negado: Chave de autenticação inválida.');
                         return false;
                     }
                     
@@ -695,7 +713,6 @@
                     
                     if (tokenAge > oneHour) {
                         console.log('Debug - Token expirado');
-                        blockAccess('Acesso negado: Token de acesso expirado. Gere um novo token através do arquivo de acesso.');
                         return false;
                     }
                     
@@ -703,7 +720,6 @@
                     const urlSessionId = urlParams.get('s');
                     if (decodedToken.sessionId !== urlSessionId) {
                         console.log('Debug - Session ID não coincide');
-                        blockAccess('Acesso negado: Inconsistência de sessão detectada.');
                         return false;
                     }
                     
@@ -713,7 +729,6 @@
                     
                     if (timestampDiff > 5000) { // Diferença máxima de 5 segundos
                         console.log('Debug - Timestamps não coincidem');
-                        blockAccess('Acesso negado: Inconsistência temporal detectada.');
                         return false;
                     }
                     
@@ -727,91 +742,9 @@
                     
                 } catch (error) {
                     console.log('Debug - Erro geral na validação:', error);
-                    blockAccess('Acesso negado: Erro interno de validação.');
                     return false;
                 }
             }
-            
-            function blockAccess(message) {
-                // Criar tela de bloqueio
-                document.body.innerHTML = `
-                    <div style="
-                        position: fixed; 
-                        top: 0; 
-                        left: 0; 
-                        width: 100%; 
-                        height: 100%; 
-                        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-                        color: white;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        z-index: 999999;
-                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    ">
-                        <div style="
-                            text-align: center;
-                            background: rgba(30, 41, 59, 0.9);
-                            backdrop-filter: blur(10px);
-                            padding: 40px;
-                            border-radius: 20px;
-                            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-                            border: 2px solid #ef4444;
-                            max-width: 600px;
-                            margin: 20px;
-                        ">
-                            <div style="font-size: 4rem; margin-bottom: 20px;">🔒</div>
-                            <h1 style="color: #ef4444; font-size: 2.5rem; margin-bottom: 20px;">Acesso Negado</h1>
-                            <p style="font-size: 1.2rem; margin: 20px 0; line-height: 1.6; color: #e2e8f0;">
-                                ${message}
-                            </p>
-                            <div style="
-                                background: rgba(239, 68, 68, 0.1);
-                                border: 1px solid #ef4444;
-                                border-radius: 12px;
-                                padding: 20px;
-                                margin: 25px 0;
-                                text-align: left;
-                            ">
-                                <h3 style="color: #fca5a5; margin: 0 0 15px 0;">🚀 Para acessar legitimamente:</h3>
-                                <ol style="color: #fecaca; margin: 0; line-height: 1.7;">
-                                    <li>Vá na <strong>Kirvano</strong> e faça login 🏪</li>
-                                    <li>Acesse a aba <strong>"Compras"</strong> 🛒</li>
-                                    <li>Baixe o arquivo HTML do produto 📥</li>
-                                    <li>Abra o arquivo de acesso localmente 🌐</li>
-                                </ol>
-                            </div>
-                            <a href="https://kirvano.com/" target="_blank" style="
-                                display: inline-block;
-                                background: linear-gradient(135deg, #22c55e, #16a34a);
-                                color: white;
-                                padding: 15px 30px;
-                                border-radius: 12px;
-                                text-decoration: none;
-                                font-weight: 600;
-                                font-size: 1.1rem;
-                                margin-top: 20px;
-                                transition: all 0.3s;
-                            ">🏪 Acessar Kirvano</a>
-                        </div>
-                    </div>
-                `;
-                
-                // Impedir qualquer ação adicional
-                document.addEventListener('contextmenu', e => e.preventDefault());
-                document.addEventListener('keydown', e => {
-                    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey)) {
-                        e.preventDefault();
-                    }
-                });
-            }
-            
-            // Executar validação imediatamente
-            if (!validateAccess()) {
-                return; // Parar execução se o acesso for negado
-            }
-            
-            console.log('Debug - Acesso autorizado, carregando página...');
         })();
     </script>
 
