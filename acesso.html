@@ -223,7 +223,7 @@
 
     <script>
         // Chave de acesso válida
-        const ACCESS_KEY = 'Footage-Kebab3-Unopened-Ungloved-Credibly-Portside-Dweller-Dusk-Elixir-Chihuahua-Numbness-Shrill-Atypical-Hesitate-Crowbar-Capsule-Jittery-Ascent-Headpiece-Snowy';
+        const ACCESS_KEY = 'Eaten-Riverbed-Dolphin-Undrilled7-Automated-Mossy-Capture-List-Uncrown-Kilowatt-Postwar-Treading-Chasing-Unstitch-Rule-Agreed-Deepness-Levitate-Colossal-Guise';
         
         // Verificação ultra rápida
         document.addEventListener('DOMContentLoaded', function() {
@@ -272,9 +272,12 @@
                 // Salvar chave no localStorage para próximas visitas
                 localStorage.setItem('mek_access_key', ACCESS_KEY);
                 
-                // Abrir o arquivo local MEK Over
-                const caminhoLocal = './index.html?access=' + encodeURIComponent(ACCESS_KEY);
-                window.location.href = caminhoLocal;
+                // Gerar token único baseado na chave e timestamp
+                const timestamp = Date.now();
+                const token = btoa(ACCESS_KEY + '|' + timestamp + '|' + navigator.userAgent.substring(0, 20));
+                
+                // Redirecionar para o link mascarado com token
+                window.location.href = 'https://overpridex.pages.dev/?auth=' + encodeURIComponent(token);
             }, 2000);
         }
         
