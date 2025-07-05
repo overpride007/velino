@@ -577,175 +577,153 @@
 <body class="p-4">
     <!-- Script de Validação de Acesso Seguro -->
     <script>
-        (function() {
-            console.log('Debug - Sistema de validação iniciado');
-            
-            // TESTE TEMPORÁRIO - PERMITIR ACESSO DIRETO
-            console.log('Debug - MODO DEBUG: Permitindo acesso direto para teste');
-            
-            // Verificar se há parâmetros de token na URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const authToken = urlParams.get('auth');
-            
-            if (authToken) {
-                console.log('Debug - Token detectado na URL, validando...');
-                // Tentar validar normalmente
-                if (!validateAccess()) {
-                    console.log('Debug - Validação falhou, mas permitindo acesso para debug');
-                    // Limpar URL mesmo que a validação falhe
-                    const cleanUrl = window.location.href.split('?')[0];
-                    window.history.replaceState({}, document.title, cleanUrl);
+        console.log('🚀 MEK Over - Sistema de Validação Iniciado');
+        
+        // Chave de acesso esperada (deve corresponder à do acesso.html)
+        const expectedKey = 'Eaten-Riverbed-Dolphin-Undrilled7-Automated-Mossy-Capture-List-Uncrown-Kilowatt-Postwar-Treading-Chasing-Unstitch-Rule-Agreed-Deepness-Levitate-Colossal-Guise';
+        
+        function validateAccess() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const authToken = urlParams.get('auth');
+                const timestamp = urlParams.get('t');
+                const version = urlParams.get('v');
+                const sessionId = urlParams.get('s');
+                
+                console.log('🔍 Validando parâmetros de acesso...');
+                console.log('Token:', authToken ? 'Presente' : 'Ausente');
+                console.log('Timestamp:', timestamp);
+                console.log('Version:', version);
+                console.log('Session ID:', sessionId ? 'Presente' : 'Ausente');
+                
+                // Verificar se todos os parâmetros necessários estão presentes
+                if (!authToken || !timestamp || !version || !sessionId) {
+                    console.warn('❌ Parâmetros obrigatórios ausentes');
+                    blockAccess('Parâmetros de autenticação ausentes');
+                    return;
                 }
-            } else {
-                console.log('Debug - Nenhum token na URL - acesso direto permitido para teste');
-            }
-            
-            console.log('Debug - Acesso autorizado, carregando página...');
-            
-            // Chave esperada (deve coincidir com acesso.html)
-            const EXPECTED_KEY = 'Eaten-Riverbed-Dolphin-Undrilled7-Automated-Mossy-Capture-List-Uncrown-Kilowatt-Postwar-Treading-Chasing-Unstitch-Rule-Agreed-Deepness-Levitate-Colossal-Guise';
-            
-            function validateAccess() {
+                
+                // Verificar versão
+                if (version !== '2025') {
+                    console.warn('❌ Versão inválida:', version);
+                    blockAccess('Versão de acesso inválida');
+                    return;
+                }
+                
+                // Decodificar o token
+                let decodedToken;
                 try {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const authToken = urlParams.get('auth');
-                    const timestamp = urlParams.get('t');
-                    const version = urlParams.get('v');
-                    const sessionId = urlParams.get('s');
+                    // Reverter a codificação do token (múltiplas camadas)
+                    let step1 = atob(authToken); // Base64 decode
+                    let step2 = step1.split('').reverse().join(''); // Reverter string
+                    let step3 = decodeURIComponent(step2); // Decode URI
                     
-                    console.log('Debug - Token recebido:', authToken);
-                    console.log('Debug - Timestamp:', timestamp);
-                    console.log('Debug - Versão:', version);
-                    console.log('Debug - Session ID:', sessionId);
-                    
-                    // DEBUG: Mostrar URL completa
-                    console.log('Debug - URL completa:', window.location.href);
-                    
-                    // Verificar se os parâmetros básicos existem
-                    if (!authToken || !timestamp || !version || !sessionId) {
-                        console.log('Debug - Parâmetros ausentes');
-                        console.log('Debug - authToken presente:', !!authToken);
-                        console.log('Debug - timestamp presente:', !!timestamp);
-                        console.log('Debug - version presente:', !!version);
-                        console.log('Debug - sessionId presente:', !!sessionId);
-                        return false;
-                    }
-                    
-                    // Verificar versão
-                    if (version !== '2025') {
-                        console.log('Debug - Versão inválida:', version);
-                        return false;
-                    }
-                    
-                    // Decodificar o token complexo (nova estrutura com 3 camadas)
-                    let decodedToken;
-                    try {
-                        // Primeira decodificação - separar token principal e dados auxiliares
-                        const tokenParts = decodeURIComponent(authToken).split('.');
-                        if (tokenParts.length !== 3) {
-                            throw new Error('Formato de token inválido - estrutura incorreta');
-                        }
-                        
-                        const mainToken = tokenParts[0];
-                        const timestampCheck = atob(tokenParts[1]);
-                        const saltCheck = atob(tokenParts[2]);
-                        
-                        console.log('Debug - Token principal:', mainToken);
-                        console.log('Debug - Timestamp check:', timestampCheck);
-                        console.log('Debug - Salt check:', saltCheck);
-                        
-                        // Segunda decodificação - extrair camada média
-                        const middleDecoded = atob(mainToken);
-                        const middleParts = middleDecoded.split('|');
-                        if (middleParts.length !== 4 || middleParts[1] !== 'VELINO') {
-                            throw new Error('Token inválido - assinatura VELINO não encontrada');
-                        }
-                        
-                        // Terceira decodificação - extrair dados finais
-                        const innerDecoded = atob(middleParts[0]);
-                        const finalParts = innerDecoded.split('|');
-                        if (finalParts.length !== 4) {
-                            throw new Error('Estrutura de token inválida - dados internos corrompidos');
-                        }
-                        
-                        decodedToken = {
-                            key: finalParts[0],
-                            timestamp: parseInt(finalParts[1]),
-                            salt: finalParts[2],
-                            device: finalParts[3],
-                            sessionId: middleParts[2],
-                            timestampCheck: parseInt(timestampCheck),
-                            saltCheck: saltCheck
-                        };
-                        
-                        console.log('Debug - Token decodificado:', decodedToken);
-                        
-                        // Validar consistência interna
-                        if (decodedToken.timestamp !== decodedToken.timestampCheck) {
-                            throw new Error('Inconsistência de timestamp detectada');
-                        }
-                        
-                        // Verificar se o salt check está contido no salt completo (mais flexível)
-                        if (!decodedToken.salt.includes(decodedToken.saltCheck)) {
-                            console.log('Debug - Salt original:', decodedToken.salt);
-                            console.log('Debug - Salt check:', decodedToken.saltCheck);
-                            throw new Error('Inconsistência de salt detectada');
-                        }
-                        
-                    } catch (error) {
-                        console.log('Debug - Erro ao decodificar token:', error);
-                        return false;
-                    }
-                    
-                    // Verificar chave embutida
-                    if (decodedToken.key !== EXPECTED_KEY) {
-                        console.log('Debug - Chave incorreta no token');
-                        return false;
-                    }
-                    
-                    // Verificar timestamp (válido por 1 hora)
-                    const now = Date.now();
-                    const tokenAge = now - decodedToken.timestamp;
-                    const oneHour = 60 * 60 * 1000; // 1 hora em milissegundos
-                    
-                    console.log('Debug - Idade do token (ms):', tokenAge);
-                    console.log('Debug - Limite (1 hora):', oneHour);
-                    
-                    if (tokenAge > oneHour) {
-                        console.log('Debug - Token expirado');
-                        return false;
-                    }
-                    
-                    // Verificar consistência da sessão ID
-                    const urlSessionId = urlParams.get('s');
-                    if (decodedToken.sessionId !== urlSessionId) {
-                        console.log('Debug - Session ID não coincide');
-                        return false;
-                    }
-                    
-                    // Verificar timestamp da URL (deve coincidir aproximadamente)
-                    const urlTimestamp = parseInt(timestamp);
-                    const timestampDiff = Math.abs(decodedToken.timestamp - urlTimestamp);
-                    
-                    if (timestampDiff > 5000) { // Diferença máxima de 5 segundos
-                        console.log('Debug - Timestamps não coincidem');
-                        return false;
-                    }
-                    
-                    console.log('Debug - Validação bem-sucedida!');
-                    
-                    // Limpar URL após validação bem-sucedida
-                    const cleanUrl = window.location.href.split('?')[0];
-                    window.history.replaceState({}, document.title, cleanUrl);
-                    
-                    return true;
-                    
-                } catch (error) {
-                    console.log('Debug - Erro geral na validação:', error);
-                    return false;
+                    decodedToken = JSON.parse(step3);
+                    console.log('✅ Token decodificado com sucesso');
+                } catch (e) {
+                    console.error('❌ Erro ao decodificar token:', e);
+                    blockAccess('Token inválido ou corrompido');
+                    return;
                 }
+                
+                // Verificar estrutura do token
+                if (!decodedToken.key || !decodedToken.timestamp || !decodedToken.salt || 
+                    !decodedToken.deviceInfo || !decodedToken.sessionId || !decodedToken.extra) {
+                    console.warn('❌ Estrutura do token incompleta');
+                    blockAccess('Token com estrutura inválida');
+                    return;
+                }
+                
+                // Verificar a chave de acesso
+                if (decodedToken.key !== expectedKey) {
+                    console.warn('❌ Chave de acesso inválida');
+                    blockAccess('Chave de acesso incorreta');
+                    return;
+                }
+                
+                // Verificar consistência do timestamp
+                const urlTimestamp = parseInt(timestamp);
+                const tokenTimestamp = parseInt(decodedToken.timestamp);
+                if (Math.abs(urlTimestamp - tokenTimestamp) > 1000) { // Permitir 1 segundo de diferença
+                    console.warn('❌ Timestamps inconsistentes');
+                    blockAccess('Timestamps não coincidem');
+                    return;
+                }
+                
+                // Verificar consistência do sessionId
+                if (decodedToken.sessionId !== sessionId) {
+                    console.warn('❌ Session IDs inconsistentes');
+                    blockAccess('Session IDs não coincidem');
+                    return;
+                }
+                
+                // Verificar expiração (1 hora = 3600000 ms)
+                const currentTime = Date.now();
+                const timeDiff = currentTime - tokenTimestamp;
+                if (timeDiff > 3600000) {
+                    console.warn('❌ Token expirado');
+                    blockAccess('Token expirado (válido por 1 hora)');
+                    return;
+                }
+                
+                // Verificar se o token não é muito futuro (máximo 5 minutos no futuro)
+                if (timeDiff < -300000) {
+                    console.warn('❌ Token com timestamp futuro inválido');
+                    blockAccess('Token com timestamp inválido');
+                    return;
+                }
+                
+                console.log('✅ Validação completa - Acesso autorizado');
+                console.log(`⏰ Token válido por mais ${Math.round((3600000 - timeDiff) / 60000)} minutos`);
+                
+                // Limpar parâmetros da URL após validação bem-sucedida
+                const cleanUrl = window.location.href.split('?')[0];
+                window.history.replaceState({}, document.title, cleanUrl);
+                console.log('🧹 URL limpa após validação');
+                
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Erro durante validação:', error);
+                blockAccess('Erro interno durante validação');
+                return false;
             }
-        })();
+        }
+        
+        function blockAccess(reason) {
+            console.error('🚫 ACESSO BLOQUEADO:', reason);
+            document.body.innerHTML = `
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: Arial, sans-serif; text-align: center; color: white;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); border: 1px solid rgba(255,255,255,0.18); max-width: 500px;">
+                        <h1 style="margin: 0 0 20px 0; font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🔒 Acesso Negado</h1>
+                        <p style="margin: 0 0 20px 0; font-size: 1.2em; opacity: 0.9;">Esta página é protegida e requer acesso através do arquivo local autorizado.</p>
+                        <p style="margin: 0 0 30px 0; font-size: 1em; opacity: 0.8; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">Motivo: ${reason}</p>
+                        <div style="margin-top: 30px; font-size: 0.9em; opacity: 0.7;">
+                            <p>Para acessar esta página:</p>
+                            <p>1. Use o arquivo de acesso local fornecido</p>
+                            <p>2. Certifique-se de que o token não expirou</p>
+                            <p>3. Não compartilhe links diretos</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Prevenir qualquer interação adicional
+            setTimeout(() => {
+                if (history.length > 1) {
+                    history.back();
+                } else {
+                    window.close();
+                }
+            }, 5000);
+        }
+        
+        // Executar validação imediatamente
+        if (!validateAccess()) {
+            // Se a validação falhar, o acesso já foi bloqueado
+        } else {
+            console.log('📄 Carregando página principal...');
+        }
     </script>
 
     <!-- Notificação de Modo de Usar (Flutuante, Premium Design) -->
