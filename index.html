@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velino Extensions - Extensões Tachiyomi</title>
-    <meta name="description" content="Lista completa de extensões para Tachiyomi com análises, avaliações e guias de instalação.">
-    <meta name="keywords" content="tachiyomi, extensões, manga, anime, leitura, android">
+    <title>MEK-Over Extensions - Extensões Tachiyomi Premium</title>
+    <meta name="description" content="Lista completa de extensões premium para Tachiyomi com análises, avaliações e guias de instalação - Cliente OverPrideX.">
+    <meta name="keywords" content="tachiyomi, extensões, manga, anime, leitura, android, premium, mek-over">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     
     <!-- Sistema de Proteção com Chave de Acesso -->
@@ -77,7 +77,7 @@
                         <span style="font-weight: bold;">Acesso Liberado!</span>
                     </div>
                     <div style="font-size: 14px; margin-top: 4px; opacity: 0.9;">
-                        Bem-vindo ao Velino Extensions
+                        Bem-vindo ao MEK-Over Extensions
                     </div>
                 </div>
             `;
@@ -204,294 +204,94 @@
             to { transform: translateX(100%); opacity: 0; }
         }
         
-        /* Estilos das telas de bloqueio */
+        /* Estilos das telas de bloqueio - Design Premium Inspirado na Seção de Apps */
         #tela-bloqueio {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1f2937 50%, #111827 100%);
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #2d1b69 100%);
             z-index: 99999;
             display: none;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            overflow-y: auto;
-            padding: 20px 0;
-        }
-        
-        .card-bloqueio {
-            background: rgba(31, 41, 55, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            text-align: center;
-            animation: fadeInScale 0.6s ease-out;
-            margin: auto;
-        }
-        
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        .logo-bloqueio {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ef4444);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .titulo-bloqueio {
-            color: #f3f4f6;
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .subtitulo-bloqueio {
-            color: #9ca3af;
-            font-size: 1rem;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        
-        .conteudo-bloqueio {
-            background: rgba(17, 24, 39, 0.6);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        
-        .lista-interesses {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .lista-interesses li {
-            color: #e5e7eb;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
-            font-size: 0.95rem;
-        }
-        
-        .lista-interesses li:last-child {
-            border-bottom: none;
-        }
-        
-        .convite {
-            color: #60a5fa;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin: 20px 0;
-        }
-        
-        .btn-produto, .btn-renovar {
-            display: inline-block;
-            background: linear-gradient(45deg, #10b981, #059669);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin: 20px 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-produto:hover, .btn-renovar:hover {
-            background: linear-gradient(45deg, #059669, #047857);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
-        }
-        
-        .rodape-bloqueio {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(59, 130, 246, 0.2);
-            color: #6b7280;
-            font-size: 14px;
-        }
-        
-        .rodape-bloqueio h4 {
-            color: #f3f4f6;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .passos-acesso, .passos-renovacao {
-            text-align: left;
-            background: rgba(17, 24, 39, 0.4);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-        
-        .passos-acesso ol, .passos-renovacao ol {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        
-        .passos-acesso li, .passos-renovacao li {
-            color: #d1d5db;
-            margin: 5px 0;
-            line-height: 1.4;
-        }
-        
-        .passos-acesso a, .passos-renovacao a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .passos-acesso a:hover, .passos-renovacao a:hover {
-            color: #93c5fd;
-            text-decoration: underline;
-        }
-        
-        .texto-expirado {
-            color: #fbbf24;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        
-        /* Responsividade */
-        @media (max-width: 600px) {
-            .card-bloqueio {
-                padding: 30px 20px;
-                margin: 20px;
-                max-width: 95%;
-            }
-            
-            .logo-bloqueio {
-                font-size: 3rem;
-            }
-            
-            .titulo-bloqueio {
-                font-size: 1.5rem;
-            }
-            
-            .subtitulo-bloqueio {
-                font-size: 0.9rem;
-            }
-            
-            .btn-produto, .btn-renovar {
-                padding: 14px 24px;
-                font-size: 1rem;
-                margin: 15px 5px;
-            }
-        }
-        
-        /* Estilos para as novas telas */
-        .conteudo-bloqueio {
-            text-align: left;
-            margin: 25px 0;
-        }
-        
-        .lista-interesses {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-        
-        .lista-interesses li {
-            color: #e5e7eb;
-            margin: 10px 0;
-            padding: 8px 12px;
-            background: rgba(17, 24, 39, 0.6);
-            border-radius: 8px;
-            border-left: 3px solid #3b82f6;
-        }
-        
-        .convite {
-            color: #60a5fa;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0;
-            font-size: 1.1rem;
-        }
-        
-        .btn-produto, .btn-renovar {
-            display: inline-block;
-            width: 100%;
-            max-width: 300px;
-            padding: 16px 24px;
-            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            text-align: center;
-            margin: 20px auto;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(59, 130, 246, 0.3);
-        }
-        
-        .btn-produto:hover, .btn-renovar:hover {
-            background: linear-gradient(45deg, #2563eb, #1e40af);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-        }
-        
-        .passos-acesso, .passos-renovacao {
-            background: rgba(17, 24, 39, 0.8);
-            border-radius: 12px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             padding: 20px;
-            margin: 20px 0;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            overflow-y: auto;
         }
         
-        .passos-acesso h4, .passos-renovacao h4 {
-            color: #3b82f6;
-            margin-bottom: 15px;
+        /* Estilos específicos das seções de bloqueio */
+        #tela-bloqueio .rounded-2xl { 
+            border-radius: 1.25rem; 
         }
         
-        .passos-acesso ol, .passos-renovacao ol {
-            color: #e5e7eb;
-            padding-left: 20px;
+        #tela-bloqueio .shadow-xl { 
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25); 
         }
         
-        .passos-acesso li, .passos-renovacao li {
-            margin: 8px 0;
-            line-height: 1.4;
+        #tela-bloqueio .hover\:shadow-purple-400\/40:hover { 
+            box-shadow: 0 0 0 4px rgba(192,132,252,0.3), 0 8px 32px 0 rgba(0,0,0,0.25); 
         }
         
-        .passos-acesso a, .passos-renovacao a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: bold;
+        #tela-bloqueio .hover\:shadow-blue-400\/40:hover { 
+            box-shadow: 0 0 0 4px rgba(96,165,250,0.3), 0 8px 32px 0 rgba(0,0,0,0.25); 
         }
         
-        .passos-acesso a:hover, .passos-renovacao a:hover {
-            color: #93c5fd;
-            text-decoration: underline;
+        #tela-bloqueio .hover\:shadow-red-400\/40:hover { 
+            box-shadow: 0 0 0 4px rgba(248,113,113,0.3), 0 8px 32px 0 rgba(0,0,0,0.25); 
         }
         
-        .texto-expirado {
-            color: #fbbf24;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0;
-            font-size: 1.1rem;
+        /* Responsividade das telas de bloqueio */
+        @media (max-width: 900px) {
+            #tela-bloqueio .grid-cols-1, 
+            #tela-bloqueio .md\:grid-cols-2 { 
+                grid-template-columns: 1fr !important; 
+            }
         }
         
-        #tela-acesso-expirado .logo-bloqueio {
-            background: linear-gradient(45deg, #f59e0b, #d97706, #b45309);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        @media (max-width: 600px) {
+            #tela-bloqueio { 
+                padding: 12px !important; 
+            }
+            
+            #tela-bloqueio h2 { 
+                font-size: 1.5rem !important; 
+            }
+            
+            #tela-bloqueio .text-2xl { 
+                font-size: 1.1rem !important; 
+            }
+            
+            #tela-bloqueio .p-7, 
+            #tela-bloqueio .p-10 { 
+                padding: 1rem !important; 
+            }
+            
+            #tela-bloqueio .max-w-5xl,
+            #tela-bloqueio .max-w-4xl,
+            #tela-bloqueio .max-w-3xl,
+            #tela-bloqueio .max-w-2xl {
+                max-width: 95vw !important;
+            }
+            
+            #tela-bloqueio .gap-10 {
+                gap: 1.5rem !important;
+            }
+        }
+        
+        /* Animações para os cards */
+        #tela-bloqueio .hover\:scale-\[1\.025\]:hover {
+            transform: scale(1.025);
+        }
+        
+        /* Gradientes e cores específicas */
+        #tela-acesso-exclusivo {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 50%, #581c87 100%);
+        }
+        
+        #tela-acesso-expirado {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 50%, #7f1d1d 100%);
         }
     </style>
     
@@ -1068,88 +868,122 @@
     </style>
 </head>
 <body class="p-4">
-    <!-- Tela de Bloqueio com Novas Mensagens -->
+    <!-- Tela de Bloqueio -->
     <div id="tela-bloqueio">
         <!-- Tela de Acesso Exclusivo -->
-        <div id="tela-acesso-exclusivo" class="card-bloqueio">
-            <div class="logo-bloqueio">�</div>
-            <h1 class="titulo-bloqueio">Acesso Exclusivo</h1>
-            <p class="subtitulo-bloqueio">
-                Esta página é de acesso exclusivo para clientes da <strong>OverPrideX</strong>
-            </p>
+        <div id="tela-acesso-exclusivo" class="mt-20 bg-gradient-to-br from-gray-800 via-gray-900 to-purple-900 p-10 rounded-3xl border-4 border-purple-500 shadow-2xl max-w-5xl mx-auto">
+            <h2 class="text-4xl font-extrabold text-center text-purple-100 mb-10 tracking-tight drop-shadow-lg">🔒 Acesso Exclusivo</h2>
             
-            <div class="conteudo-bloqueio">
-                <p>Mas caso você tenha interesse em:</p>
-                <ul class="lista-interesses">
-                    <li>📚 <strong>Manhwas, Mangás e Comics</strong></li>
-                    <li>📱 <strong>Recomendações de apps de leitura</strong></li>
-                    <li>⭐ <strong>Recomendação das melhores extensões</strong></li>
-                    <li>🎯 <strong>Obras e dicas de configurações</strong></li>
-                    <li>🔧 <strong>Uso e resoluções de problemas</strong></li>
-                    <li>✨ <strong>Experiência interativa e intuitiva</strong></li>
-                </ul>
-                
-                <p class="convite">Você é mais que bem-vindo a participar da nossa comunidade!</p>
-                
-                <a href="https://pay.kirvano.com/e1e18750-3577-44e7-9237-006e090578cb" 
-                   target="_blank" 
-                   class="btn-produto">
-                    🛒 Adquirir Produto
-                </a>
-            </div>
-            
-            <div class="rodape-bloqueio">
-                <h4>📋 Já é nosso cliente?</h4>
-                <p>O acesso ao site é feito pelo arquivo do produto!</p>
-                <div class="passos-acesso">
-                    <p><strong>Para baixar:</strong></p>
-                    <ol>
-                        <li>Acesse <a href="https://app.kirvano.com/" target="_blank">app.kirvano.com</a></li>
-                        <li>Faça login na sua conta</li>
-                        <li>Vá na aba "Compras"</li>
-                        <li>Clique no produto "Melhores Extensões"</li>
-                        <li>Baixe o arquivo ZIP</li>
-                        <li>Extraia e abra o arquivo HTML no navegador</li>
-                    </ol>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Card do Produto -->
+                <div class="bg-gray-900/95 p-7 rounded-2xl shadow-xl flex flex-col items-center hover:shadow-purple-400/40 transition duration-300 border border-purple-400/30 hover:scale-[1.025]">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl shadow border-2 border-purple-400 bg-purple-600 flex items-center justify-center text-2xl">📚</div>
+                        <h3 class="text-2xl font-bold text-purple-300">MEK-Over Extensions <span class="text-xs bg-purple-700/60 text-white px-2 py-0.5 rounded ml-1">Exclusivo</span></h3>
+                    </div>
+                    <p class="mb-4 text-gray-200 text-center">Acesso completo a recomendações especializadas de mangás, manhwas e webtoons com suporte técnico dedicado.</p>
+                    <ul class="list-disc list-inside mb-4 text-purple-200 space-y-1 text-left self-start w-full">
+                        <li>📱 Recomendações de apps para leitura</li>
+                        <li>⭐ Extensões testadas e funcionais</li>
+                        <li>📚 Obras recomendadas por especialistas</li>
+                        <li>🔧 Dicas de configurações avançadas</li>
+                        <li>💡 Dicas de uso otimizado</li>
+                        <li>🛠️ Soluções de problemas com suporte</li>
+                    </ul>
+                    <p class="mb-4 text-purple-400 font-semibold text-center">💎 Produto de pagamento único com atualizações mensais incluídas!</p>
+                    <a href="https://pay.kirvano.com/e1e18750-3577-44e7-9237-006e090578cb" target="_blank" class="inline-block bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-lg font-semibold shadow transition text-lg w-full text-center">🛒 Adquirir MEK-Over</a>
                 </div>
+
+                <!-- Card para Clientes Existentes -->
+                <div class="bg-gray-900/95 p-7 rounded-2xl shadow-xl flex flex-col items-center hover:shadow-blue-400/40 transition duration-300 border border-blue-400/30 hover:scale-[1.025]">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl shadow border-2 border-blue-400 bg-blue-600 flex items-center justify-center text-2xl">👤</div>
+                        <h3 class="text-2xl font-bold text-blue-300">Já é Cliente? <span class="text-xs bg-blue-700/60 text-white px-2 py-0.5 rounded ml-1">Acesso</span></h3>
+                    </div>
+                    <p class="mb-4 text-gray-200 text-center">Para acessar o conteúdo, você precisa do arquivo MEK-Over baixado da sua conta na Kirvano.</p>
+                    <div class="bg-gray-800/80 p-4 rounded-xl mb-4 w-full">
+                        <h4 class="text-lg font-semibold text-blue-300 mb-3">📥 Como baixar seu arquivo:</h4>
+                        <ol class="list-decimal list-inside text-blue-200 space-y-2 text-sm">
+                            <li>Acesse <strong>app.kirvano.com</strong></li>
+                            <li>Faça login na sua conta</li>
+                            <li>Navegue até a aba <strong>"Compras"</strong></li>
+                            <li>Clique no produto <strong>"MEK-Over Extensions"</strong></li>
+                            <li>Baixe o arquivo ZIP atualizado</li>
+                            <li>Extraia e execute o arquivo HTML no navegador</li>
+                        </ol>
+                    </div>
+                    <div class="flex flex-col gap-2 w-full">
+                        <a href="https://app.kirvano.com/" target="_blank" class="inline-block bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition text-center">🔗 Acessar Kirvano</a>
+                        <p class="text-xs text-center text-gray-400 mt-2">💡 O arquivo é atualizado mensalmente com novos conteúdos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aviso Informativo -->
+            <div class="mt-8 bg-gray-900/90 p-6 rounded-xl shadow-lg border border-purple-700 max-w-3xl mx-auto">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="text-2xl">ℹ️</span>
+                    <h3 class="text-xl font-bold text-purple-200">Sobre o MEK-Over</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed">
+                    Este conteúdo é de uso restrito para clientes OverPrideX. Se você tem interesse em mangás, manhwas e webtoons, 
+                    aqui encontrará as melhores recomendações de apps para leitura, extensões testadas, obras curadas, 
+                    dicas de configuração e solução de problemas com suporte especializado.
+                </p>
             </div>
         </div>
         
         <!-- Tela de Acesso Expirado -->
-        <div id="tela-acesso-expirado" class="card-bloqueio" style="display: none;">
-            <div class="logo-bloqueio">⏰</div>
-            <h1 class="titulo-bloqueio">Acesso Expirado</h1>
-            <p class="subtitulo-bloqueio">
-                O arquivo de acesso expirou!<br>
-                <strong>Arquivos são atualizados mensalmente.</strong>
-            </p>
+        <div id="tela-acesso-expirado" class="mt-20 bg-gradient-to-br from-gray-800 via-gray-900 to-red-900 p-10 rounded-3xl border-4 border-red-500 shadow-2xl max-w-4xl mx-auto" style="display: none;">
+            <h2 class="text-4xl font-extrabold text-center text-red-100 mb-10 tracking-tight drop-shadow-lg">⏰ Arquivo MEK-Over Expirado</h2>
             
-            <div class="conteudo-bloqueio">
-                <p class="texto-expirado">
-                    Para acessar com o novo arquivo atualizado, siga os passos:
-                </p>
-                
-                <div class="passos-renovacao">
-                    <ol>
-                        <li>Acesse <a href="https://app.kirvano.com/" target="_blank">app.kirvano.com</a></li>
-                        <li>Faça login na sua conta</li>
-                        <li>Vá na aba "Compras"</li>
-                        <li>Clique no produto "Melhores Extensões"</li>
-                        <li>Baixe o arquivo ZIP atualizado</li>
-                        <li>Extraia e abra o novo arquivo HTML</li>
-                    </ol>
+            <div class="grid grid-cols-1 gap-8">
+                <!-- Card Principal -->
+                <div class="bg-gray-900/95 p-7 rounded-2xl shadow-xl flex flex-col items-center hover:shadow-red-400/40 transition duration-300 border border-red-400/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl shadow border-2 border-red-400 bg-red-600 flex items-center justify-center text-2xl">🔄</div>
+                        <h3 class="text-2xl font-bold text-red-300">Renovação Necessária</h3>
+                    </div>
+                    <p class="mb-6 text-gray-200 text-center text-lg">
+                        O arquivo de acesso MEK-Over expirou! <br>
+                        <strong class="text-red-300">Arquivos são atualizados mensalmente para sua segurança e novos conteúdos.</strong>
+                    </p>
+                    
+                    <div class="bg-gray-800/80 p-6 rounded-xl mb-6 w-full max-w-lg">
+                        <h4 class="text-lg font-semibold text-green-300 mb-4 flex items-center gap-2">
+                            <span>🔄</span> Para continuar desfrutando:
+                        </h4>
+                        <ol class="list-decimal list-inside text-gray-200 space-y-2">
+                            <li>Acesse <strong>app.kirvano.com</strong></li>
+                            <li>Faça login na sua conta</li>
+                            <li>Navegue até a aba <strong>"Compras"</strong></li>
+                            <li>Clique no produto <strong>"MEK-Over Extensions"</strong></li>
+                            <li>Baixe o arquivo ZIP atualizado mais recente</li>
+                            <li>Extraia e execute o novo arquivo HTML</li>
+                        </ol>
+                    </div>
+                    
+                    <a href="https://app.kirvano.com/" target="_blank" class="inline-block bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-lg font-semibold shadow transition text-lg">
+                        🔄 Renovar MEK-Over
+                    </a>
                 </div>
-                
-                <a href="https://app.kirvano.com/" 
-                   target="_blank" 
-                   class="btn-renovar">
-                    🔄 Renovar Acesso
-                </a>
             </div>
-            
-            <div class="rodape-bloqueio">
-                <p>� <strong>Dica:</strong> Salve sempre a versão mais recente!</p>
-                <small>Sistema de Segurança OverPrideX</small>
+
+            <!-- Dica -->
+            <div class="mt-8 bg-yellow-900/90 border border-yellow-700 p-5 rounded-xl shadow max-w-2xl mx-auto">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-2xl">💡</span>
+                    <h4 class="text-lg font-semibold text-yellow-300">Dica Importante</h4>
+                </div>
+                <p class="text-gray-200">
+                    <strong>Sempre mantenha a versão mais recente salva!</strong> 
+                    A versão do arquivo segue o padrão mês/ano (ex: MEK-Over v01.25 para Janeiro/2025).
+                </p>
+            </div>
+
+            <!-- Rodapé -->
+            <div class="mt-6 text-center">
+                <small class="text-gray-400">Sistema de Segurança MEK-Over v3.0 • Cliente OverPrideX</small>
             </div>
         </div>
     </div>
@@ -1567,7 +1401,8 @@
         #usageNotification { padding: 1.2rem !important; border-width: 2px !important; }
         #usageNotification h3 { font-size: 1.3rem !important; }
         #usageNotification .w-12, #usageNotification .h-12 { width: 2.2rem !important; height: 2.2rem !important; }
-    }    </style>
+    }
+    </style>
     <!-- Título principal -->
     <h1 class="text-4xl font-bold text-center mb-8 text-blue-300">Melhores Extensões da Keiyoushi</h1>
     
@@ -4722,7 +4557,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .copy-card { cursor: pointer; }
         }
         </style>
-        </style>
     <!-- Sessão 6: Possíveis Erros e Problemas (Design Moderno e Explicativo) -->
     <section id="problemas" class="mt-20 bg-gradient-to-br from-gray-800 via-gray-900 to-red-900 p-10 rounded-3xl border-4 border-red-500 shadow-2xl max-w-6xl mx-auto">
         <h2 class="text-4xl font-extrabold text-center text-red-100 mb-10 tracking-tight drop-shadow-lg">❌ Para evitar problemas siga esse passo a passo</h2>
@@ -5301,11 +5135,11 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.error('Erro ao enviar comentário:', error);
                 feedbackDiv.innerHTML = '<div class="erro-comentarios">Erro ao enviar comentário</div>';
+            } finally {
+                // Reabilitar botão
+                btnEnviar.disabled = false;
+                btnEnviar.textContent = 'Enviar Comentário';
             }
-            
-            // Reabilitar botão
-            btnEnviar.disabled = false;
-            btnEnviar.textContent = 'Enviar Comentário';
         }
 
         // Fechar modal clicando fora
@@ -5335,7 +5169,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function criarCardComentarios(extensaoId, extensaoNome) {
             // Encontra o card da extensão para posicionar o card de comentários próximo a ele
-            const cardExtensao = document.querySelector(`[data-extensao="${extensaoId}"]`) || 
+            let cardExtensao = document.querySelector(`[data-extensao="${extensaoId}"]`) || 
                                  document.querySelector(`#${extensaoId}`) ||
                                  document.querySelector(`[id="${extensaoId}"]`);
             
@@ -5343,9 +5177,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Card da extensão não encontrado para:', extensaoId);
                 console.log('Tentando elementos alternativos...');
                 // Fallback: procurar pelo botão de comentários
-                const botaoComentarios = document.querySelector(`[onclick*="toggleComentarios('${extensaoId}'"]`);
+                const botaoComentarios = document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`);
                 if (botaoComentarios) {
-                    const cardExtensao = botaoComentarios.closest('.extension-card');
+                    cardExtensao = botaoComentarios.closest('.extension-card');
                     if (cardExtensao) {
                         console.log('Card encontrado via botão de comentários');
                     } else {
@@ -5445,7 +5279,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
 
             // Insere o card de comentários após o card da extensão
-            const cardFinal = cardExtensao || document.querySelector(`[onclick*="toggleComentarios('${extensaoId}'"]`).closest('.extension-card');
+            const cardFinal = cardExtensao || document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`).closest('.extension-card');
             cardFinal.parentNode.insertBefore(cardComentarios, cardFinal.nextSibling);
 
             // Carrega os comentários
@@ -5526,7 +5360,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function fecharComentarios(extensaoId) {
             const comentariosDiv = document.getElementById(`comentarios-${extensaoId}`);
-            const button = document.querySelector(`button[onclick*="toggleComentarios('${extensaoId}'"]`);
+            const button = document.querySelector(`button[onclick*="toggleComentarios('${extensaoId}')"]`);
             
             comentariosDiv.style.display = 'none';
             button.textContent = '💬 Ver Comentários';
@@ -5820,7 +5654,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="flex justify-between items-start mb-2">
                                     <div class="flex items-center gap-2">
                                         <span class="comentario-autor font-semibold text-blue-300">👤 ${nomeAutor}</span>
-                                        ${likesComentario > 0 ? `<span class="likes text-yellow-400 text-sm">❤️ ${likesComentario}</span>` : ''}
+                                        ${likesComentario > 0 ? '<span class="likes text-yellow-400 text-sm">❤️ ' + likesComentario + '</span>' : ''}
                                     </div>
                                     <div class="comentario-data text-xs text-gray-400">${dataFormatada}</div>
                                 </div>
@@ -5998,7 +5832,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-
+        
         // Modificar a função de carregar comentários para tratar resposta da API corretamente
         async function carregarComentariosInline(extensaoId) {
             // Esta função agora apenas redireciona para o carregamento do card
@@ -6006,7 +5840,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return carregarComentariosCard(extensaoId);
         }
     </script>
-    
-    </div> <!-- Fim do conteúdo principal -->
+
 </body>
 </html>
