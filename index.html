@@ -341,6 +341,47 @@
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
+    /* Sistema de Avaliação por Estrelas */
+    .star-rating {
+        display: flex;
+        gap: 2px;
+    }
+    
+    .star-rating .star {
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        filter: grayscale(100%);
+        opacity: 0.5;
+    }
+    
+    .star-rating .star:hover,
+    .star-rating .star.active {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    
+    .star-rating .star.active {
+        color: #fbbf24;
+    }
+    
+    /* Avaliação média exibida nos comentários */
+    .rating-display {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.9rem;
+    }
+    
+    .rating-display .star-filled {
+        color: #fbbf24;
+    }
+    
+    .rating-display .star-empty {
+        color: #6b7280;
+    }
+
     /* Sistema de Comentários Inline */
     .comentarios-toggle-btn {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -934,26 +975,23 @@
         </div>
         
         <!-- Tela de Acesso Expirado -->
-        <div id="tela-acesso-expirado" class="mt-20 bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 p-10 rounded-3xl border-4 border-blue-500 shadow-2xl max-w-5xl mx-auto" style="display: none;">
+        <div id="tela-acesso-expirado" class="mt-20 bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 p-10 rounded-3xl border-4 border-blue-500 shadow-2xl max-w-3xl mx-auto flex flex-col items-center justify-center" style="display: none;">
             <h2 class="text-4xl font-extrabold text-center text-blue-100 mb-10 tracking-tight drop-shadow-lg">📥 Arquivo de acesso expirado</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <!-- Card Principal -->
-            <div class="bg-gray-900/95 p-7 rounded-2xl shadow-xl flex flex-col items-center hover:shadow-red-400/40 transition duration-300 border border-red-400/30">
+            <div class="flex justify-center w-full">
+            <div class="bg-gray-900/95 p-10 rounded-2xl shadow-xl flex flex-col items-center hover:shadow-red-400/40 transition duration-300 border border-red-400/30 w-full max-w-lg">
                 <div class="flex items-center gap-3 mb-4">
-                <div class="w-12 h-12 rounded-xl shadow border-2 border-red-400 bg-red-600 flex items-center justify-center text-2xl">⏰</div>
+                <div class="w-14 h-14 rounded-xl shadow border-2 border-red-400 bg-red-600 flex items-center justify-center text-3xl">⏰</div>
                 <h3 class="text-2xl font-bold text-red-300">Acesso Expirado</h3>
                 </div>
                 <p class="mb-6 text-gray-200 text-center text-lg">
                 O arquivo de acesso <span class="font-bold text-blue-300">MEK-Over</span> está desatualizado.<br>
-                <span class="text-red-300 font-semibold">O acesso ao conteudo e feito por meio do arquivo do produto.</span>
+                <span class="text-red-300 font-semibold">O acesso ao conteúdo é feito por meio do arquivo do produto.</span>
                 </p>
-                
-                <div class="bg-gray-800/80 p-6 rounded-xl mb-6 w-full max-w-lg">
+                <div class="bg-gray-800/90 p-7 rounded-xl mb-6 w-full">
                 <h4 class="text-lg font-semibold text-green-300 mb-4 flex items-center gap-2">
                     <span>🔗</span> Como atualizar seu arquivo de acesso:
                 </h4>
-                <ol class="list-decimal list-inside text-gray-200 space-y-2">
+                <ol class="list-decimal list-inside text-gray-200 space-y-2 pl-4">
                     <li>Acesse <strong><a href="https://app.kirvano.com/" target="_blank" class="text-blue-400 hover:underline">app.kirvano.com</a></strong></li>
                     <li>Faça login na sua conta</li>
                     <li>Vá em <strong>"Compras"</strong> e selecione <strong>"Melhores Extensões"</strong></li>
@@ -964,11 +1002,12 @@
                 <div class="mt-4 text-center text-sm text-gray-400">
                 <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-700 to-blue-900 text-blue-100 font-semibold shadow">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Atualize sempre para garantir acesso as novidades!
+                    Atualize sempre para garantir acesso às novidades!
                 </span>
                 </div>
             </div>
             </div>
+        </div>
 
             <!-- Dica -->
             <div class="mt-8 bg-yellow-900/90 border border-yellow-700 p-5 rounded-xl shadow max-w-2xl mx-auto">
@@ -2344,7 +2383,7 @@
             <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="manhastro" data-extensao="manhastro" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
                 <!-- Overlay de cópia -->
                 <div class="copy-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 pointer-events-none z-20">
-                    <span class="feedback-message text-green-400 font-bold text-xl" style="text-shadow: none; filter: none; box-shadow: none;"></span>
+                    <span class="feedback-message text-green-400 font-bold text-xl"></span>
                 </div>
                 <!-- Ícone centralizado + nome maior -->
                 <div class="text-center mb-5">
@@ -2357,7 +2396,7 @@
                 <div class="space-y-1 text-base text-gray-200">
                     <p><strong>Reputação:</strong> Alta entre leitores de manhwas e webtoons brasileiros.</p>
                     <p><strong>Estabilidade do Servidor:</strong> Boa</p>
-                    <p><strong>Link:</strong> <a href="https://manhastro.net/" class="text-blue-400 hover:underline" target="_blank">https://manhastro.net</a></p>
+                    <p><strong>Link:</strong> <a href="https://manhastro.net/" class="text-blue-400 hover:underline" target="_blank" onclick="event.stopPropagation()">https://manhastro.net</a></p>
                     <p><strong>Formato Predominante:</strong> Manhwa</p>
                     <p><strong>Gênero Predominante:</strong> Muita diversidade</p>
                     <p><strong>Tamanho do Acervo:</strong> 11.982 obras</p>
@@ -2390,7 +2429,7 @@
                 
                 <!-- Botão de Comentários -->
                 <div class="mt-4 text-center">
-                    <button onclick="toggleComentarios('manhastro', 'Manhastro')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                    <button onclick="event.stopPropagation(); toggleComentarios('manhastro', 'Manhastro')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
                         💬 Ver Comentários
                     </button>
                 </div>
@@ -3628,13 +3667,29 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.extension-card').forEach(card => {
         // Clique normal
         card.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A' || e.target.classList.contains('text-yellow-400') || e.target.classList.contains('copy-overlay') || e.target.classList.contains('feedback-message')) return;
+            // Verifica se o clique foi em um link, elemento de texto amarelo, overlay de cópia, feedback message, ou botão de comentários
+            if (e.target.tagName === 'A' || 
+                e.target.classList.contains('text-yellow-400') || 
+                e.target.classList.contains('copy-overlay') || 
+                e.target.classList.contains('feedback-message') ||
+                e.target.tagName === 'BUTTON' ||
+                e.target.classList.contains('comentarios-toggle-btn') ||
+                e.target.closest('button') ||
+                e.target.closest('.comentarios-toggle-btn')) {
+                return;
+            }
             const title = this.querySelector('h3').textContent;
             copyToClipboard(title, this);
         });
         // Toque longo (mobile)
         card.addEventListener('touchstart', function(e) {
-            if (e.target.tagName === 'A') return;
+            if (e.target.tagName === 'A' || 
+                e.target.tagName === 'BUTTON' ||
+                e.target.classList.contains('comentarios-toggle-btn') ||
+                e.target.closest('button') ||
+                e.target.closest('.comentarios-toggle-btn')) {
+                return;
+            }
             pressTimer = setTimeout(() => {
                 const title = this.querySelector('h3').textContent;
                 copyToClipboard(title, this);
@@ -3747,6 +3802,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     @media (max-width: 700px) {
                         .extension-card { padding: 1.1rem !important; margin-bottom: 1.2rem; margin-top: 1.2rem; }
                         .feedback-message { font-size: 0.9rem; }
+                    }
+
+                    /* Garantir que os cards de comentários tenham a mesma largura dos cards principais */
+                    .extension-card {
+                        width: auto !important;
+                        max-width: none !important;
+                    }
+                    
+                    /* Específico para cards de comentários */
+                    .extension-card[id*="card-comentarios"] {
+                        margin-left: 0.5rem !important;
+                        margin-right: 0.5rem !important;
+                        margin-top: 1rem !important;
+                        margin-bottom: 1rem !important;
+                    }
+                    
+                    /* CSS para mensagens de feedback nos comentários */
+                    .text-sm.success {
+                        color: #10b981;
+                    }
+                    
+                    .text-sm.error {
+                        color: #ef4444;
                     }
                     </style>
         <!-- Adicione esta seção após a notificação de modo de usar e antes do título principal -->
@@ -4963,7 +5041,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let userFingerprint = '';
         
         // URL da API para comentários (defina aqui sua URL real da API)
-        const API_URL = 'https://sua-api-comentarios.com/api'; // Substitua pela URL real da sua API
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwUqtycHTBWZ8hFyzXcHjM3oLwCqJ3IUighRPzXjCCXhPbuvRrzdGiLrLMrjYYSvMdknA/exec'; // URL do Google Apps Script
 
         // Gerar fingerprint único do usuário
         function generateUserFingerprint() {
@@ -5157,14 +5235,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Funções para Sistema de Comentários Inline
         function toggleComentarios(extensaoId, extensaoNome) {
+            // Previne a propagação do evento para o card pai
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            
             const cardComentarios = document.getElementById(`card-comentarios-${extensaoId}`);
+            const botaoToggle = document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`);
             
             if (cardComentarios) {
                 // Se o card já existe, remove ele
                 cardComentarios.remove();
+                if (botaoToggle) {
+                    botaoToggle.textContent = '💬 Ver Comentários';
+                    botaoToggle.className = 'comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                }
             } else {
                 // Cria um novo card de comentários
                 criarCardComentarios(extensaoId, extensaoNome);
+                if (botaoToggle) {
+                    botaoToggle.textContent = '🔽 Fechar Comentários';
+                    botaoToggle.className = 'comentarios-toggle-btn bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                }
             }
         }
 
@@ -5193,12 +5286,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Cria o container do card de comentários
+            // Cria o container do card de comentários com a mesma largura e estilo do card principal
             const cardComentarios = document.createElement('div');
             cardComentarios.id = `card-comentarios-${extensaoId}`;
-            cardComentarios.className = 'extension-card comentarios-card bg-gray-800 rounded-xl border border-gray-600 p-6 shadow-2xl max-w-4xl mx-auto mt-4 mb-4';
-            cardComentarios.style.position = 'relative';
-            cardComentarios.style.zIndex = '1000';
+            cardComentarios.className = 'extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4';
+            cardComentarios.style.boxShadow = '0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10)';
             
             // Previne que cliques no card de comentários ativem a função de cópia
             cardComentarios.onclick = function(e) { 
@@ -5243,6 +5335,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                             
                             <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Avaliação da Extensão:</label>
+                                <div class="flex items-center gap-2">
+                                    <div class="star-rating" data-extensao="${extensaoId}">
+                                        <span class="star" data-rating="1" onclick="selectRating(1, '${extensaoId}')" onmouseover="hoverStars(1, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
+                                        <span class="star" data-rating="2" onclick="selectRating(2, '${extensaoId}')" onmouseover="hoverStars(2, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
+                                        <span class="star" data-rating="3" onclick="selectRating(3, '${extensaoId}')" onmouseover="hoverStars(3, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
+                                        <span class="star" data-rating="4" onclick="selectRating(4, '${extensaoId}')" onmouseover="hoverStars(4, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
+                                        <span class="star" data-rating="5" onclick="selectRating(5, '${extensaoId}')" onmouseover="hoverStars(5, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
+                                    </div>
+                                    <span id="rating-text-${extensaoId}" class="text-sm text-gray-400 ml-2">Clique nas estrelas para avaliar</span>
+                                </div>
+                                <input type="hidden" id="rating-value-${extensaoId}" value="0">
+                            </div>
+                            
+                            <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Comentário:</label>
                                 <textarea id="comentario-texto-card-${extensaoId}" 
                                           placeholder="Escreva seu comentário aqui..." 
@@ -5283,6 +5390,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const cardFinal = cardExtensao || document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`).closest('.extension-card');
             cardFinal.parentNode.insertBefore(cardComentarios, cardFinal.nextSibling);
 
+            // Inicializar estrelas para este card específico
+            setTimeout(() => {
+                initStarsForCard(extensaoId);
+            }, 100);
+
             // Carrega os comentários
             carregarComentariosCard(extensaoId);
 
@@ -5321,6 +5433,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 form.style.display = 'block';
                 btnComentar.textContent = '🚫 Cancelar';
                 document.getElementById(`nome-usuario-card-${extensaoId}`).focus();
+                
+                // Garantir que as estrelas estejam funcionando
+                setTimeout(() => {
+                    initStarsForCard(extensaoId);
+                }, 50);
+                
             } else {
                 form.style.display = 'none';
                 btnComentar.textContent = '✍️ Escrever Comentário';
@@ -5339,6 +5457,21 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(`contador-chars-card-${extensaoId}`).textContent = '0/500';
             document.getElementById(`mensagem-feedback-card-${extensaoId}`).textContent = '';
             document.getElementById(`mensagem-feedback-card-${extensaoId}`).className = 'text-sm';
+            
+            // Reset rating usando o novo sistema
+            document.getElementById(`rating-value-${extensaoId}`).value = '0';
+            document.getElementById(`rating-text-${extensaoId}`).textContent = 'Clique nas estrelas para avaliar';
+            
+            // Resetar visual das estrelas
+            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+            if (starContainer) {
+                const stars = starContainer.querySelectorAll('.star');
+                stars.forEach(star => {
+                    star.classList.remove('active');
+                    star.style.filter = 'grayscale(100%)';
+                    star.style.opacity = '0.5';
+                });
+            }
         }
 
         function atualizarContadorCard(extensaoId) {
@@ -5375,16 +5508,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         async function enviarComentarioCard(extensaoId, extensaoNome) {
+            console.log(`🚀 Iniciando envio de comentário para ${extensaoId}`);
+            
             const nome = document.getElementById(`nome-usuario-card-${extensaoId}`).value.trim();
             const comentario = document.getElementById(`comentario-texto-card-${extensaoId}`).value.trim();
+            const rating = document.getElementById(`rating-value-${extensaoId}`).value;
             const feedbackDiv = document.getElementById(`mensagem-feedback-card-${extensaoId}`);
             const btnEnviar = document.getElementById(`btn-enviar-card-${extensaoId}`);
+            
+            // Log detalhado dos valores capturados
+            console.log('📋 Dados capturados:', {
+                extensaoId,
+                nome: nome,
+                comentario: comentario.substring(0, 50) + '...',
+                rating: rating,
+                ratingType: typeof rating,
+                ratingParsed: parseInt(rating)
+            });
             
             feedbackDiv.textContent = '';
             feedbackDiv.className = 'text-sm';
             
             if (!nome || nome.length < 2) {
                 feedbackDiv.textContent = 'O nome deve ter pelo menos 2 caracteres.';
+                feedbackDiv.className = 'text-sm error';
+                return;
+            }
+            
+            if (!rating || rating === '0') {
+                feedbackDiv.textContent = 'Por favor, selecione uma avaliação de 1 a 5 estrelas.';
                 feedbackDiv.className = 'text-sm error';
                 return;
             }
@@ -5397,7 +5549,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             btnEnviar.disabled = true;
             btnEnviar.textContent = 'Enviando...';
-            feedbackDiv.textContent = 'Enviando comentário...';
+            feedbackDiv.textContent = 'Enviando comentário e avaliação...';
             feedbackDiv.className = 'text-sm';
             
             try {
@@ -5409,6 +5561,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     extensao: extensaoId,
                     nome: nome,
                     comentario: comentario,
+                    avaliacao: parseInt(rating),
                     fingerprint: fingerprint
                 };
                 
@@ -5451,12 +5604,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Dados da resposta (envio):', data); // Debug
                 
                 if (data.success || data.status === 'success' || data.resultado === 'sucesso') {
-                    feedbackDiv.textContent = 'Comentário enviado com sucesso! Aguarde aprovação.';
+                    feedbackDiv.textContent = 'Comentário e avaliação enviados com sucesso! Aguarde aprovação.';
                     feedbackDiv.className = 'text-sm success';
                     
                     document.getElementById(`nome-usuario-card-${extensaoId}`).value = '';
                     document.getElementById(`comentario-texto-card-${extensaoId}`).value = '';
+                    document.getElementById(`rating-value-${extensaoId}`).value = '0';
                     document.getElementById(`contador-chars-card-${extensaoId}`).textContent = '0/500';
+                    
+                    // Resetar estrelas
+                    const stars = document.querySelectorAll(`[data-extensao="${extensaoId}"] .star`);
+                    stars.forEach(star => star.classList.remove('active'));
+                    document.getElementById(`rating-text-${extensaoId}`).textContent = 'Clique nas estrelas para avaliar';
                     
                     setTimeout(() => {
                         cancelarComentarioCard(extensaoId);
@@ -5594,12 +5753,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log(`Processando comentário ${index}:`, comentario);
                         
                         // Adaptação para diferentes formatos da planilha
-                        // Formato: Data | Extensão | UserID | Nome | Comentário | Status | Likes
-                        let dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario;
+                        // Formato: Data | Extensão | UserID | Nome | Comentário | Status | Likes | Avaliação
+                        let dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario, avaliacaoComentario;
                         
                         // Se for array (linha da planilha)
                         if (Array.isArray(comentario)) {
-                            [dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario] = comentario;
+                            [dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario, avaliacaoComentario] = comentario;
                         } else {
                             // Se for objeto
                             dataComentario = comentario.Data || comentario.data || comentario['Data'];
@@ -5609,6 +5768,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             textoComentario = comentario.Comentario || comentario.comentario || comentario['Comentário'] || comentario.Comentário || comentario.comment || comentario.texto;
                             statusComentario = comentario.Status || comentario.status || comentario['Status'] || 'aprovado';
                             likesComentario = comentario.Likes || comentario.likes || comentario['Likes'] || 0;
+                            avaliacaoComentario = comentario.Avaliacao || comentario.avaliacao || comentario['Avaliação'] || comentario.rating || 0;
                         }
                         
                         console.log('Dados extraídos:', { 
@@ -5617,7 +5777,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             nomeAutor, 
                             textoComentario, 
                             statusComentario, 
-                            likesComentario 
+                            likesComentario,
+                            avaliacaoComentario
                         });
                         
                         // Verificar se o comentário é válido e para esta extensão
@@ -5644,6 +5805,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             }
                             
+                            // Processar avaliação
+                            const avaliacaoNumero = parseInt(avaliacaoComentario) || 0;
+                            const avaliacaoDisplay = avaliacaoNumero > 0 ? createStarDisplay(avaliacaoNumero) : '';
+                            
                             const comentarioCard = document.createElement('div');
                             comentarioCard.className = 'comentario-card bg-gray-700 rounded-lg p-4 mb-3 border border-gray-600';
                             comentarioCard.onclick = function(e) { 
@@ -5659,6 +5824,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="comentario-data text-xs text-gray-400">${dataFormatada}</div>
                                 </div>
+                                ${avaliacaoDisplay ? '<div class="mb-2">' + avaliacaoDisplay + '</div>' : ''}
                                 <div class="comentario-texto text-gray-200 leading-relaxed">${textoComentario}</div>
                             `;
                             
@@ -5813,6 +5979,180 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Sistema de Estrelas (escopo global) - implementação simplificada e confiável
+        console.log('Carregando sistema de estrelas...');
+        
+        // Função para atualizar rating
+        window.selectRating = function(rating, extensaoId) {
+            console.log(`📊 Rating selecionado: ${rating} para extensão: ${extensaoId}`);
+            
+            // Atualizar valor oculto
+            const ratingInput = document.getElementById(`rating-value-${extensaoId}`);
+            const ratingText = document.getElementById(`rating-text-${extensaoId}`);
+            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+            
+            console.log('Elementos encontrados:', { ratingInput, ratingText, starContainer });
+            
+            if (!ratingInput || !ratingText || !starContainer) {
+                console.error('❌ Elementos não encontrados para extensão:', extensaoId);
+                console.error('Rating input ID procurado:', `rating-value-${extensaoId}`);
+                console.error('Rating text ID procurado:', `rating-text-${extensaoId}`);
+                console.error('Star container procurado:', `[data-extensao="${extensaoId}"]`);
+                return;
+            }
+            
+            // Atualizar valores
+            ratingInput.value = rating;
+            ratingText.textContent = `${rating} ${rating === 1 ? 'estrela' : 'estrelas'}`;
+            ratingText.style.color = '#10b981';
+            ratingText.style.fontWeight = 'bold';
+            
+            // Atualizar visual das estrelas
+            const allStars = starContainer.querySelectorAll('.star');
+            console.log(`Atualizando ${allStars.length} estrelas`);
+            
+            allStars.forEach((star, index) => {
+                star.classList.remove('active');
+                if (index < rating) {
+                    star.classList.add('active');
+                    star.style.filter = 'grayscale(0%)';
+                    star.style.opacity = '1';
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.filter = 'grayscale(100%)';
+                    star.style.opacity = '0.5';
+                    star.style.color = '#6b7280';
+                }
+            });
+            
+            // Feedback visual temporário
+            setTimeout(() => {
+                ratingText.style.color = '#9ca3af';
+                ratingText.style.fontWeight = 'normal';
+            }, 1500);
+            
+            console.log(`✅ Rating ${rating} registrado para ${extensaoId}. Input value: ${ratingInput.value}`);
+        };
+        
+        // Função para hover nas estrelas
+        window.hoverStars = function(rating, extensaoId) {
+            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+            if (!starContainer) return;
+            
+            const allStars = starContainer.querySelectorAll('.star');
+            allStars.forEach((star, index) => {
+                if (index < rating) {
+                    star.style.filter = 'grayscale(0%)';
+                    star.style.opacity = '1';
+                    star.style.transform = 'scale(1.1)';
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.filter = 'grayscale(100%)';
+                    star.style.opacity = '0.5';
+                    star.style.transform = 'scale(1)';
+                    star.style.color = '#6b7280';
+                }
+            });
+        };
+        
+        // Função para restaurar visual
+        window.resetStars = function(extensaoId) {
+            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+            const ratingValue = document.getElementById(`rating-value-${extensaoId}`);
+            
+            if (!starContainer || !ratingValue) return;
+            
+            const currentRating = parseInt(ratingValue.value) || 0;
+            const allStars = starContainer.querySelectorAll('.star');
+            
+            allStars.forEach((star, index) => {
+                star.style.transform = 'scale(1)';
+                if (index < currentRating) {
+                    star.style.filter = 'grayscale(0%)';
+                    star.style.opacity = '1';
+                    star.style.color = '#fbbf24';
+                    star.classList.add('active');
+                } else {
+                    star.style.filter = 'grayscale(100%)';
+                    star.style.opacity = '0.5';
+                    star.style.color = '#6b7280';
+                    star.classList.remove('active');
+                }
+            });
+        };
+        
+        function initStarsForCard(extensaoId) {
+            console.log(`🌟 Inicializando estrelas para card: ${extensaoId}`);
+            
+            // Aguardar um pouco para garantir que o DOM foi renderizado
+            setTimeout(() => {
+                const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+                if (!starContainer) {
+                    console.error(`❌ Container de estrelas não encontrado para extensão: ${extensaoId}`);
+                    // Tentar novamente com seletor alternativo
+                    const alternativeContainer = document.querySelector(`.star-rating[data-extensao="${extensaoId}"]`);
+                    if (!alternativeContainer) {
+                        console.error(`❌ Container alternativo também não encontrado`);
+                        return;
+                    }
+                    console.log('✅ Container alternativo encontrado');
+                }
+                
+                const stars = starContainer.querySelectorAll('.star');
+                const ratingInput = document.getElementById(`rating-value-${extensaoId}`);
+                const ratingText = document.getElementById(`rating-text-${extensaoId}`);
+                
+                console.log(`🔍 Elementos encontrados:`, {
+                    stars: stars.length,
+                    ratingInput: !!ratingInput,
+                    ratingText: !!ratingText
+                });
+                
+                if (stars.length === 0) {
+                    console.error(`❌ Nenhuma estrela encontrada para ${extensaoId}`);
+                    return;
+                }
+                
+                // Aplicar estilos iniciais às estrelas
+                stars.forEach((star, index) => {
+                    star.style.filter = 'grayscale(100%)';
+                    star.style.opacity = '0.5';
+                    star.style.cursor = 'pointer';
+                    star.style.transition = 'all 0.2s ease';
+                    star.style.fontSize = '1.5rem';
+                    star.style.color = '#6b7280';
+                    
+                    console.log(`Estrela ${index + 1} configurada`);
+                });
+                
+                // Verificar se os elementos necessários existem
+                if (!ratingInput || !ratingText) {
+                    console.error(`❌ Elementos de rating não encontrados para ${extensaoId}`);
+                    console.error(`Rating input: ${!!ratingInput}, Rating text: ${!!ratingText}`);
+                } else {
+                    console.log(`✅ Todos os elementos encontrados para ${extensaoId}`);
+                }
+                
+                console.log(`✅ ${stars.length} estrelas inicializadas para extensão: ${extensaoId}`);
+            }, 50);
+        }
+        
+        function createStarDisplay(rating) {
+            const maxStars = 5;
+            let starsHtml = '<div class="rating-display flex items-center gap-1">';
+            
+            for (let i = 1; i <= maxStars; i++) {
+                if (i <= rating) {
+                    starsHtml += '<span class="text-yellow-400">⭐</span>';
+                } else {
+                    starsHtml += '<span class="text-gray-500">⭐</span>';
+                }
+            }
+            
+            starsHtml += `<span class="text-sm text-gray-400 ml-2">(${rating}/5)</span></div>`;
+            return starsHtml;
+        }
+
         // Contador de caracteres para Manhastro
         document.addEventListener('DOMContentLoaded', function() {
             const textarea = document.getElementById('comentario-texto-manhastro');
@@ -5832,6 +6172,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
+            
+            console.log('✅ Sistema de estrelas carregado e pronto para uso');
         });
         
         // Modificar a função de carregar comentários para tratar resposta da API corretamente
