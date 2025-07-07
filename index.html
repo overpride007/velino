@@ -2446,6 +2446,13 @@
                 <p><strong>Frequência de Atualização:</strong> Alta</p>
                 <p><strong>Observação:</strong> Interface simples e acervo extenso; uma das mais acessadas do Brasil. O Mangá Livre está de volta após um longo período fora do ar! Depois de enfrentar bloqueios, a plataforma agora opera com servidores localizados fora do país, o que dificulta novas tentativas de derrubá-la.</p>
             </div>
+            
+            <!-- Botão de Comentários -->
+            <div class="mt-4 text-center">
+                <button onclick="event.stopPropagation(); toggleComentarios('manga-livre', 'Manga Livre')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                    💬 Ver Comentários
+                </button>
+            </div>
         </div>
         <!-- Sussy Toons -->
         <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="sussy-toons" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
@@ -2494,6 +2501,13 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Botão de Comentários -->
+            <div class="mt-4 text-center">
+                <button onclick="event.stopPropagation(); toggleComentarios('sussy-toons', 'Sussy Toons')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                    💬 Ver Comentários
+                </button>
+            </div>
         </div>
         <!-- Ler Mangas -->
         <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="ler-mangas" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
@@ -2519,6 +2533,13 @@
                 <p><strong>Frequência de Atualização:</strong> Alta</p>
                 <p><strong>Observação:</strong> Um dos maiores sites de mangás traduzidos em português.</p>
             </div>
+            
+            <!-- Botão de Comentários -->
+            <div class="mt-4 text-center">
+                <button onclick="event.stopPropagation(); toggleComentarios('ler-mangas', 'Ler Mangas')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                    💬 Ver Comentários
+                </button>
+            </div>
         </div>
                     <!-- Sagrado Império de Britania -->
                     <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="sagrado-imperio" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
@@ -2543,6 +2564,13 @@
                             <p><strong>Tamanho do Acervo:</strong> 709 obras</p>
                             <p><strong>Frequência de Atualização:</strong> Média</p>
                             <p><strong>Observação:</strong> Títulos bem selecionados e conteúdo atualizado.</p>
+                        </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('sagrado-imperio', 'Sagrado Império')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
                         </div>
                     </div>
                     <!-- Remangas -->
@@ -2574,6 +2602,13 @@
                                 o que pode incomodar os usuários, mas na minha opinião vale a pena pois ela tem muitos títulos bons e uma frequência acima da média.
                             </p>
                         </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('remangas', 'Remangas')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
+                        </div>
                     </div>
                     <!-- Seita Celestial -->
                     <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="seita-celestial" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
@@ -2598,6 +2633,13 @@
                             <p><strong>Tamanho do Acervo:</strong> 125 obras</p>
                             <p><strong>Frequência de Atualização:</strong> Regular</p>
                             <p><strong>Observação:</strong> Foco claro em narrativas orientais com ação e misticismo. <span class="cloudflare-warning" style="color:#ef4444;">Requer passar pelo CAPTCHA do Cloudflare periodicamente.</span></p>
+                        </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('seita-celestial', 'Seita Celestial')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
                         </div>
                     </div>
                     <!-- Manga Terra -->
@@ -5027,8 +5069,38 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentExtensaoId = '';
         let userFingerprint = '';
         
-        // URL da API para comentários (defina aqui sua URL real da API)
+        // URL da API para comentários - SISTEMA APRIMORADO (DESABILITADO - AGORA 100% LOCAL)
         const API_URL = 'https://script.google.com/macros/s/AKfycbwUqtycHTBWZ8hFyzXcHjM3oLwCqJ3IUighRPzXjCCXhPbuvRrzdGiLrLMrjYYSvMdknA/exec'; // URL do Google Apps Script
+        
+        // Sistema de cache local para comentários (AGORA SISTEMA PRINCIPAL)
+        
+        // Função para testar conectividade da API
+        async function testarAPI() {
+            try {
+                console.log('🔄 Testando conectividade da API...');
+                const response = await fetch(`${API_URL}?test=true`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('📊 Status da resposta:', response.status);
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    console.log('✅ API respondeu:', text.substring(0, 200));
+                    return true;
+                } else {
+                    console.error('❌ API retornou erro:', response.status, response.statusText);
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ Erro ao testar API:', error);
+                return false;
+            }
+        }
 
         // Gerar fingerprint único do usuário
         function generateUserFingerprint() {
@@ -5220,254 +5292,488 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Funções para Sistema de Comentários Inline
-        function toggleComentarios(extensaoId, extensaoNome) {
-            // Previne a propagação do evento para o card pai
-            if (event) {
-                event.stopPropagation();
-                event.preventDefault();
+        // Sistema de Comentários Local - VERSÃO FINAL SEM API
+        
+        // Sistema de cache local para comentários
+        const COMENTARIOS_STORAGE_KEY = 'mek_over_comentarios_local';
+        
+        // Função para salvar comentários localmente
+        function salvarComentarioLocal(extensaoId, comentarioData) {
+            try {
+                let comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                
+                if (!comentariosLocais[extensaoId]) {
+                    comentariosLocais[extensaoId] = [];
+                }
+                
+                // Adicionar timestamp e ID único
+                comentarioData.id = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+                comentarioData.timestamp = new Date().toISOString();
+                comentarioData.status = 'ativo';
+                
+                comentariosLocais[extensaoId].push(comentarioData);
+                localStorage.setItem(COMENTARIOS_STORAGE_KEY, JSON.stringify(comentariosLocais));
+                
+                console.log('💾 Comentário salvo localmente para:', extensaoId);
+                
+                // Salvar também no arquivo JSON local (se disponível)
+                salvarComentarioArquivoJSON(extensaoId, comentarioData);
+                
+                return true;
+            } catch (error) {
+                console.error('❌ Erro ao salvar comentário:', error);
+                return false;
+            }
+        }
+        
+        // Função para carregar comentários locais
+        function carregarComentariosLocais(extensaoId) {
+            try {
+                const comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                return comentariosLocais[extensaoId] || [];
+            } catch (error) {
+                console.error('❌ Erro ao carregar comentários:', error);
+                return [];
+            }
+        }
+        
+        // Função para calcular média de avaliações
+        function calcularMediaAvaliacoes(comentarios) {
+            if (!comentarios || comentarios.length === 0) return 0;
+            
+            const avaliacoesValidas = comentarios.filter(c => c.rating && c.rating > 0);
+            if (avaliacoesValidas.length === 0) return 0;
+            
+            const soma = avaliacoesValidas.reduce((acc, c) => acc + parseInt(c.rating), 0);
+            return (soma / avaliacoesValidas.length).toFixed(1);
+        }
+
+        // Unificar chaves de localStorage
+        const LOCAL_STORAGE_KEY = 'mek_over_comentarios_local'; // Unified key
+        
+        // Função para salvar no arquivo JSON local
+        async function salvarComentarioArquivoJSON(extensaoId, comentarioData) {
+            try {
+                // Esta função tentará fazer download do arquivo atualizado
+                // Em um ambiente web normal, isso será limitado, mas mantemos para futuras implementações
+                const comentariosJSON = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                
+                const dadosArquivo = {
+                    comentarios: comentariosJSON,
+                    avaliacoes: {},
+                    updated: new Date().toISOString(),
+                    version: "1.0.0"
+                };
+                
+                // Criar blob e trigger download (opcional)
+                const blob = new Blob([JSON.stringify(dadosArquivo, null, 2)], { type: 'application/json' });
+                console.log('📁 Arquivo JSON atualizado (salvo em localStorage)', blob.size + ' bytes');
+                
+            } catch (error) {
+                console.error('❌ Erro ao salvar no arquivo JSON:', error);
+            }
+        }
+        
+        // Função para criar display de estrelas
+        function criarDisplayEstrelas(rating, tamanho = 'text-sm') {
+            const ratingNum = parseFloat(rating) || 0;
+            const estrelasCompletas = Math.floor(ratingNum);
+            const temMeiaEstrela = ratingNum % 1 >= 0.5;
+            
+            let estrelasHtml = '';
+            
+            // Estrelas completas (douradas)
+            for (let i = 0; i < estrelasCompletas; i++) {
+                estrelasHtml += '<span class="' + tamanho + '" style="color: #fbbf24;">⭐</span>';
             }
             
-            const cardComentarios = document.getElementById(`card-comentarios-${extensaoId}`);
-            const botaoToggle = document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`);
+            // Meia estrela se necessário
+            if (temMeiaEstrela) {
+                estrelasHtml += '<span class="' + tamanho + '" style="color: #fbbf24;">✨</span>';
+            }
+            
+            // Estrelas vazias (cinzas)
+            const estrelasVazias = 5 - estrelasCompletas - (temMeiaEstrela ? 1 : 0);
+            for (let i = 0; i < estrelasVazias; i++) {
+                estrelasHtml += '<span class="' + tamanho + '" style="color: #6b7280; opacity: 0.5;">⭐</span>';
+            }
+            
+            return estrelasHtml;
+        }
+        
+        // Função para atualizar avaliação da Manhastro e todas as extensões
+        function atualizarAvaliacaoExtensoes() {
+            console.log('🔄 Atualizando avaliações de todas as extensões...');
+            
+            // Lista de IDs de extensões principais
+            const extensoes = [
+                'manhastro',
+                'manga-livre', 
+                'sussy-toons',
+                'ler-mangas',
+                'sagrado-imperio',
+                'remangas',
+                'seita-celestial'
+            ];
+            
+            extensoes.forEach(extensaoId => {
+                atualizarAvaliacaoExtensao(extensaoId);
+            });
+        }
+        
+        // Função para atualizar avaliação de uma extensão específica
+        function atualizarAvaliacaoExtensao(extensaoId) {
+            try {
+                const comentarios = carregarComentariosLocais(extensaoId);
+                const mediaAvaliacoes = calcularMediaAvaliacoes(comentarios);
+                
+                console.log('📊 Avaliação para ' + extensaoId + ':', mediaAvaliacoes, 'com', comentarios.length, 'comentários');
+                
+                if (mediaAvaliacoes > 0) {
+                    // Encontrar o card da extensão
+                    const cardExtensao = document.querySelector('[onclick*="' + extensaoId + '"]') || 
+                                        document.querySelector('[data-extensao="' + extensaoId + '"]');
+                    
+                    if (cardExtensao) {
+                        // Encontrar o elemento de nota atual
+                        const elementoNota = cardExtensao.querySelector('.font-bold.text-purple-100.text-lg');
+                        
+                        if (elementoNota) {
+                            // Atualizar nota com a média calculada
+                            elementoNota.textContent = mediaAvaliacoes;
+                            
+                            // Adicionar estrelas se ainda não existirem
+                            let containerEstrelas = cardExtensao.querySelector('.rating-stars-container');
+                            if (!containerEstrelas) {
+                                containerEstrelas = document.createElement('div');
+                                containerEstrelas.className = 'rating-stars-container flex items-center justify-center mt-1';
+                                
+                                const estrelasHtml = criarDisplayEstrelas(mediaAvaliacoes, 'text-sm');
+                                containerEstrelas.innerHTML = estrelasHtml;
+                                
+                                // Inserir após o elemento de nota
+                                const containerNota = elementoNota.parentElement;
+                                containerNota.parentElement.insertBefore(containerEstrelas, containerNota.nextSibling);
+                            } else {
+                                // Atualizar estrelas existentes
+                                const estrelasHtml = criarDisplayEstrelas(mediaAvaliacoes, 'text-sm');
+                                containerEstrelas.innerHTML = estrelasHtml;
+                            }
+                            
+                            console.log('✅ Avaliação atualizada para ' + extensaoId + ': ' + mediaAvaliacoes + ' estrelas');
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Erro ao atualizar avaliação de ' + extensaoId + ':', error);
+            }
+        }
+
+        function toggleComentarios(extensaoId, extensaoNome) {
+            console.log('🔄 toggleComentarios chamado para: ' + extensaoId + ', ' + extensaoNome);
+            
+            // Previne a propagação do evento para o card pai
+            if (window.event) {
+                window.event.stopPropagation();
+                window.event.preventDefault();
+            }
+            
+            const cardComentarios = document.getElementById('card-comentarios-' + extensaoId);
+            const botaoToggle = document.querySelector('[onclick*="toggleComentarios(\'' + extensaoId + '\')"]');
+            
+            console.log('📋 Elementos encontrados:', {
+                cardComentarios: !!cardComentarios,
+                botaoToggle: !!botaoToggle
+            });
             
             if (cardComentarios) {
+                console.log('🗑️ Removendo card existente...');
                 // Se o card já existe, remove ele
                 cardComentarios.remove();
                 if (botaoToggle) {
                     botaoToggle.textContent = '💬 Ver Comentários';
                     botaoToggle.className = 'comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
                 }
+                console.log('✅ Card removido');
             } else {
+                console.log('➕ Criando novo card...');
                 // Cria um novo card de comentários
-                criarCardComentarios(extensaoId, extensaoNome);
-                if (botaoToggle) {
+                const sucesso = criarCardComentarios(extensaoId, extensaoNome);
+                if (sucesso && botaoToggle) {
                     botaoToggle.textContent = '🔽 Fechar Comentários';
                     botaoToggle.className = 'comentarios-toggle-btn bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                    console.log('✅ Botão atualizado para "Fechar"');
+                } else {
+                    console.error('❌ Falha ao criar card ou encontrar botão');
                 }
             }
         }
 
         function criarCardComentarios(extensaoId, extensaoNome) {
+            console.log('🔨 Criando card de comentários para: ' + extensaoId);
+            
             // Encontra o card da extensão para posicionar o card de comentários próximo a ele
-            let cardExtensao = document.querySelector(`[data-extensao="${extensaoId}"]`) || 
-                                 document.querySelector(`#${extensaoId}`) ||
-                                 document.querySelector(`[id="${extensaoId}"]`);
+            let cardExtensao = document.querySelector('[data-extensao="' + extensaoId + '"]') || 
+                                 document.querySelector('#' + extensaoId) ||
+                                 document.querySelector('[id="' + extensaoId + '"]');
+            
+            console.log('🔍 Procurando card da extensão...');
+            console.log('Primeira tentativa (data-extensao):', !!document.querySelector('[data-extensao="' + extensaoId + '"]'));
+            console.log('Segunda tentativa (#id):', !!document.querySelector('#' + extensaoId));
+            console.log('Terceira tentativa ([id]):', !!document.querySelector('[id="' + extensaoId + '"]'));
             
             if (!cardExtensao) {
-                console.error('Card da extensão não encontrado para:', extensaoId);
-                console.log('Tentando elementos alternativos...');
+                console.log('⚠️ Card da extensão não encontrado, tentando fallback...');
                 // Fallback: procurar pelo botão de comentários
-                const botaoComentarios = document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`);
+                const botaoComentarios = document.querySelector('[onclick*="toggleComentarios(\'' + extensaoId + '\')"]');
+                console.log('Botão de comentários encontrado:', !!botaoComentarios);
+                
                 if (botaoComentarios) {
                     cardExtensao = botaoComentarios.closest('.extension-card');
+                    console.log('Card via botão encontrado:', !!cardExtensao);
+                    
                     if (cardExtensao) {
-                        console.log('Card encontrado via botão de comentários');
+                        console.log('✅ Card encontrado via botão de comentários');
                     } else {
-                        console.error('Card da extensão não encontrado nem via botão');
-                        return;
+                        console.error('❌ Card da extensão não encontrado nem via botão');
+                        // Último fallback: buscar qualquer card próximo
+                        cardExtensao = botaoComentarios.parentElement.closest('.extension-card') || 
+                                     botaoComentarios.parentElement.parentElement.closest('.extension-card');
+                        
+                        if (cardExtensao) {
+                            console.log('✅ Card encontrado via parent elements');
+                        } else {
+                            console.error('❌ Nenhum card encontrado, abortando...');
+                            return false;
+                        }
                     }
                 } else {
-                    console.error('Botão de comentários também não encontrado');
-                    return;
+                    console.error('❌ Botão de comentários também não encontrado');
+                    return false;
                 }
+            } else {
+                console.log('✅ Card da extensão encontrado diretamente');
             }
 
             // Cria o container do card de comentários com a mesma largura e estilo do card principal
             const cardComentarios = document.createElement('div');
-            cardComentarios.id = `card-comentarios-${extensaoId}`;
+            cardComentarios.id = 'card-comentarios-' + extensaoId;
             cardComentarios.className = 'extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4';
             cardComentarios.style.boxShadow = '0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10)';
+            
+            console.log('🎨 Card criado com ID:', cardComentarios.id);
             
             // Previne que cliques no card de comentários ativem a função de cópia
             cardComentarios.onclick = function(e) { 
                 e.stopPropagation(); 
                 e.preventDefault();
             };
+            
+            cardComentarios.innerHTML = 
+                '<!-- Header do Card de Comentários -->' +
+                '<div class="flex justify-between items-center mb-4">' +
+                    '<h3 class="text-xl font-bold text-white flex items-center gap-2">' +
+                        '💬 Comentários - ' + extensaoNome +
+                    '</h3>' +
+                    '<button onclick="fecharCardComentarios(\'' + extensaoId + '\')" ' +
+                            'class="text-gray-400 hover:text-white transition-colors text-2xl font-bold">' +
+                        '×' +
+                    '</button>' +
+                '</div>' +
 
-            cardComentarios.innerHTML = `
-                <!-- Header do Card de Comentários -->
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                        💬 Comentários - ${extensaoNome}
-                    </h3>
-                    <button onclick="fecharCardComentarios('${extensaoId}')" 
-                            class="text-gray-400 hover:text-white transition-colors text-2xl font-bold">
-                        ×
-                    </button>
-                </div>
+                '<!-- Botão para mostrar formulário -->' +
+                '<div class="mb-4 text-center">' +
+                    '<button onclick="mostrarFormComentarioCard(\'' + extensaoId + '\')" ' +
+                            'id="btn-comentar-' + extensaoId + '"' +
+                            'class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">' +
+                        '✍️ Escrever Comentário' +
+                    '</button>' +
+                '</div>' +
 
-                <!-- Botão para mostrar formulário -->
-                <div class="mb-4 text-center">
-                    <button onclick="mostrarFormComentarioCard('${extensaoId}')" 
-                            id="btn-comentar-${extensaoId}"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
-                        ✍️ Escrever Comentário
-                    </button>
-                </div>
-
-                <!-- Formulário de comentário (inicialmente oculto) -->
-                <div id="form-comentario-card-${extensaoId}" class="comentario-form mb-6" style="display: none;">
-                    <div class="bg-gray-700 rounded-lg p-4 border border-gray-600">
-                        <h4 class="text-lg font-semibold text-white mb-3">💭 Novo Comentário</h4>
+                '<!-- Formulário de comentário (inicialmente oculto) -->' +
+                '<div id="form-comentario-card-' + extensaoId + '" class="comentario-form mb-6" style="display: none;">' +
+                    '<div class="bg-gray-700 rounded-lg p-4 border border-gray-600">' +
+                        '<h4 class="text-lg font-semibold text-white mb-3">💭 Novo Comentário</h4>' +
                         
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Seu Nome:</label>
-                                <input type="text" 
-                                       id="nome-usuario-card-${extensaoId}" 
-                                       placeholder="Digite seu nome" 
-                                       class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                       onclick="event.stopPropagation();">
-                            </div>
+                        '<div class="space-y-4">' +
+                            '<div>' +
+                                '<label class="block text-sm font-medium text-gray-300 mb-2">Seu Nome:</label>' +
+                                '<input type="text" ' +
+                                       'id="nome-usuario-card-' + extensaoId + '" ' +
+                                       'placeholder="Digite seu nome" ' +
+                                       'class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"' +
+                                       'onclick="event.stopPropagation();">' +
+                            '</div>' +
                             
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Avaliação da Extensão:</label>
-                                <div class="flex items-center gap-2">
-                                    <div class="star-rating" data-extensao="${extensaoId}">
-                                        <span class="star" data-rating="1" onclick="selectRating(1, '${extensaoId}')" onmouseover="hoverStars(1, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
-                                        <span class="star" data-rating="2" onclick="selectRating(2, '${extensaoId}')" onmouseover="hoverStars(2, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
-                                        <span class="star" data-rating="3" onclick="selectRating(3, '${extensaoId}')" onmouseover="hoverStars(3, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
-                                        <span class="star" data-rating="4" onclick="selectRating(4, '${extensaoId}')" onmouseover="hoverStars(4, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
-                                        <span class="star" data-rating="5" onclick="selectRating(5, '${extensaoId}')" onmouseover="hoverStars(5, '${extensaoId}')" onmouseout="resetStars('${extensaoId}')">⭐</span>
-                                    </div>
-                                    <span id="rating-text-${extensaoId}" class="text-sm text-gray-400 ml-2">Clique nas estrelas para avaliar</span>
-                                </div>
-                                <input type="hidden" id="rating-value-${extensaoId}" value="0">
-                            </div>
+                            '<div>' +
+                                '<label class="block text-sm font-medium text-gray-300 mb-2">Avaliação da Extensão:</label>' +
+                                '<div class="flex items-center gap-2">' +
+                                    '<div class="star-rating" data-extensao="' + extensaoId + '">' +
+                                        '<span class="star" data-rating="1" onclick="selectRating(1, \'' + extensaoId + '\')" onmouseover="hoverStars(1, \'' + extensaoId + '\')" onmouseout="resetStars(\'' + extensaoId + '\')">⭐</span>' +
+                                        '<span class="star" data-rating="2" onclick="selectRating(2, \'' + extensaoId + '\')" onmouseover="hoverStars(2, \'' + extensaoId + '\')" onmouseout="resetStars(\'' + extensaoId + '\')">⭐</span>' +
+                                        '<span class="star" data-rating="3" onclick="selectRating(3, \'' + extensaoId + '\')" onmouseover="hoverStars(3, \'' + extensaoId + '\')" onmouseout="resetStars(\'' + extensaoId + '\')">⭐</span>' +
+                                        '<span class="star" data-rating="4" onclick="selectRating(4, \'' + extensaoId + '\')" onmouseover="hoverStars(4, \'' + extensaoId + '\')" onmouseout="resetStars(\'' + extensaoId + '\')">⭐</span>' +
+                                        '<span class="star" data-rating="5" onclick="selectRating(5, \'' + extensaoId + '\')" onmouseover="hoverStars(5, \'' + extensaoId + '\')" onmouseout="resetStars(\'' + extensaoId + '\')">⭐</span>' +
+                                    '</div>' +
+                                    '<span id="rating-text-' + extensaoId + '" class="text-sm text-gray-400 ml-2">Clique nas estrelas para avaliar</span>' +
+                                '</div>' +
+                                '<input type="hidden" id="rating-value-' + extensaoId + '" value="0">' +
+                            '</div>' +
                             
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Comentário:</label>
-                                <textarea id="comentario-texto-card-${extensaoId}" 
-                                          placeholder="Escreva seu comentário aqui..." 
-                                          maxlength="500" 
-                                          rows="4"
-                                          class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                                          onclick="event.stopPropagation();"
-                                          oninput="atualizarContadorCard('${extensaoId}')"></textarea>
-                                <div class="text-right text-sm text-gray-400 mt-1">
-                                    <span id="contador-chars-card-${extensaoId}">0/500</span>
-                                </div>
-                            </div>
-                        </div>
+                            '<div>' +
+                                '<label class="block text-sm font-medium text-gray-300 mb-2">Comentário:</label>' +
+                                '<textarea id="comentario-texto-card-' + extensaoId + '" ' +
+                                          'placeholder="Escreva seu comentário aqui..." ' +
+                                          'maxlength="500" ' +
+                                          'rows="4"' +
+                                          'class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"' +
+                                          'onclick="event.stopPropagation();"' +
+                                          'oninput="atualizarContadorCard(\'' + extensaoId + '\')"></textarea>' +
+                                '<div class="text-right text-sm text-gray-400 mt-1">' +
+                                    '<span id="contador-chars-card-' + extensaoId + '">0/500</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
                         
-                        <div class="flex gap-3 mt-4">
-                            <button onclick="enviarComentarioCard('${extensaoId}', '${extensaoNome}')" 
-                                    id="btn-enviar-card-${extensaoId}"
-                                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
-                                Enviar
-                            </button>
-                            <button onclick="cancelarComentarioCard('${extensaoId}')" 
-                                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
-                                Cancelar
-                            </button>
-                        </div>
+                        '<div class="flex gap-3 mt-4">' +
+                            '<button onclick="enviarComentarioCard(\'' + extensaoId + '\', \'' + extensaoNome + '\')" ' +
+                                    'id="btn-enviar-card-' + extensaoId + '"' +
+                                    'class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">' +
+                                'Enviar' +
+                            '</button>' +
+                            '<button onclick="cancelarComentarioCard(\'' + extensaoId + '\')" ' +
+                                    'class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">' +
+                                'Cancelar' +
+                            '</button>' +
+                        '</div>' +
                         
-                        <div id="mensagem-feedback-card-${extensaoId}" class="text-sm mt-3"></div>
-                    </div>
-                </div>
+                        '<div id="mensagem-feedback-card-' + extensaoId + '" class="text-sm mt-3"></div>' +
+                    '</div>' +
+                '</div>' +
 
-                <!-- Lista de comentários -->
-                <div id="lista-comentarios-card-${extensaoId}" class="comentarios-lista">
-                    <div class="loading-comentarios p-4 text-center text-gray-400">Carregando comentários...</div>
-                </div>
-            `;
+                '<!-- Lista de comentários -->' +
+                '<div id="lista-comentarios-card-' + extensaoId + '" class="comentarios-lista">' +
+                    '<div class="loading-comentarios p-4 text-center text-gray-400">📡 Carregando comentários...</div>' +
+                '</div>';
 
             // Insere o card de comentários após o card da extensão
-            const cardFinal = cardExtensao || document.querySelector(`[onclick*="toggleComentarios('${extensaoId}')"]`).closest('.extension-card');
-            cardFinal.parentNode.insertBefore(cardComentarios, cardFinal.nextSibling);
+            console.log('📌 Inserindo card no DOM...');
+            const cardFinal = cardExtensao;
+            
+            try {
+                cardFinal.parentNode.insertBefore(cardComentarios, cardFinal.nextSibling);
+                console.log('✅ Card inserido com sucesso no DOM');
+            } catch (error) {
+                console.error('❌ Erro ao inserir card no DOM:', error);
+                // Fallback: adicionar no final do parent
+                try {
+                    cardFinal.parentNode.appendChild(cardComentarios);
+                    console.log('✅ Card adicionado como último elemento');
+                } catch (error2) {
+                    console.error('❌ Erro no fallback:', error2);
+                    return false;
+                }
+            }
 
             // Inicializar estrelas para este card específico
-            setTimeout(() => {
+            console.log('⭐ Inicializando estrelas...');
+            setTimeout(function() {
                 initStarsForCard(extensaoId);
-            }, 100);
+            }, 200);
 
             // Carrega os comentários
-            carregarComentariosCard(extensaoId);
+            console.log('📥 Carregando comentários...');
+            setTimeout(function() {
+                carregarComentariosCard(extensaoId);
+            }, 300);
 
             // Scroll suave para o card de comentários
-            setTimeout(() => {
-                cardComentarios.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            console.log('📜 Fazendo scroll para o card...');
+            setTimeout(function() {
+                cardComentarios.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
             }, 100);
+            
+            console.log('✅ Card de comentários criado com sucesso');
+            return true;
         }
 
         function mostrarFormComentario(extensaoId) {
-            const form = document.getElementById(`form-comentario-${extensaoId}`);
+            const form = document.getElementById('form-comentario-' + extensaoId);
             const btnComentar = event.target;
             
             if (form.style.display === 'none') {
                 form.style.display = 'block';
                 btnComentar.textContent = 'Ocultar';
-                document.getElementById(`nome-usuario-${extensaoId}`).focus();
+                document.getElementById('nome-usuario-' + extensaoId).focus();
             } else {
                 form.style.display = 'none';
                 btnComentar.textContent = 'Comentar';
             }
         }
 
+        
         function fecharCardComentarios(extensaoId) {
-            const cardComentarios = document.getElementById(`card-comentarios-${extensaoId}`);
+            console.log('🗑️ Fechando card de comentários: ' + extensaoId);
+            const cardComentarios = document.getElementById('card-comentarios-' + extensaoId);
+            const botaoToggle = document.querySelector('[onclick*="toggleComentarios(\'' + extensaoId + '\')"]');
+            
             if (cardComentarios) {
                 cardComentarios.remove();
+                console.log('✅ Card removido');
+            }
+            
+            if (botaoToggle) {
+                botaoToggle.textContent = '💬 Ver Comentários';
+                botaoToggle.className = 'comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                console.log('✅ Botão resetado');
             }
         }
 
         function mostrarFormComentarioCard(extensaoId) {
-            const form = document.getElementById(`form-comentario-card-${extensaoId}`);
-            const btnComentar = document.getElementById(`btn-comentar-${extensaoId}`);
+            console.log('📝 Mostrando formulário para: ' + extensaoId);
+            const form = document.getElementById('form-comentario-card-' + extensaoId);
+            const btnComentar = document.getElementById('btn-comentar-' + extensaoId);
             
             if (form.style.display === 'none') {
                 form.style.display = 'block';
                 btnComentar.textContent = '🚫 Cancelar';
-                document.getElementById(`nome-usuario-card-${extensaoId}`).focus();
-                
-                // Garantir que as estrelas estejam funcionando
-                setTimeout(() => {
-                    initStarsForCard(extensaoId);
-                }, 50);
-                
+                document.getElementById('nome-usuario-card-' + extensaoId).focus();
+                console.log('✅ Formulário exibido');
             } else {
                 form.style.display = 'none';
                 btnComentar.textContent = '✍️ Escrever Comentário';
+                console.log('✅ Formulário ocultado');
             }
         }
 
         function cancelarComentarioCard(extensaoId) {
-            const form = document.getElementById(`form-comentario-card-${extensaoId}`);
-            const btnComentar = document.getElementById(`btn-comentar-${extensaoId}`);
+            console.log('🚫 Cancelando comentário para: ' + extensaoId);
+            const form = document.getElementById('form-comentario-card-' + extensaoId);
+            const btnComentar = document.getElementById('btn-comentar-' + extensaoId);
             
             form.style.display = 'none';
             btnComentar.textContent = '✍️ Escrever Comentário';
             
-            document.getElementById(`nome-usuario-card-${extensaoId}`).value = '';
-            document.getElementById(`comentario-texto-card-${extensaoId}`).value = '';
-            document.getElementById(`contador-chars-card-${extensaoId}`).textContent = '0/500';
-            document.getElementById(`mensagem-feedback-card-${extensaoId}`).textContent = '';
-            document.getElementById(`mensagem-feedback-card-${extensaoId}`).className = 'text-sm';
+            // Limpar campos
+            document.getElementById('nome-usuario-card-' + extensaoId).value = '';
+            document.getElementById('comentario-texto-card-' + extensaoId).value = '';
+            document.getElementById('contador-chars-card-' + extensaoId).textContent = '0/500';
+            document.getElementById('rating-value-' + extensaoId).value = '0';
+            document.getElementById('rating-text-' + extensaoId).textContent = 'Clique nas estrelas para avaliar';
             
-            // Reset rating usando o novo sistema
-            document.getElementById(`rating-value-${extensaoId}`).value = '0';
-            document.getElementById(`rating-text-${extensaoId}`).textContent = 'Clique nas estrelas para avaliar';
-            
-            // Resetar visual das estrelas
-            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
-            if (starContainer) {
-                const stars = starContainer.querySelectorAll('.star');
-                stars.forEach(star => {
-                    star.classList.remove('active');
-                    star.style.filter = 'grayscale(100%)';
-                    star.style.opacity = '0.5';
-                });
-            }
+            console.log('✅ Formulário cancelado e limpo');
         }
 
         function atualizarContadorCard(extensaoId) {
-            const textarea = document.getElementById(`comentario-texto-card-${extensaoId}`);
-            const contador = document.getElementById(`contador-chars-card-${extensaoId}`);
+            const textarea = document.getElementById('comentario-texto-card-' + extensaoId);
+            const contador = document.getElementById('contador-chars-card-' + extensaoId);
             
             if (textarea && contador) {
                 const length = textarea.value.length;
-                contador.textContent = `${length}/500`;
+                contador.textContent = length + '/500';
                 
                 if (length > 450) {
                     contador.style.color = '#ef4444';
@@ -5480,144 +5786,129 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function fecharComentarios(extensaoId) {
-            const comentariosDiv = document.getElementById(`comentarios-${extensaoId}`);
-            const button = document.querySelector(`button[onclick*="toggleComentarios('${extensaoId}')"]`);
+            const comentariosDiv = document.getElementById('comentarios-' + extensaoId);
+            const button = document.querySelector('button[onclick*="toggleComentarios(\'' + extensaoId + '\')"]');
             
             comentariosDiv.style.display = 'none';
             button.textContent = '💬 Ver Comentários';
             
-            const form = document.getElementById(`form-comentario-${extensaoId}`);
+            const form = document.getElementById('form-comentario-' + extensaoId);
             if (form) {
                 form.style.display = 'none';
-                const btnComentar = document.querySelector(`button[onclick="mostrarFormComentario('${extensaoId}')"]`);
+                const btnComentar = document.querySelector('button[onclick="mostrarFormComentario(\'' + extensaoId + '\')"]');
                 if (btnComentar) btnComentar.textContent = 'Comentar';
             }
         }
 
         async function enviarComentarioCard(extensaoId, extensaoNome) {
-            console.log(`🚀 Iniciando envio de comentário para ${extensaoId}`);
+            console.log('🚀 Iniciando envio de comentário para ' + extensaoId);
             
-            const nome = document.getElementById(`nome-usuario-card-${extensaoId}`).value.trim();
-            const comentario = document.getElementById(`comentario-texto-card-${extensaoId}`).value.trim();
-            const rating = document.getElementById(`rating-value-${extensaoId}`).value;
-            const feedbackDiv = document.getElementById(`mensagem-feedback-card-${extensaoId}`);
-            const btnEnviar = document.getElementById(`btn-enviar-card-${extensaoId}`);
+            const nome = document.getElementById('nome-usuario-card-' + extensaoId).value.trim();
+            const comentario = document.getElementById('comentario-texto-card-' + extensaoId).value.trim();
+            const rating = document.getElementById('rating-value-' + extensaoId).value;
+            const feedbackDiv = document.getElementById('mensagem-feedback-card-' + extensaoId);
+            const btnEnviar = document.getElementById('btn-enviar-card-' + extensaoId);
             
-            // Log detalhado dos valores capturados
-            console.log('📋 Dados capturados:', {
-                extensaoId,
-                nome: nome,
-                comentario: comentario.substring(0, 50) + '...',
-                rating: rating,
-                ratingType: typeof rating,
-                ratingParsed: parseInt(rating)
-            });
+            console.log('📋 Dados:', { nome: nome.length + ' chars', comentario: comentario.length + ' chars', rating: rating });
             
+            // Reset visual do feedback
             feedbackDiv.textContent = '';
-            feedbackDiv.className = 'text-sm';
+            feedbackDiv.className = 'text-sm mt-3';
             
+            // Validações
             if (!nome || nome.length < 2) {
                 feedbackDiv.textContent = 'O nome deve ter pelo menos 2 caracteres.';
-                feedbackDiv.className = 'text-sm error';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                console.log('❌ Validação falhou: nome muito curto');
                 return;
             }
             
-            if (!rating || rating === '0') {
+            if (!rating || rating === '0' || parseInt(rating) < 1 || parseInt(rating) > 5) {
                 feedbackDiv.textContent = 'Por favor, selecione uma avaliação de 1 a 5 estrelas.';
-                feedbackDiv.className = 'text-sm error';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                console.log('❌ Validação falhou: rating inválido');
                 return;
             }
             
             if (!comentario || comentario.length < 10) {
                 feedbackDiv.textContent = 'O comentário deve ter pelo menos 10 caracteres.';
-                feedbackDiv.className = 'text-sm error';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                console.log('❌ Validação falhou: comentário muito curto');
                 return;
             }
             
+            if (comentario.length > 500) {
+                feedbackDiv.textContent = 'O comentário não pode ter mais de 500 caracteres.';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                console.log('❌ Validação falhou: comentário muito longo');
+                return;
+            }
+            
+            // Preparar interface
             btnEnviar.disabled = true;
             btnEnviar.textContent = 'Enviando...';
-            feedbackDiv.textContent = 'Enviando comentário e avaliação...';
-            feedbackDiv.className = 'text-sm';
+            feedbackDiv.textContent = '📤 Salvando comentário...';
+            feedbackDiv.className = 'text-sm mt-3 text-blue-400';
             
             try {
-                const fingerprint = Math.random().toString(36) + Date.now().toString(36);
+                // Simular delay para feedback visual
+                await new Promise(resolve => setTimeout(resolve, 800));
                 
-                // Usar JSON ao invés de form data
-                const dados = {
-                    action: 'post',
+                // Salvar no sistema local
+                const comentarioData = {
                     extensao: extensaoId,
+                    extensaoNome: extensaoNome,
                     nome: nome,
                     comentario: comentario,
-                    avaliacao: parseInt(rating),
-                    fingerprint: fingerprint
+                    rating: parseInt(rating)
                 };
                 
-                console.log('Dados sendo enviados (JSON):', dados); // Debug
+                const sucesso = salvarComentarioLocal(extensaoId, comentarioData);
                 
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(dados)
-                });
-                
-                console.log('Response status (envio):', response.status); // Debug
-                
-                const responseText = await response.text();
-                console.log('Response text (envio):', responseText); // Debug
-                
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                } catch (parseError) {
-                    console.error('Erro ao fazer parse do JSON (envio):', parseError);
+                if (sucesso) {
+                    feedbackDiv.textContent = '✅ Comentário salvo com sucesso!';
+                    feedbackDiv.className = 'text-sm mt-3 text-green-400';
                     
-                    // Tentar extrair JSON se estiver envolvido em HTML
-                    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        try {
-                            data = JSON.parse(jsonMatch[0]);
-                            console.log('JSON extraído com sucesso (envio):', data);
-                        } catch (e) {
-                            throw new Error(`Resposta de envio não é JSON válido: ${responseText.substring(0, 200)}`);
-                        }
-                    } else {
-                        throw new Error(`Resposta de envio não contém JSON: ${responseText.substring(0, 200)}`);
-                    }
-                }
-                
-                console.log('Dados da resposta (envio):', data); // Debug
-                
-                if (data.success || data.status === 'success' || data.resultado === 'sucesso') {
-                    feedbackDiv.textContent = 'Comentário e avaliação enviados com sucesso! Aguarde aprovação.';
-                    feedbackDiv.className = 'text-sm success';
-                    
-                    document.getElementById(`nome-usuario-card-${extensaoId}`).value = '';
-                    document.getElementById(`comentario-texto-card-${extensaoId}`).value = '';
-                    document.getElementById(`rating-value-${extensaoId}`).value = '0';
-                    document.getElementById(`contador-chars-card-${extensaoId}`).textContent = '0/500';
+                    // Limpar formulário
+                    document.getElementById('nome-usuario-card-' + extensaoId).value = '';
+                    document.getElementById('comentario-texto-card-' + extensaoId).value = '';
+                    document.getElementById('rating-value-' + extensaoId).value = '0';
+                    document.getElementById('contador-chars-card-' + extensaoId).textContent = '0/500';
                     
                     // Resetar estrelas
-                    const stars = document.querySelectorAll(`[data-extensao="${extensaoId}"] .star`);
-                    stars.forEach(star => star.classList.remove('active'));
-                    document.getElementById(`rating-text-${extensaoId}`).textContent = 'Clique nas estrelas para avaliar';
+                    const stars = document.querySelectorAll('[data-extensao="' + extensaoId + '"] .star');
+                    stars.forEach(function(star) {
+                        star.classList.remove('active', 'selected');
+                        star.style.filter = 'grayscale(80%)';
+                        star.style.opacity = '0.4';
+                        star.style.color = '#6b7280';
+                    });
+                    document.getElementById('rating-text-' + extensaoId).textContent = 'Clique nas estrelas para avaliar';
                     
-                    setTimeout(() => {
+                    console.log('✅ Comentário salvo com sucesso');
+                    
+                    // Atualizar exibição de avaliações na extensão específica
+                    atualizarAvaliacaoExtensao(extensaoId);
+                    
+                    // Atualizar todas as extensões se for necessário
+                    if (extensaoId === 'manhastro' || extensaoNome.toLowerCase().includes('manhastro')) {
+                        setTimeout(() => atualizarAvaliacaoExtensoes(), 500);
+                    }
+                    
+                    // Fechar formulário e recarregar comentários após delay
+                    setTimeout(function() {
                         cancelarComentarioCard(extensaoId);
                         carregarComentariosCard(extensaoId);
-                    }, 2000);
+                    }, 1500);
                     
                 } else {
-                    const errorMsg = data.message || data.error || data.erro || 'Erro desconhecido do servidor';
-                    throw new Error(errorMsg);
+                    throw new Error('Falha ao salvar comentário no sistema local');
                 }
                 
             } catch (error) {
-                console.error('Erro completo ao enviar comentário:', error);
-                feedbackDiv.textContent = `Erro: ${error.message}`;
-                feedbackDiv.className = 'text-sm error';
+                console.error('❌ Erro ao enviar comentário:', error);
+                feedbackDiv.textContent = '❌ Erro: ' + error.message;
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
             } finally {
                 btnEnviar.disabled = false;
                 btnEnviar.textContent = 'Enviar';
@@ -5625,217 +5916,219 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function cancelarComentario(extensaoId) {
-            const form = document.getElementById(`form-comentario-${extensaoId}`);
-            const btnComentar = document.querySelector(`button[onclick="mostrarFormComentario('${extensaoId}')"]`);
+            const form = document.getElementById('form-comentario-' + extensaoId);
+            const btnComentar = document.querySelector('button[onclick="mostrarFormComentario(\'' + extensaoId + '\')"]');
             
             form.style.display = 'none';
             btnComentar.textContent = 'Comentar';
             
-            document.getElementById(`nome-usuario-${extensaoId}`).value = '';
-            document.getElementById(`comentario-texto-${extensaoId}`).value = '';
-            document.getElementById(`contador-chars-${extensaoId}`).textContent = '0/500';
-            document.getElementById(`mensagem-feedback-${extensaoId}`).textContent = '';
-            document.getElementById(`mensagem-feedback-${extensaoId}`).className = 'text-sm';
+            document.getElementById('nome-usuario-' + extensaoId).value = '';
+            document.getElementById('comentario-texto-' + extensaoId).value = '';
+            document.getElementById('contador-chars-' + extensaoId).textContent = '0/500';
+            document.getElementById('mensagem-feedback-' + extensaoId).textContent = '';
+            document.getElementById('mensagem-feedback-' + extensaoId).className = 'text-sm';
         }
 
-        async function carregarComentariosCard(extensaoId) {
-            const listaComentarios = document.getElementById(`lista-comentarios-card-${extensaoId}`);
+        // Função principal para carregar comentários no card específico - VERSÃO FINAL SIMPLIFICADA
+        function carregarComentariosCard(extensaoId) {
+            console.log('📥 Carregando comentários para: ' + extensaoId);
+            
+            const container = document.getElementById('lista-comentarios-card-' + extensaoId);
+            if (!container) {
+                console.error('❌ Container de comentários não encontrado');
+                return;
+            }
             
             try {
-                listaComentarios.innerHTML = '<div class="loading-comentarios p-4 text-center text-gray-400">Carregando comentários...</div>';
+                // Carregar do cache local
+                const comentariosCache = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                const comentariosLocal = comentariosCache[extensaoId] || [];
                 
-                // Tentar diferentes formatos de URL
-                const urls = [
-                    `${API_URL}?action=get&extensao=${encodeURIComponent(extensaoId)}`,
-                    `${API_URL}?extensao=${encodeURIComponent(extensaoId)}`,
-                    `${API_URL}?method=get&ext=${encodeURIComponent(extensaoId)}`,
-                    `${API_URL}?op=list&extension=${encodeURIComponent(extensaoId)}`
-                ];
-                
-                let response = null;
-                let responseText = '';
-                
-                // Tentar cada URL até uma funcionar
-                for (const url of urls) {
-                    try {
-                        console.log('Tentando URL:', url);
-                        response = await fetch(url, {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        });
-                        
-                        console.log('Response status:', response.status);
-                        
-                        if (response.ok) {
-                            responseText = await response.text();
-                            console.log('Response text (primeiros 500 chars):', responseText.substring(0, 500));
-                            
-                            // Se a resposta contém JSON válido, usar essa URL
-                            try {
-                                JSON.parse(responseText);
-                                console.log('JSON válido encontrado com URL:', url);
-                                break;
-                            } catch (e) {
-                                // Tentar extrair JSON de HTML
-                                const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-                                if (jsonMatch) {
-                                    try {
-                                        JSON.parse(jsonMatch[0]);
-                                        console.log('JSON extraído com sucesso de HTML');
-                                        responseText = jsonMatch[0];
-                                        break;
-                                    } catch (e2) {
-                                        console.log('JSON extraído também inválido');
-                                    }
-                                }
-                                console.log('Resposta não é JSON válido, tentando próxima URL');
-                            }
-                        }
-                    } catch (error) {
-                        console.log('Erro com URL:', url, error.message);
-                    }
+                if (comentariosLocal.length === 0) {
+                    container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
+                    console.log('📝 Nenhum comentário encontrado');
+                    return;
                 }
                 
-                if (!response || !response.ok) {
-                    throw new Error('Nenhuma URL funcionou para carregar comentários');
-                }
-                
-                // Processar a resposta
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                    console.log('Dados finais parseados:', data);
-                } catch (parseError) {
-                    console.error('Erro final ao fazer parse do JSON:', parseError);
-                    throw new Error(`Resposta final não é JSON válido: ${responseText.substring(0, 200)}`);
-                }
-                
-                // Processar os dados baseado no formato da planilha
-                let comentarios = [];
-                
-                // Diferentes formatos de resposta possíveis
-                if (Array.isArray(data)) {
-                    comentarios = data;
-                } else if (data.data && Array.isArray(data.data)) {
-                    comentarios = data.data;
-                } else if (data.comentarios && Array.isArray(data.comentarios)) {
-                    comentarios = data.comentarios;
-                } else if (data.rows && Array.isArray(data.rows)) {
-                    comentarios = data.rows;
-                } else if (data.values && Array.isArray(data.values)) {
-                    comentarios = data.values;
-                } else if (data.success && Array.isArray(data.result)) {
-                    comentarios = data.result;
-                }
-                
-                console.log('Comentários extraídos:', comentarios);
-                
-                if (comentarios.length > 0) {
-                    listaComentarios.innerHTML = '';
-                    let comentariosExibidos = 0;
+                const comentariosHtml = comentariosLocal.map(function(comentario) {
+                    const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
+                    const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                     
-                    comentarios.forEach((comentario, index) => {
-                        console.log(`Processando comentário ${index}:`, comentario);
-                        
-                        // Adaptação para diferentes formatos da planilha
-                        // Formato: Data | Extensão | UserID | Nome | Comentário | Status | Likes | Avaliação
-                        let dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario, avaliacaoComentario;
-                        
-                        // Se for array (linha da planilha)
-                        if (Array.isArray(comentario)) {
-                            [dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario, avaliacaoComentario] = comentario;
-                        } else {
-                            // Se for objeto
-                            dataComentario = comentario.Data || comentario.data || comentario['Data'];
-                            extensaoComentario = comentario.Extensao || comentario.extensao || comentario['Extensão'] || comentario.Extensão;
-                            userIdComentario = comentario.UserID || comentario.userId || comentario.userid || comentario['UserID'];
-                            nomeAutor = comentario.Nome || comentario.nome || comentario['Nome'] || comentario.name || 'Anônimo';
-                            textoComentario = comentario.Comentario || comentario.comentario || comentario['Comentário'] || comentario.Comentário || comentario.comment || comentario.texto;
-                            statusComentario = comentario.Status || comentario.status || comentario['Status'] || 'aprovado';
-                            likesComentario = comentario.Likes || comentario.likes || comentario['Likes'] || 0;
-                            avaliacaoComentario = comentario.Avaliacao || comentario.avaliacao || comentario['Avaliação'] || comentario.rating || 0;
-                        }
-                        
-                        console.log('Dados extraídos:', { 
-                            dataComentario, 
-                            extensaoComentario, 
-                            nomeAutor, 
-                            textoComentario, 
-                            statusComentario, 
-                            likesComentario,
-                            avaliacaoComentario
-                        });
-                        
-                        // Verificar se o comentário é válido e para esta extensão
-                        const temTexto = textoComentario && textoComentario.trim() !== '' && textoComentario !== 'Comentário não disponível';
-                        const temNome = nomeAutor && nomeAutor.trim() !== '' && nomeAutor !== 'Anônimo';
-                        const extensaoMatch = !extensaoComentario || extensaoComentario.toLowerCase() === extensaoId.toLowerCase();
-                        const aprovado = !statusComentario || statusComentario.toLowerCase() === 'aprovado' || statusComentario.toLowerCase() === 'approved' || statusComentario === '';
-                        
-                        console.log('Validações:', { temTexto, temNome, extensaoMatch, aprovado });
-                        
-                        if (temTexto && temNome && extensaoMatch && aprovado) {
-                            // Processar data
-                            let dataFormatada = 'Data não disponível';
-                            if (dataComentario) {
-                                try {
-                                    const data = new Date(dataComentario);
-                                    if (!isNaN(data.getTime())) {
-                                        dataFormatada = data.toLocaleString('pt-BR');
-                                    } else {
-                                        dataFormatada = dataComentario.toString();
-                                    }
-                                } catch (e) {
-                                    dataFormatada = dataComentario.toString();
-                                }
-                            }
-                            
-                            // Processar avaliação
-                            const avaliacaoNumero = parseInt(avaliacaoComentario) || 0;
-                            const avaliacaoDisplay = avaliacaoNumero > 0 ? createStarDisplay(avaliacaoNumero) : '';
-                            
-                            const comentarioCard = document.createElement('div');
-                            comentarioCard.className = 'comentario-card bg-gray-700 rounded-lg p-4 mb-3 border border-gray-600';
-                            comentarioCard.onclick = function(e) { 
-                                e.stopPropagation(); 
-                                e.preventDefault();
-                            };
-                            
-                            comentarioCard.innerHTML = `
-                                <div class="flex justify-between items-start mb-2">
-                                    <div class="flex items-center gap-2">
-                                        <span class="comentario-autor font-semibold text-blue-300">👤 ${nomeAutor}</span>
-                                        ${likesComentario > 0 ? '<span class="likes text-yellow-400 text-sm">❤️ ' + likesComentario + '</span>' : ''}
-                                    </div>
-                                    <div class="comentario-data text-xs text-gray-400">${dataFormatada}</div>
-                                </div>
-                                ${avaliacaoDisplay ? '<div class="mb-2">' + avaliacaoDisplay + '</div>' : ''}
-                                <div class="comentario-texto text-gray-200 leading-relaxed">${textoComentario}</div>
-                            `;
-                            
-                            listaComentarios.appendChild(comentarioCard);
-                            comentariosExibidos++;
-                        }
-                    });
+                    const estrelas = Array(5).fill('⭐').map(function(star, index) {
+                        return index < comentario.rating ? 
+                            '<span style="color: #fbbf24;">⭐</span>' : 
+                            '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                    }).join('');
                     
-                    // Se não há comentários válidos após filtro
-                    if (comentariosExibidos === 0) {
-                        listaComentarios.innerHTML = '<div class="p-4 text-center text-gray-400">Nenhum comentário aprovado para esta extensão ainda. Seja o primeiro a comentar!</div>';
-                    }
-                } else {
-                    listaComentarios.innerHTML = '<div class="p-4 text-center text-gray-400">Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
-                }
+                    return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
+                           '<div class="flex justify-between items-start mb-2">' +
+                           '<div class="flex items-center gap-2">' +
+                           '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
+                           '<div class="flex text-sm">' + estrelas + '</div>' +
+                           '</div>' +
+                           '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
+                           '</div>' +
+                           '<p class="text-gray-200">' + comentario.comentario + '</p>' +
+                           '</div>';
+                }).join('');
+                
+                container.innerHTML = '<div class="mb-4">' +
+                                     '<h4 class="text-lg font-semibold text-white">� Comentários (' + comentariosLocal.length + ')</h4>' +
+                                     '</div>' + comentariosHtml;
+                
+                console.log('✅ ' + comentariosLocal.length + ' comentários carregados');
                 
             } catch (error) {
-                console.error('Erro ao carregar comentários:', error);
-                listaComentarios.innerHTML = `<div class="p-4 text-center text-red-400">Erro ao carregar comentários: ${error.message}<br><small>Verifique o console para mais detalhes</small></div>`;
+                console.error('❌ Erro ao carregar comentários:', error);
+                container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
+            }
+        }
+        function exibirComentarios(data, listaComentarios, extensaoId) {
+            // Processar os dados baseado no formato da resposta
+            let comentarios = [];
+            
+            // Diferentes formatos de resposta possíveis
+            if (Array.isArray(data)) {
+                comentarios = data;
+            } else if (data.data && Array.isArray(data.data)) {
+                comentarios = data.data;
+            } else if (data.comentarios && Array.isArray(data.comentarios)) {
+                comentarios = data.comentarios;
+            } else if (data.rows && Array.isArray(data.rows)) {
+                comentarios = data.rows;
+            } else if (data.values && Array.isArray(data.values)) {
+                comentarios = data.values;
+            } else if (data.success && Array.isArray(data.result)) {
+                comentarios = data.result;
+            } else if (data.result && Array.isArray(data.result)) {
+                comentarios = data.result;
+            }
+            
+            console.log('📋 ' + comentarios.length + ' comentários encontrados para processamento');
+            
+            if (comentarios.length > 0) {
+                listaComentarios.innerHTML = '';
+                let comentariosExibidos = 0;
+                
+                comentarios.forEach(function(comentario, index) {
+                    console.log('🔍 Processando comentário ' + (index + 1) + ':', comentario);
+                    
+                    // Adaptação para diferentes formatos
+                    let dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario, avaliacaoComentario;
+                    
+                    // Se for array (linha da planilha)
+                    if (Array.isArray(comentario)) {
+                        [dataComentario, extensaoComentario, userIdComentario, nomeAutor, textoComentario, statusComentario, likesComentario, avaliacaoComentario] = comentario;
+                    } else {
+                        // Se for objeto
+                        dataComentario = comentario.Data || comentario.data || comentario.timestamp || comentario.created_at;
+                        extensaoComentario = comentario.Extensao || comentario.extensao || comentario.extension;
+                        userIdComentario = comentario.UserID || comentario.userId || comentario.user_id;
+                        nomeAutor = comentario.Nome || comentario.nome || comentario.name || comentario.author || 'Anônimo';
+                        textoComentario = comentario.Comentario || comentario.comentario || comentario.comment || comentario.text || comentario.content;
+                        statusComentario = comentario.Status || comentario.status || 'aprovado';
+                        likesComentario = comentario.Likes || comentario.likes || comentario.votes || 0;
+                        avaliacaoComentario = comentario.Avaliacao || comentario.avaliacao || comentario.rating || comentario.stars || 0;
+                    }
+                    
+                    // Validações
+                    const temTexto = textoComentario && textoComentario.toString().trim() !== '' && textoComentario !== 'N/A';
+                    const temNome = nomeAutor && nomeAutor.toString().trim() !== '' && nomeAutor !== 'N/A';
+                    const extensaoMatch = !extensaoComentario || 
+                                        extensaoComentario.toLowerCase() === extensaoId.toLowerCase() ||
+                                        extensaoComentario.toLowerCase().includes(extensaoId.toLowerCase()) ||
+                                        extensaoId.toLowerCase().includes(extensaoComentario.toLowerCase());
+                    const aprovado = !statusComentario || 
+                                   statusComentario.toLowerCase() === 'aprovado' || 
+                                   statusComentario.toLowerCase() === 'approved' || 
+                                   statusComentario === '' ||
+                                   statusComentario === '1' ||
+                                   statusComentario === 'ativo';
+                    
+                    console.log('✅ Validações para comentário ' + (index + 1) + ':', { 
+                        temTexto: temTexto, 
+                        temNome: temNome, 
+                        extensaoMatch: extensaoMatch, 
+                        aprovado: aprovado,
+                        texto: textoComentario ? textoComentario.substring(0, 30) + '...' : '',
+                        nome: nomeAutor
+                    });
+                    
+                    if (temTexto && temNome && extensaoMatch && aprovado) {
+                        // Processar data
+                        let dataFormatada = 'Data não disponível';
+                        if (dataComentario) {
+                            try {
+                                const data = new Date(dataComentario);
+                                if (!isNaN(data.getTime())) {
+                                    dataFormatada = data.toLocaleString('pt-BR', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    });
+                                } else {
+                                    dataFormatada = dataComentario.toString();
+                                }
+                            } catch (e) {
+                                dataFormatada = dataComentario.toString();
+                            }
+                        }
+                        
+                        // Processar avaliação
+                        const avaliacaoNumero = parseInt(avaliacaoComentario) || 0;
+                        const avaliacaoDisplay = avaliacaoNumero > 0 ? createStarDisplay(avaliacaoNumero) : '';
+                        
+                        // Processar likes
+                        const likesNumero = parseInt(likesComentario) || 0;
+                        
+                        const comentarioCard = document.createElement('div');
+                        comentarioCard.className = 'comentario-card bg-gray-700 rounded-lg p-4 mb-3 border border-gray-600 hover:border-gray-500 transition-colors';
+                        comentarioCard.onclick = function(e) { 
+                            e.stopPropagation(); 
+                            e.preventDefault();
+                        };
+                        
+                        comentarioCard.innerHTML = 
+                            '<div class="flex justify-between items-start mb-2">' +
+                                '<div class="flex items-center gap-2">' +
+                                    '<span class="comentario-autor font-semibold text-blue-300">👤 ' + nomeAutor + '</span>' +
+                                    (likesNumero > 0 ? '<span class="likes text-yellow-400 text-sm">❤️ ' + likesNumero + '</span>' : '') +
+                                '</div>' +
+                                '<div class="comentario-data text-xs text-gray-400">' + dataFormatada + '</div>' +
+                            '</div>' +
+                            (avaliacaoDisplay ? '<div class="mb-2">' + avaliacaoDisplay + '</div>' : '') +
+                            '<div class="comentario-texto text-gray-200 leading-relaxed">' + textoComentario + '</div>';
+                        
+                        listaComentarios.appendChild(comentarioCard);
+                        comentariosExibidos++;
+                    }
+                });
+                
+                // Resultado final
+                if (comentariosExibidos === 0) {
+                    listaComentarios.innerHTML = 
+                        '<div class="p-4 text-center text-gray-400">' +
+                            '<div class="text-lg mb-2">💬</div>' +
+                            '<div>Nenhum comentário aprovado para esta extensão ainda.</div>' +
+                            '<div class="text-sm mt-1">Seja o primeiro a comentar!</div>' +
+                        '</div>';
+                } else {
+                    console.log('✅ ' + comentariosExibidos + ' comentários exibidos com sucesso');
+                }
+            } else {
+                listaComentarios.innerHTML = 
+                    '<div class="p-4 text-center text-gray-400">' +
+                        '<div class="text-lg mb-2">💬</div>' +
+                        '<div>Nenhum comentário ainda.</div>' +
+                        '<div class="text-sm mt-1">Seja o primeiro a comentar!</div>' +
+                    '</div>';
             }
         }
 
         async function carregarComentariosInline(extensaoId) {
-            const listaComentarios = document.getElementById(`lista-comentarios-${extensaoId}`);
+            const listaComentarios = document.getElementById('lista-comentarios-' + extensaoId);
             
             try {
                 listaComentarios.innerHTML = '<div class="loading-comentarios p-4 text-center text-gray-400">Carregando comentários...</div>';
@@ -5878,10 +6171,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         async function enviarComentarioInline(extensaoId) {
-            const nome = document.getElementById(`nome-usuario-${extensaoId}`).value.trim();
-            const comentario = document.getElementById(`comentario-texto-${extensaoId}`).value.trim();
-            const btnEnviar = document.getElementById(`btn-enviar-${extensaoId}`);
-            const feedbackDiv = document.getElementById(`mensagem-feedback-${extensaoId}`);
+            const nome = document.getElementById('nome-usuario-' + extensaoId).value.trim();
+            const comentario = document.getElementById('comentario-texto-' + extensaoId).value.trim();
+            const btnEnviar = document.getElementById('btn-enviar-' + extensaoId);
+            const feedbackDiv = document.getElementById('mensagem-feedback-' + extensaoId);
             
             console.log('Enviando comentário:', { extensaoId, nome, comentario }); // Debug
             
@@ -5934,7 +6227,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     data = JSON.parse(responseText);
                 } catch (parseError) {
                     console.error('Erro ao fazer parse do JSON:', parseError);
-                    throw new Error(`Resposta inválida do servidor: ${responseText.substring(0, 100)}`);
+                    throw new Error('Resposta inválida do servidor: ' + responseText.substring(0, 100));
                 }
                 
                 console.log('Dados da resposta:', data); // Debug
@@ -5943,11 +6236,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     feedbackDiv.textContent = 'Comentário enviado com sucesso!';
                     feedbackDiv.className = 'text-sm success';
                     
-                    document.getElementById(`nome-usuario-${extensaoId}`).value = '';
-                    document.getElementById(`comentario-texto-${extensaoId}`).value = '';
-                    document.getElementById(`contador-chars-${extensaoId}`).textContent = '0/500';
+                    document.getElementById('nome-usuario-' + extensaoId).value = '';
+                    document.getElementById('comentario-texto-' + extensaoId).value = '';
+                    document.getElementById('contador-chars-' + extensaoId).textContent = '0/500';
                     
-                    setTimeout(() => {
+                    setTimeout(function() {
                         cancelarComentario(extensaoId);
                         carregarComentariosInline(extensaoId);
                     }, 2000);
@@ -5958,7 +6251,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
             } catch (error) {
                 console.error('Erro completo ao enviar comentário:', error);
-                feedbackDiv.textContent = `Erro: ${error.message}`;
+                feedbackDiv.textContent = 'Erro: ' + error.message;
                 feedbackDiv.className = 'text-sm error';
             } finally {
                 btnEnviar.disabled = false;
@@ -5966,164 +6259,259 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Sistema de Estrelas (escopo global) - implementação simplificada e confiável
-        console.log('Carregando sistema de estrelas...');
+        // Sistema de Estrelas (escopo global) - VERSÃO CORRIGIDA E ROBUSTA
+        console.log('🌟 Carregando sistema de estrelas aprimorado...');
         
-        // Função para atualizar rating
+        // Função global para selecionar rating - VERSÃO FINAL CORRIGIDA
         window.selectRating = function(rating, extensaoId) {
-            console.log(`📊 Rating selecionado: ${rating} para extensão: ${extensaoId}`);
+            console.log('⭐ Rating ' + rating + ' selecionado para: ' + extensaoId);
             
-            // Atualizar valor oculto
-            const ratingInput = document.getElementById(`rating-value-${extensaoId}`);
-            const ratingText = document.getElementById(`rating-text-${extensaoId}`);
-            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
-            
-            console.log('Elementos encontrados:', { ratingInput, ratingText, starContainer });
+            const ratingInput = document.getElementById('rating-value-' + extensaoId);
+            const ratingText = document.getElementById('rating-text-' + extensaoId);
+            const starContainer = document.querySelector('[data-extensao="' + extensaoId + '"]');
             
             if (!ratingInput || !ratingText || !starContainer) {
-                console.error('❌ Elementos não encontrados para extensão:', extensaoId);
-                console.error('Rating input ID procurado:', `rating-value-${extensaoId}`);
-                console.error('Rating text ID procurado:', `rating-text-${extensaoId}`);
-                console.error('Star container procurado:', `[data-extensao="${extensaoId}"]`);
-                return;
+                console.error('❌ Elementos de rating não encontrados');
+                return false;
             }
             
             // Atualizar valores
             ratingInput.value = rating;
-            ratingText.textContent = `${rating} ${rating === 1 ? 'estrela' : 'estrelas'}`;
+            ratingText.textContent = rating + (rating === 1 ? ' estrela' : ' estrelas') + ' selecionada' + (rating > 1 ? 's' : '');
             ratingText.style.color = '#10b981';
             ratingText.style.fontWeight = 'bold';
             
             // Atualizar visual das estrelas
             const allStars = starContainer.querySelectorAll('.star');
-            console.log(`Atualizando ${allStars.length} estrelas`);
             
-            allStars.forEach((star, index) => {
-                star.classList.remove('active');
+            allStars.forEach(function(star, index) {
                 if (index < rating) {
-                    star.classList.add('active');
                     star.style.filter = 'grayscale(0%)';
                     star.style.opacity = '1';
                     star.style.color = '#fbbf24';
+                    star.classList.add('active');
                 } else {
-                    star.style.filter = 'grayscale(100%)';
-                    star.style.opacity = '0.5';
+                    star.style.filter = 'grayscale(80%)';
+                    star.style.opacity = '0.4';
                     star.style.color = '#6b7280';
+                    star.classList.remove('active');
                 }
             });
             
-            // Feedback visual temporário
-            setTimeout(() => {
-                ratingText.style.color = '#9ca3af';
-                ratingText.style.fontWeight = 'normal';
-            }, 1500);
-            
-            console.log(`✅ Rating ${rating} registrado para ${extensaoId}. Input value: ${ratingInput.value}`);
+            console.log('✅ Rating aplicado com sucesso');
+            return true;
         };
         
-        // Função para hover nas estrelas
+        // Função para hover nas estrelas - CORRIGIDA
         window.hoverStars = function(rating, extensaoId) {
-            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+            let starContainer = document.querySelector('[data-extensao="' + extensaoId + '"]');
+            
+            if (!starContainer) {
+                starContainer = document.querySelector('.star-rating[data-extensao="' + extensaoId + '"]');
+            }
+            
             if (!starContainer) return;
             
             const allStars = starContainer.querySelectorAll('.star');
-            allStars.forEach((star, index) => {
+            if (allStars.length === 0) return;
+            
+            allStars.forEach(function(star, index) {
                 if (index < rating) {
-                    star.style.filter = 'grayscale(0%)';
+                    star.style.filter = 'grayscale(0%) brightness(1.3)';
                     star.style.opacity = '1';
-                    star.style.transform = 'scale(1.1)';
+                    star.style.transform = 'scale(1.15)';
                     star.style.color = '#fbbf24';
+                    star.style.textShadow = '0 0 15px rgba(251, 191, 36, 0.7)';
                 } else {
-                    star.style.filter = 'grayscale(100%)';
-                    star.style.opacity = '0.5';
-                    star.style.transform = 'scale(1)';
+                    star.style.filter = 'grayscale(90%)';
+                    star.style.opacity = '0.3';
+                    star.style.transform = 'scale(0.95)';
                     star.style.color = '#6b7280';
+                    star.style.textShadow = 'none';
                 }
             });
         };
         
-        // Função para restaurar visual
+        // Função para restaurar visual - CORRIGIDA
         window.resetStars = function(extensaoId) {
-            const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
-            const ratingValue = document.getElementById(`rating-value-${extensaoId}`);
+            let starContainer = document.querySelector('[data-extensao="' + extensaoId + '"]');
+            
+            if (!starContainer) {
+                starContainer = document.querySelector('.star-rating[data-extensao="' + extensaoId + '"]');
+            }
+            
+            const ratingValue = document.getElementById('rating-value-' + extensaoId);
             
             if (!starContainer || !ratingValue) return;
             
             const currentRating = parseInt(ratingValue.value) || 0;
             const allStars = starContainer.querySelectorAll('.star');
             
-            allStars.forEach((star, index) => {
+            allStars.forEach(function(star, index) {
                 star.style.transform = 'scale(1)';
+                star.style.textShadow = 'none';
+                
                 if (index < currentRating) {
                     star.style.filter = 'grayscale(0%)';
                     star.style.opacity = '1';
                     star.style.color = '#fbbf24';
-                    star.classList.add('active');
+                    star.classList.add('active', 'selected');
                 } else {
-                    star.style.filter = 'grayscale(100%)';
-                    star.style.opacity = '0.5';
+                    star.style.filter = 'grayscale(80%)';
+                    star.style.opacity = '0.4';
                     star.style.color = '#6b7280';
-                    star.classList.remove('active');
+                    star.classList.remove('active', 'selected');
                 }
             });
         };
         
+        // Função para inicializar estrelas em um card específico - APRIMORADA
         function initStarsForCard(extensaoId) {
-            console.log(`🌟 Inicializando estrelas para card: ${extensaoId}`);
+            console.log('🌟 Inicializando sistema de estrelas para: ' + extensaoId);
             
-            // Aguardar um pouco para garantir que o DOM foi renderizado
-            setTimeout(() => {
-                const starContainer = document.querySelector(`[data-extensao="${extensaoId}"]`);
+            // Aguardar renderização do DOM
+            setTimeout(function() {
+                let starContainer = document.querySelector('[data-extensao="' + extensaoId + '"]');
+                
+                // Múltiplas estratégias para encontrar o container
                 if (!starContainer) {
-                    console.error(`❌ Container de estrelas não encontrado para extensão: ${extensaoId}`);
-                    // Tentar novamente com seletor alternativo
-                    const alternativeContainer = document.querySelector(`.star-rating[data-extensao="${extensaoId}"]`);
-                    if (!alternativeContainer) {
-                        console.error(`❌ Container alternativo também não encontrado`);
-                        return;
-                    }
-                    console.log('✅ Container alternativo encontrado');
+                    starContainer = document.querySelector('.star-rating[data-extensao="' + extensaoId + '"]');
                 }
                 
-                const stars = starContainer.querySelectorAll('.star');
-                const ratingInput = document.getElementById(`rating-value-${extensaoId}`);
-                const ratingText = document.getElementById(`rating-text-${extensaoId}`);
+                if (!starContainer) {
+                    const cardComentarios = document.getElementById('card-comentarios-' + extensaoId);
+                    if (cardComentarios) {
+                        starContainer = cardComentarios.querySelector('.star-rating');
+                        if (starContainer) {
+                            starContainer.setAttribute('data-extensao', extensaoId);
+                            console.log('✅ Atributo data-extensao adicionado ao container encontrado');
+                        }
+                    }
+                }
                 
-                console.log(`🔍 Elementos encontrados:`, {
-                    stars: stars.length,
-                    ratingInput: !!ratingInput,
-                    ratingText: !!ratingText
-                });
-                
-                if (stars.length === 0) {
-                    console.error(`❌ Nenhuma estrela encontrada para ${extensaoId}`);
+                if (!starContainer) {
+                    console.error('❌ Container de estrelas não encontrado para: ' + extensaoId);
                     return;
                 }
                 
-                // Aplicar estilos iniciais às estrelas
-                stars.forEach((star, index) => {
-                    star.style.filter = 'grayscale(100%)';
-                    star.style.opacity = '0.5';
-                    star.style.cursor = 'pointer';
-                    star.style.transition = 'all 0.2s ease';
-                    star.style.fontSize = '1.5rem';
-                    star.style.color = '#6b7280';
-                    
-                    console.log(`Estrela ${index + 1} configurada`);
+                const stars = starContainer.querySelectorAll('.star');
+                const ratingInput = document.getElementById('rating-value-' + extensaoId);
+                const ratingText = document.getElementById('rating-text-' + extensaoId);
+                
+                console.log('🔍 Elementos encontrados:', {
+                    stars: stars.length,
+                    ratingInput: !!ratingInput,
+                    ratingText: !!ratingText,
+                    starContainer: !!starContainer
                 });
                 
-                // Verificar se os elementos necessários existem
-                if (!ratingInput || !ratingText) {
-                    console.error(`❌ Elementos de rating não encontrados para ${extensaoId}`);
-                    console.error(`Rating input: ${!!ratingInput}, Rating text: ${!!ratingText}`);
-                } else {
-                    console.log(`✅ Todos os elementos encontrados para ${extensaoId}`);
+                if (stars.length === 0) {
+                    console.error('❌ Nenhuma estrela encontrada no container para: ' + extensaoId);
+                    return;
                 }
                 
-                console.log(`✅ ${stars.length} estrelas inicializadas para extensão: ${extensaoId}`);
-            }, 50);
+                // Configurar estilos iniciais para cada estrela
+                stars.forEach(function(star, index) {
+                    // Aplicar estilos base
+                    star.style.filter = 'grayscale(80%)';
+                    star.style.opacity = '0.4';
+                    star.style.cursor = 'pointer';
+                    star.style.transition = 'all 0.3s ease';
+                    star.style.fontSize = '1.5rem';
+                    star.style.color = '#6b7280';
+                    star.style.display = 'inline-block';
+                    star.style.userSelect = 'none';
+                    
+                    // Adicionar eventos de interação
+                    star.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        const rating = index + 1;
+                        selectRating(rating, extensaoId);
+                    });
+                    
+                    star.addEventListener('mouseenter', function() {
+                        hoverStars(index + 1, extensaoId);
+                    });
+                    
+                    star.addEventListener('mouseleave', function() {
+                        resetStars(extensaoId);
+                    });
+                    
+                    console.log('⭐ Estrela ' + (index + 1) + ' configurada com eventos');
+                });
+                
+                // Verificar elementos necessários
+                if (!ratingInput || !ratingText) {
+                    console.error('❌ Elementos de rating ausentes para: ' + extensaoId);
+                    if (!ratingInput) console.error('Input não encontrado: rating-value-' + extensaoId);
+                    if (!ratingText) console.error('Text não encontrado: rating-text-' + extensaoId);
+                } else {
+                    console.log('✅ Todos os elementos encontrados para: ' + extensaoId);
+                    // Definir valor inicial
+                    ratingInput.value = '0';
+                    ratingText.textContent = 'Clique nas estrelas para avaliar';
+                }
+                
+                console.log('✅ Sistema de estrelas inicializado: ' + stars.length + ' estrelas para ' + extensaoId);
+                
+            }, 100); // Aumentar delay para garantir renderização
         }
-        
+        // Função para carregar comentários no card específico - VERSÃO FINAL
+        function carregarComentariosCard(extensaoId) {
+            console.log('📥 Carregando comentários para: ' + extensaoId);
+            
+            const container = document.getElementById('lista-comentarios-card-' + extensaoId);
+            if (!container) {
+                console.error('❌ Container de comentários não encontrado');
+                return;
+            }
+            
+            try {
+                // Carregar do cache local
+                const comentariosCache = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                const comentariosLocal = comentariosCache[extensaoId] || [];
+                
+                if (comentariosLocal.length === 0) {
+                    container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
+                    console.log('📝 Nenhum comentário encontrado');
+                    return;
+                }
+                
+                const comentariosHtml = comentariosLocal.map(function(comentario) {
+                    const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
+                    const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    
+                    const estrelas = Array(5).fill('⭐').map(function(star, index) {
+                        return index < comentario.rating ? 
+                            '<span style="color: #fbbf24;">⭐</span>' : 
+                            '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                    }).join('');
+                    
+                    return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
+                           '<div class="flex justify-between items-start mb-2">' +
+                           '<div class="flex items-center gap-2">' +
+                           '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
+                           '<div class="flex text-sm">' + estrelas + '</div>' +
+                           '</div>' +
+                           '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
+                           '</div>' +
+                           '<p class="text-gray-200">' + comentario.comentario + '</p>' +
+                           '</div>';
+                }).join('');
+                
+                container.innerHTML = '<div class="mb-4">' +
+                                     '<h4 class="text-lg font-semibold text-white">📝 Comentários (' + comentariosLocal.length + ')</h4>' +
+                                     '</div>' + comentariosHtml;
+                
+                console.log('✅ ' + comentariosLocal.length + ' comentários carregados');
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar comentários:', error);
+                container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
+            }
+        }
+
         function createStarDisplay(rating) {
             const maxStars = 5;
             let starsHtml = '<div class="rating-display flex items-center gap-1">';
@@ -6136,19 +6524,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            starsHtml += `<span class="text-sm text-gray-400 ml-2">(${rating}/5)</span></div>`;
+            starsHtml += '<span class="text-sm text-gray-400 ml-2">(' + rating + '/5)</span></div>';
             return starsHtml;
         }
 
         // Contador de caracteres para Manhastro
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Inicializando sistema MEK-Over Extensions...');
+            
+            // Testar API ao carregar
+            testarAPI().then(resultado => {
+                if (resultado) {
+                    console.log('✅ API está funcionando corretamente');
+                } else {
+                    console.warn('⚠️ API pode estar com problemas - usando modo offline');
+                }
+            });
+            
+            // Configurar contador de caracteres para Manhastro
             const textarea = document.getElementById('comentario-texto-manhastro');
             const contador = document.getElementById('contador-chars-manhastro');
             
             if (textarea && contador) {
                 textarea.addEventListener('input', function() {
                     const length = this.value.length;
-                    contador.textContent = `${length}/500`;
+                    contador.textContent = length + '/500';
                     
                     if (length > 450) {
                         contador.style.color = '#ef4444';
@@ -6161,6 +6561,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             console.log('✅ Sistema de estrelas carregado e pronto para uso');
+            console.log('✅ Sistema de comentários inicializado com sucesso');
+            
+            // Inicializar avaliações das extensões com dados salvos
+            setTimeout(() => {
+                console.log('🔄 Carregando avaliações salvas...');
+                atualizarAvaliacaoExtensoes();
+            }, 1000);
         });
         
         // Modificar a função de carregar comentários para tratar resposta da API corretamente

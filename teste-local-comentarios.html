@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Local - Sistema de Comentários</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .star {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .star:hover {
+            transform: scale(1.2);
+        }
+        .star.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">🧪 Teste Local - Sistema de Comentários</h1>
+        
+        <!-- Card de Extensão de Teste -->
+        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 mb-4" id="teste-extensao">
+            <h2 class="text-xl font-bold mb-4">📱 Extensão de Teste</h2>
+            <p class="text-gray-300 mb-4">Esta é uma extensão de teste para verificar o sistema de comentários.</p>
+            
+            <!-- Botão Ver Comentários -->
+            <button onclick="toggleComentarios('teste-ext', 'Extensão de Teste')" 
+                    class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                💬 Ver Comentários
+            </button>
+        </div>
+        
+        <!-- Log de Debug -->
+        <div class="bg-black border border-gray-600 rounded-lg p-4 mb-4">
+            <h3 class="text-lg font-bold mb-2">🔍 Log de Debug:</h3>
+            <div id="debug-log" class="text-green-400 font-mono text-sm max-h-40 overflow-y-auto">
+                <div>🚀 Sistema inicializado - aguardando clique no botão...</div>
+            </div>
+        </div>
+        
+        <!-- Instruções -->
+        <div class="bg-blue-900 border border-blue-600 rounded-lg p-4">
+            <h3 class="text-lg font-bold mb-2">📋 Instruções:</h3>
+            <ol class="list-decimal list-inside space-y-1 text-blue-200">
+                <li>Clique no botão "💬 Ver Comentários" acima</li>
+                <li>Observe o log de debug para ver se os eventos estão sendo disparados</li>
+                <li>Se o card aparecer, clique em "✍️ Escrever Comentário"</li>
+                <li>Preencha o formulário e teste o envio</li>
+                <li>Verifique se as estrelas funcionam corretamente</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de cache local para comentários (fallback)
+        const LOCAL_STORAGE_KEY = 'velino_comentarios_cache_teste';
+        
+        // Função de debug para logar eventos
+        function debugLog(mensagem) {
+            const logDiv = document.getElementById('debug-log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += '<div>[' + timestamp + '] ' + mensagem + '</div>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log('DEBUG:', mensagem);
+        }
+
+        // Função principal para alternar comentários
+        function toggleComentarios(extensaoId, extensaoNome) {
+            debugLog('🔄 toggleComentarios chamado para: ' + extensaoId + ', ' + extensaoNome);
+            
+            // Previne a propagação do evento para o card pai
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                debugLog('✅ Evento de propagação impedido');
+            }
+            
+            const cardComentarios = document.getElementById('card-comentarios-' + extensaoId);
+            const botaoToggle = document.querySelector('[onclick*="toggleComentarios(\'' + extensaoId + '\')"]');
+            
+            debugLog('📋 Elementos encontrados: card=' + !!cardComentarios + ', botao=' + !!botaoToggle);
+            
+            if (cardComentarios) {
+                debugLog('🗑️ Removendo card existente...');
+                cardComentarios.remove();
+                if (botaoToggle) {
+                    botaoToggle.textContent = '💬 Ver Comentários';
+                    botaoToggle.className = 'comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                }
+                debugLog('✅ Card removido com sucesso');
+            } else {
+                debugLog('➕ Criando novo card...');
+                const sucesso = criarCardComentarios(extensaoId, extensaoNome);
+                if (sucesso && botaoToggle) {
+                    botaoToggle.textContent = '🔽 Fechar Comentários';
+                    botaoToggle.className = 'comentarios-toggle-btn bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                    debugLog('✅ Botão atualizado para "Fechar"');
+                } else {
+                    debugLog('❌ Falha ao criar card ou encontrar botão');
+                }
+            }
+        }
+
+        function criarCardComentarios(extensaoId, extensaoNome) {
+            debugLog('🔨 Criando card de comentários para: ' + extensaoId);
+            
+            // Encontra o card da extensão
+            let cardExtensao = document.getElementById('teste-extensao');
+            
+            if (!cardExtensao) {
+                debugLog('❌ Card da extensão não encontrado');
+                return false;
+            } else {
+                debugLog('✅ Card da extensão encontrado');
+            }
+
+            // Cria o container do card de comentários
+            const cardComentarios = document.createElement('div');
+            cardComentarios.id = 'card-comentarios-' + extensaoId;
+            cardComentarios.className = 'bg-gray-800 p-6 rounded-lg border border-gray-700 mt-4';
+            
+            debugLog('🎨 Card criado com ID: ' + cardComentarios.id);
+            
+            // Previne que cliques no card de comentários ativem a função de cópia
+            cardComentarios.onclick = function(e) { 
+                e.stopPropagation(); 
+                e.preventDefault();
+            };
+            
+            cardComentarios.innerHTML = 
+                '<!-- Header do Card de Comentários -->' +
+                '<div class="flex justify-between items-center mb-4">' +
+                    '<h3 class="text-xl font-bold text-white flex items-center gap-2">' +
+                        '💬 Comentários - ' + extensaoNome +
+                    '</h3>' +
+                    '<button onclick="fecharCardComentarios(\'' + extensaoId + '\')" ' +
+                            'class="text-gray-400 hover:text-white transition-colors text-2xl font-bold">' +
+                        '×' +
+                    '</button>' +
+                '</div>' +
+
+                '<!-- Botão para mostrar formulário -->' +
+                '<div class="mb-4 text-center">' +
+                    '<button onclick="mostrarFormComentarioCard(\'' + extensaoId + '\')" ' +
+                            'id="btn-comentar-' + extensaoId + '"' +
+                            'class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">' +
+                        '✍️ Escrever Comentário' +
+                    '</button>' +
+                '</div>' +
+
+                '<!-- Formulário de comentário (inicialmente oculto) -->' +
+                '<div id="form-comentario-card-' + extensaoId + '" class="bg-gray-700 rounded-lg p-4 border border-gray-600 mb-6" style="display: none;">' +
+                    '<h4 class="text-lg font-semibold text-white mb-3">💭 Novo Comentário</h4>' +
+                    
+                    '<div class="space-y-4">' +
+                        '<div>' +
+                            '<label class="block text-sm font-medium text-gray-300 mb-2">Seu Nome:</label>' +
+                            '<input type="text" ' +
+                                   'id="nome-usuario-card-' + extensaoId + '" ' +
+                                   'placeholder="Digite seu nome" ' +
+                                   'class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"' +
+                                   'onclick="event.stopPropagation();">' +
+                        '</div>' +
+                        
+                        '<div>' +
+                            '<label class="block text-sm font-medium text-gray-300 mb-2">Avaliação da Extensão:</label>' +
+                            '<div class="flex items-center gap-2">' +
+                                '<div class="star-rating" data-extensao="' + extensaoId + '">' +
+                                    '<span class="star" data-rating="1" onclick="selectRating(1, \'' + extensaoId + '\')" style="font-size: 1.5rem; cursor: pointer; color: #6b7280; filter: grayscale(80%); opacity: 0.4;">⭐</span>' +
+                                    '<span class="star" data-rating="2" onclick="selectRating(2, \'' + extensaoId + '\')" style="font-size: 1.5rem; cursor: pointer; color: #6b7280; filter: grayscale(80%); opacity: 0.4;">⭐</span>' +
+                                    '<span class="star" data-rating="3" onclick="selectRating(3, \'' + extensaoId + '\')" style="font-size: 1.5rem; cursor: pointer; color: #6b7280; filter: grayscale(80%); opacity: 0.4;">⭐</span>' +
+                                    '<span class="star" data-rating="4" onclick="selectRating(4, \'' + extensaoId + '\')" style="font-size: 1.5rem; cursor: pointer; color: #6b7280; filter: grayscale(80%); opacity: 0.4;">⭐</span>' +
+                                    '<span class="star" data-rating="5" onclick="selectRating(5, \'' + extensaoId + '\')" style="font-size: 1.5rem; cursor: pointer; color: #6b7280; filter: grayscale(80%); opacity: 0.4;">⭐</span>' +
+                                '</div>' +
+                                '<span id="rating-text-' + extensaoId + '" class="text-sm text-gray-400 ml-2">Clique nas estrelas para avaliar</span>' +
+                            '</div>' +
+                            '<input type="hidden" id="rating-value-' + extensaoId + '" value="0">' +
+                        '</div>' +
+                        
+                        '<div>' +
+                            '<label class="block text-sm font-medium text-gray-300 mb-2">Comentário:</label>' +
+                            '<textarea id="comentario-texto-card-' + extensaoId + '" ' +
+                                      'placeholder="Escreva seu comentário aqui..." ' +
+                                      'maxlength="500" ' +
+                                      'rows="4"' +
+                                      'class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"' +
+                                      'onclick="event.stopPropagation();"' +
+                                      'oninput="atualizarContadorCard(\'' + extensaoId + '\')"></textarea>' +
+                            '<div class="text-right text-sm text-gray-400 mt-1">' +
+                                '<span id="contador-chars-card-' + extensaoId + '">0/500</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    
+                    '<div class="flex gap-3 mt-4">' +
+                        '<button onclick="enviarComentarioCard(\'' + extensaoId + '\', \'' + extensaoNome + '\')" ' +
+                                'id="btn-enviar-card-' + extensaoId + '"' +
+                                'class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">' +
+                            'Enviar' +
+                        '</button>' +
+                        '<button onclick="cancelarComentarioCard(\'' + extensaoId + '\')" ' +
+                                'class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">' +
+                            'Cancelar' +
+                        '</button>' +
+                    '</div>' +
+                    
+                    '<div id="mensagem-feedback-card-' + extensaoId + '" class="text-sm mt-3"></div>' +
+                '</div>' +
+
+                '<!-- Lista de comentários -->' +
+                '<div id="lista-comentarios-card-' + extensaoId + '" class="comentarios-lista">' +
+                    '<div class="loading-comentarios p-4 text-center text-gray-400">📡 Carregando comentários...</div>' +
+                '</div>';
+
+            // Insere o card de comentários após o card da extensão
+            debugLog('📌 Inserindo card no DOM...');
+            
+            try {
+                cardExtensao.parentNode.insertBefore(cardComentarios, cardExtensao.nextSibling);
+                debugLog('✅ Card inserido com sucesso no DOM');
+            } catch (error) {
+                debugLog('❌ Erro ao inserir card no DOM: ' + error.message);
+                return false;
+            }
+
+            // Carrega os comentários
+            debugLog('📥 Carregando comentários...');
+            setTimeout(function() {
+                carregarComentariosCard(extensaoId);
+            }, 100);
+
+            // Scroll suave para o card de comentários
+            debugLog('📜 Fazendo scroll para o card...');
+            setTimeout(function() {
+                cardComentarios.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 200);
+            
+            debugLog('✅ Card de comentários criado com sucesso');
+            return true;
+        }
+
+        function fecharCardComentarios(extensaoId) {
+            debugLog('🗑️ Fechando card de comentários: ' + extensaoId);
+            const cardComentarios = document.getElementById('card-comentarios-' + extensaoId);
+            const botaoToggle = document.querySelector('[onclick*="toggleComentarios(\'' + extensaoId + '\')"]');
+            
+            if (cardComentarios) {
+                cardComentarios.remove();
+                debugLog('✅ Card removido');
+            }
+            
+            if (botaoToggle) {
+                botaoToggle.textContent = '💬 Ver Comentários';
+                botaoToggle.className = 'comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                debugLog('✅ Botão resetado');
+            }
+        }
+
+        function mostrarFormComentarioCard(extensaoId) {
+            debugLog('📝 Mostrando formulário para: ' + extensaoId);
+            const form = document.getElementById('form-comentario-card-' + extensaoId);
+            const btnComentar = document.getElementById('btn-comentar-' + extensaoId);
+            
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                btnComentar.textContent = '🚫 Cancelar';
+                document.getElementById('nome-usuario-card-' + extensaoId).focus();
+                debugLog('✅ Formulário exibido');
+            } else {
+                form.style.display = 'none';
+                btnComentar.textContent = '✍️ Escrever Comentário';
+                debugLog('✅ Formulário ocultado');
+            }
+        }
+
+        function cancelarComentarioCard(extensaoId) {
+            debugLog('🚫 Cancelando comentário para: ' + extensaoId);
+            const form = document.getElementById('form-comentario-card-' + extensaoId);
+            const btnComentar = document.getElementById('btn-comentar-' + extensaoId);
+            
+            form.style.display = 'none';
+            btnComentar.textContent = '✍️ Escrever Comentário';
+            
+            // Limpar campos
+            document.getElementById('nome-usuario-card-' + extensaoId).value = '';
+            document.getElementById('comentario-texto-card-' + extensaoId).value = '';
+            document.getElementById('contador-chars-card-' + extensaoId).textContent = '0/500';
+            document.getElementById('rating-value-' + extensaoId).value = '0';
+            document.getElementById('rating-text-' + extensaoId).textContent = 'Clique nas estrelas para avaliar';
+            
+            debugLog('✅ Formulário cancelado e limpo');
+        }
+
+        function atualizarContadorCard(extensaoId) {
+            const textarea = document.getElementById('comentario-texto-card-' + extensaoId);
+            const contador = document.getElementById('contador-chars-card-' + extensaoId);
+            
+            if (textarea && contador) {
+                const length = textarea.value.length;
+                contador.textContent = length + '/500';
+                
+                if (length > 450) {
+                    contador.style.color = '#ef4444';
+                } else if (length > 400) {
+                    contador.style.color = '#f59e0b';
+                } else {
+                    contador.style.color = '#9ca3af';
+                }
+            }
+        }
+
+        function selectRating(rating, extensaoId) {
+            debugLog('⭐ Rating ' + rating + ' selecionado para: ' + extensaoId);
+            
+            const ratingInput = document.getElementById('rating-value-' + extensaoId);
+            const ratingText = document.getElementById('rating-text-' + extensaoId);
+            const starContainer = document.querySelector('[data-extensao="' + extensaoId + '"]');
+            
+            if (!ratingInput || !ratingText || !starContainer) {
+                debugLog('❌ Elementos de rating não encontrados');
+                return false;
+            }
+            
+            // Atualizar valores
+            ratingInput.value = rating;
+            ratingText.textContent = rating + (rating === 1 ? ' estrela' : ' estrelas') + ' selecionada' + (rating > 1 ? 's' : '');
+            ratingText.style.color = '#10b981';
+            ratingText.style.fontWeight = 'bold';
+            
+            // Atualizar visual das estrelas
+            const allStars = starContainer.querySelectorAll('.star');
+            
+            allStars.forEach(function(star, index) {
+                if (index < rating) {
+                    star.style.filter = 'grayscale(0%)';
+                    star.style.opacity = '1';
+                    star.style.color = '#fbbf24';
+                    star.classList.add('active');
+                } else {
+                    star.style.filter = 'grayscale(80%)';
+                    star.style.opacity = '0.4';
+                    star.style.color = '#6b7280';
+                    star.classList.remove('active');
+                }
+            });
+            
+            debugLog('✅ Rating aplicado com sucesso');
+            return true;
+        }
+
+        function enviarComentarioCard(extensaoId, extensaoNome) {
+            debugLog('🚀 Enviando comentário para: ' + extensaoId);
+            
+            const nome = document.getElementById('nome-usuario-card-' + extensaoId).value.trim();
+            const comentario = document.getElementById('comentario-texto-card-' + extensaoId).value.trim();
+            const rating = document.getElementById('rating-value-' + extensaoId).value;
+            const feedbackDiv = document.getElementById('mensagem-feedback-card-' + extensaoId);
+            const btnEnviar = document.getElementById('btn-enviar-card-' + extensaoId);
+            
+            debugLog('📋 Dados: nome=' + nome.length + ' chars, comentario=' + comentario.length + ' chars, rating=' + rating);
+            
+            // Validações
+            if (!nome || nome.length < 2) {
+                feedbackDiv.textContent = 'O nome deve ter pelo menos 2 caracteres.';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                debugLog('❌ Validação falhou: nome muito curto');
+                return;
+            }
+            
+            if (!rating || rating === '0' || parseInt(rating) < 1 || parseInt(rating) > 5) {
+                feedbackDiv.textContent = 'Por favor, selecione uma avaliação de 1 a 5 estrelas.';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                debugLog('❌ Validação falhou: rating inválido');
+                return;
+            }
+            
+            if (!comentario || comentario.length < 10) {
+                feedbackDiv.textContent = 'O comentário deve ter pelo menos 10 caracteres.';
+                feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                debugLog('❌ Validação falhou: comentário muito curto');
+                return;
+            }
+            
+            // Preparar interface
+            btnEnviar.disabled = true;
+            btnEnviar.textContent = 'Enviando...';
+            feedbackDiv.textContent = '📤 Enviando comentário...';
+            feedbackDiv.className = 'text-sm mt-3 text-blue-400';
+            debugLog('⏳ Enviando...');
+            
+            // Simular envio
+            setTimeout(function() {
+                try {
+                    // Salvar no cache local
+                    const comentarioLocal = {
+                        id: Date.now().toString(),
+                        extensao: extensaoId,
+                        nome: nome,
+                        comentario: comentario,
+                        rating: parseInt(rating),
+                        timestamp: new Date().toISOString(),
+                        status: 'local'
+                    };
+                    
+                    let comentariosCache = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}');
+                    if (!comentariosCache[extensaoId]) {
+                        comentariosCache[extensaoId] = [];
+                    }
+                    comentariosCache[extensaoId].push(comentarioLocal);
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(comentariosCache));
+                    
+                    debugLog('💾 Comentário salvo no cache local');
+                    
+                    feedbackDiv.textContent = '✅ Comentário enviado com sucesso!';
+                    feedbackDiv.className = 'text-sm mt-3 text-green-400';
+                    
+                    // Limpar formulário
+                    document.getElementById('nome-usuario-card-' + extensaoId).value = '';
+                    document.getElementById('comentario-texto-card-' + extensaoId).value = '';
+                    document.getElementById('rating-value-' + extensaoId).value = '0';
+                    document.getElementById('contador-chars-card-' + extensaoId).textContent = '0/500';
+                    
+                    debugLog('✅ Comentário enviado com sucesso');
+                    
+                    // Recarregar comentários
+                    setTimeout(function() {
+                        cancelarComentarioCard(extensaoId);
+                        carregarComentariosCard(extensaoId);
+                    }, 1500);
+                    
+                } catch (error) {
+                    debugLog('❌ Erro ao enviar: ' + error.message);
+                    feedbackDiv.textContent = '❌ Erro ao enviar comentário';
+                    feedbackDiv.className = 'text-sm mt-3 text-red-400';
+                } finally {
+                    btnEnviar.disabled = false;
+                    btnEnviar.textContent = 'Enviar';
+                }
+            }, 1000);
+        }
+
+        function carregarComentariosCard(extensaoId) {
+            debugLog('📥 Carregando comentários para: ' + extensaoId);
+            
+            const container = document.getElementById('lista-comentarios-card-' + extensaoId);
+            if (!container) {
+                debugLog('❌ Container de comentários não encontrado');
+                return;
+            }
+            
+            try {
+                // Carregar do cache local
+                const comentariosCache = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}');
+                const comentariosLocal = comentariosCache[extensaoId] || [];
+                
+                if (comentariosLocal.length === 0) {
+                    container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
+                    debugLog('📝 Nenhum comentário encontrado');
+                    return;
+                }
+                
+                const comentariosHtml = comentariosLocal.map(function(comentario) {
+                    const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
+                    const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    
+                    const estrelas = Array(5).fill('⭐').map(function(star, index) {
+                        return index < comentario.rating ? 
+                            '<span style="color: #fbbf24;">⭐</span>' : 
+                            '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                    }).join('');
+                    
+                    return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
+                           '<div class="flex justify-between items-start mb-2">' +
+                           '<div class="flex items-center gap-2">' +
+                           '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
+                           '<div class="flex text-sm">' + estrelas + '</div>' +
+                           '</div>' +
+                           '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
+                           '</div>' +
+                           '<p class="text-gray-200">' + comentario.comentario + '</p>' +
+                           '</div>';
+                }).join('');
+                
+                container.innerHTML = '<div class="mb-4">' +
+                                     '<h4 class="text-lg font-semibold text-white">📝 Comentários (' + comentariosLocal.length + ')</h4>' +
+                                     '</div>' + comentariosHtml;
+                
+                debugLog('✅ ' + comentariosLocal.length + ' comentários carregados');
+                
+            } catch (error) {
+                debugLog('❌ Erro ao carregar comentários: ' + error.message);
+                container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            debugLog('🚀 Sistema de teste inicializado');
+        });
+    </script>
+</body>
+</html>
