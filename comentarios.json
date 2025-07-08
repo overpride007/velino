@@ -1,0 +1,159 @@
+{
+  "version": "1.0.0",
+  "updated": "2025-01-08T15:30:00.000Z",
+  "comentarios": {
+    "br-mangas": [
+      {
+        "id": "1736334000000_demo1",
+        "timestamp": "2025-01-08T10:00:00.000Z",
+        "nome": "João Silva",
+        "comentario": "Excelente extensão! Funciona perfeitamente e tem um acervo gigante.",
+        "rating": 5,
+        "status": "ativo"
+      },
+      {
+        "id": "1736334300000_demo2",
+        "timestamp": "2025-01-08T10:05:00.000Z",
+        "nome": "Maria Santos",
+        "comentario": "Muito boa, mas às vezes precisa configurar login. Vale a pena!",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ],
+    "manga-plus": [
+      {
+        "id": "1736334600000_demo3",
+        "timestamp": "2025-01-08T10:10:00.000Z",
+        "nome": "Pedro Costa",
+        "comentario": "Oficial da Shueisha, qualidade garantida!",
+        "rating": 5,
+        "status": "ativo"
+      },
+      {
+        "id": "1736334700000_demo4",
+        "timestamp": "2025-01-08T10:15:00.000Z",
+        "nome": "Ana Oliveira",
+        "comentario": "Ótima para acompanhar lançamentos oficiais.",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ],
+    "ninemanga-br": [
+      {
+        "id": "1736334800000_demo5",
+        "timestamp": "2025-01-08T10:20:00.000Z",
+        "nome": "Carlos Lima",
+        "comentario": "Um dos maiores acervos que conheço. Recomendo!",
+        "rating": 5,
+        "status": "ativo"
+      },
+      {
+        "id": "1736334900000_demo6",
+        "timestamp": "2025-01-08T10:25:00.000Z",
+        "nome": "Lucia Fernandes",
+        "comentario": "Muito boa variedade, mas às vezes tem problemas de carregamento.",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ],
+    "flowermanga": [
+      {
+        "id": "1736335000000_demo7",
+        "timestamp": "2025-01-08T10:30:00.000Z",
+        "nome": "Rafael Santos",
+        "comentario": "Perfeita para romance e shoujo. Interface linda!",
+        "rating": 5,
+        "status": "ativo"
+      }
+    ],
+    "saikai-scan": [
+      {
+        "id": "1736335100000_demo8",
+        "timestamp": "2025-01-08T10:35:00.000Z",
+        "nome": "Beatriz Oliveira",
+        "comentario": "Manhwas de qualidade premium, tradução excelente.",
+        "rating": 5,
+        "status": "ativo"
+      }
+    ],
+    "one-piece-teca": [
+      {
+        "id": "1736335200000_demo9",
+        "timestamp": "2025-01-08T10:40:00.000Z",
+        "nome": "Luffy Fan",
+        "comentario": "Para quem ama One Piece, é indispensável!",
+        "rating": 5,
+        "status": "ativo"
+      },
+      {
+        "id": "1736335300000_demo10",
+        "timestamp": "2025-01-08T10:45:00.000Z",
+        "nome": "Zoro Sama",
+        "comentario": "Capítulos sempre em dia, qualidade top.",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ],
+    "yomo-mangas": [
+      {
+        "id": "1736335400000_demo11",
+        "timestamp": "2025-01-08T10:50:00.000Z",
+        "nome": "Otaku Brasil",
+        "comentario": "Acervo diversificado, atualizações frequentes. Muito bom!",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ],
+    "argo-comics": [
+      {
+        "id": "1736335500000_demo12",
+        "timestamp": "2025-01-08T10:55:00.000Z",
+        "nome": "Comic Lover",
+        "comentario": "Focada em quadrinhos autorais, conteúdo único.",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ],
+    "mangadex": [
+      {
+        "id": "1736335600000_demo13",
+        "timestamp": "2025-01-08T11:00:00.000Z",
+        "nome": "Global Reader",
+        "comentario": "A melhor plataforma internacional. Sempre funciona!",
+        "rating": 5,
+        "status": "ativo"
+      },
+      {
+        "id": "1736335700000_demo14",
+        "timestamp": "2025-01-08T11:05:00.000Z",
+        "nome": "Manga Master",
+        "comentario": "Interface ótima, muitos idiomas disponíveis.",
+        "rating": 5,
+        "status": "ativo"
+      }
+    ],
+    "comick": [
+      {
+        "id": "1736335800000_demo15",
+        "timestamp": "2025-01-08T11:10:00.000Z",
+        "nome": "Speed Reader",
+        "comentario": "Muito rápida e confiável. Recomendo!",
+        "rating": 4,
+        "status": "ativo"
+      }
+    ]
+  },
+  "estatisticas": {
+    "total_comentarios": 15,
+    "total_extensoes_avaliadas": 10,
+    "media_geral": 4.5
+  },
+  "config": {
+    "max_comentarios_por_usuario": 3,
+    "min_caracteres_comentario": 10,
+    "max_caracteres_comentario": 500,
+    "moderacao_ativa": false,
+    "permitir_comentarios_anonimos": true,
+    "auto_save": true
+  }
+}

@@ -295,6 +295,39 @@
         }
     </style>
     
+    <!-- Estilos para o Sistema de Estrelas de Avaliação -->
+    <style>
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 8px;
+            justify-content: center;
+        }
+        
+        .star {
+            color: #fbbf24; /* Cor dourada para estrelas preenchidas */
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .star.empty {
+            color: #374151; /* Cor mais escura para estrelas vazias */
+        }
+        
+        .rating-stars:hover .star {
+            transform: scale(1.1);
+        }
+        
+        /* Responsividade das estrelas */
+        @media (max-width: 768px) {
+            .star {
+                font-size: 14px;
+            }
+        }
+    </style>
+    
     <style>
       #pixButtonIcon {
         width: 42px !important;
@@ -1008,11 +1041,6 @@
             </div>
             </div>
         </div>
-            <!-- Rodapé -->
-            <div class="mt-6 text-center">
-                <small class="text-gray-400">Sistema de Segurança MEK-Over v3.0 • Cliente OverPrideX</small>
-            </div>
-        </div>
     </div>
 
     <!-- Conteúdo Principal (será exibido após autenticação) -->
@@ -1715,9 +1743,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Um dos maiores acervos</div>
                     <a href="#manga-terra" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('manga-terra', 'Manga Terra')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Manga BR -->
@@ -1733,9 +1758,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">De volta e forte - Pode ter conteúdo adulto</div>
                     <a href="#manga-br" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('manga-br', 'Manga BR')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Leitor de Manga -->
@@ -1751,9 +1773,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Interface simples e acervo extenso</div>
                     <a href="#leitor-manga" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('leitor-manga', 'Leitor de Manga')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Toomics -->
@@ -1769,9 +1788,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Possui muitas comics menos populares</div>
                     <a href="#toomics" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('toomics', 'Toomics')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- BR Mangas -->
@@ -1787,9 +1803,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Boa variedade de títulos</div>
                     <a href="#br-mangas" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('br-mangas', 'BR Mangas')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Manga Plus -->
@@ -1805,9 +1818,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Conteúdo oficial da Shueisha</div>
                     <a href="#manga-plus" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('manga-plus', 'Manga Plus')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- NineMangaBR -->
@@ -1823,9 +1833,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Internacional, acervo grande. Pode conter conteúdo adulto</div>
                     <a href="#ninemanga-br" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('ninemanga-br', 'NineMangaBR')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- FlowerManga -->
@@ -1841,9 +1848,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Foco em romance e drama</div>
                     <a href="#flowermanga" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('flowermanga', 'FlowerManga')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Saikai Scan -->
@@ -1859,9 +1863,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Títulos específicos, boa qualidade</div>
                     <a href="#saikai-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('saikai-scan', 'Saikai Scan')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Cerise Scan -->
@@ -1877,9 +1878,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Foco em romance feminino</div>
                     <a href="#cerise-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('cerise-scan', 'Cerise Scan')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 
                 <!-- Yushuke Mangas -->
@@ -1895,9 +1893,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Scan bem organizada</div>
                     <a href="#yushuke-mangas" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('yushuke-mangas', 'Yushuke Mangas')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
 
                 <!-- Global Comix -->
@@ -1913,9 +1908,6 @@
                     </div>
                     <div class="mt-3 text-xs text-yellow-300 text-center">Ótima para quadrinhos ocidentais e comics</div>
                     <a href="#global-comix" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
-                    <button onclick="event.stopPropagation(); abrirComentarios('global-comix', 'Global Comix')" class="comentarios-btn">
-                        💬 Comentários
-                    </button>
                 </div>
                 <!-- Crystal Comics -->
                 <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#crystal-comics'">
@@ -1956,7 +1948,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.5</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Interface organizada e catálogo selecionado</div>
                     <a href="#minitwo-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- NovelCool -->
@@ -1998,7 +1990,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.5</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Conteúdo em português bem organizado</div>
                     <a href="#namicomi" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Mugiwara Oficial -->
@@ -2012,7 +2004,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Boa base de fãs brasileiros</div>
                     <a href="#mugiwara" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- League of Legends -->
@@ -2040,7 +2032,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Scan focada em qualidade</div>
                     <a href="#tsundoku" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Neroxus -->
@@ -2054,7 +2046,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Conteúdo nacional bem curado</div>
                     <a href="#neroxus" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Manga Online Blog -->
@@ -2068,7 +2060,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Interface amigável e organizada</div>
                     <a href="#manga-online-blog" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Winter Scan -->
@@ -2082,7 +2074,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Boa seleção de manhwas</div>
                     <a href="#winter-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Manga Online -->
@@ -2096,7 +2088,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Site tradicional brasileiro</div>
                     <a href="#manga-online" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Yomo Comics -->
@@ -2110,7 +2102,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Variedade de comics e manhwas</div>
                     <a href="#yomo-comics" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- ApeComics -->
@@ -2124,7 +2116,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Quadrinhos ocidentais e nacionais</div>
                     <a href="#apecomics" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Tatakae Scan -->
@@ -2138,7 +2130,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Especializada em shounen</div>
                     <a href="#tatakae-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Atemporal -->
@@ -2152,7 +2144,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Conteúdo selecionado com qualidade</div>
                     <a href="#atemporal" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Alone Scanlator -->
@@ -2166,7 +2158,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">7.0</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Scan independente com projetos específicos</div>
                     <a href="#alone-scanlator" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- Kami Sama Explorer -->
@@ -2236,7 +2228,7 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">6.5</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Scan em desenvolvimento com potencial</div>
                     <a href="#infinixscan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
                 <!-- AnimeXNovel -->
@@ -2264,8 +2256,113 @@
                         <span class="font-bold text-yellow-300 text-lg">Nota:</span>
                         <span class="font-bold text-yellow-100 text-lg">6.5</span>
                     </div>
-                    <div class="mt-3 text-xs text-yellow-300 text-center"></div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Scan nova com conteúdo crescente</div>
                     <a href="#next-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- Taiyõ -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#taiyo'" data-genero="Diversos" data-formato="Manga" data-frequencia="Regular">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=https://taiyo.moe" alt="Ícone Taiyõ" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">Taiyõ</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">7.2</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Scan brasileira com boa qualidade de tradução</div>
+                    <a href="#taiyo" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- HQ Now -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#hq-now'" data-genero="Diversos" data-formato="Comics" data-frequencia="Irregular">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://raw.githubusercontent.com/keiyoushi/extensions/repo/icon/eu.kanade.tachiyomi.extension.pt.hqnow.png" alt="Ícone HQ Now" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">HQ Now</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">7.1</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Especializada em quadrinhos nacionais e internacionais</div>
+                    <a href="#hq-now" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- One Piece Teca -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#one-piece-teca'" data-genero="Ação" data-formato="Manga" data-frequencia="Semanal">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=https://onepieceteca.com" alt="Ícone One Piece Teca" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">One Piece Teca</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">7.8</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Especializada em One Piece e obras similares</div>
+                    <a href="#one-piece-teca" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- Yomo Mangas -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#yomo-mangas'" data-genero="Diversos" data-formato="Manga" data-frequencia="Diária">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=https://yomumangas.com" alt="Ícone Yomo Mangas" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">Yomo Mangas</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">7.3</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Acervo diversificado com atualizações frequentes</div>
+                    <a href="#yomo-mangas" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- Argo Comics -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#argo-comics'" data-genero="Diversos" data-formato="Comics" data-frequencia="Mensal">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://raw.githubusercontent.com/keiyoushi/extensions/repo/icon/eu.kanade.tachiyomi.extension.pt.argoscomics.png" alt="Ícone Argo Comics" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">Argo Comics</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">7.0</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Focada em quadrinhos autorais e independentes</div>
+                    <a href="#argo-comics" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- Kakusei Project -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#kakusei-project'" data-genero="Ação" data-formato="Manhwa" data-frequencia="Regular">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=https://kakuseiproject.com" alt="Ícone Kakusei Project" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">Kakusei Project</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">7.4</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Projeto com manhwas de qualidade premium</div>
+                    <a href="#kakusei-project" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
+                </div>
+                
+                <!-- Pizzaria Scan -->
+                <div class="bg-gradient-to-br from-[#181926] via-[#232946] to-[#2a223a] p-7 rounded-2xl shadow-lg flex flex-col items-center border border-yellow-400/70 hover:border-yellow-300 transition-all duration-300 extension-card cursor-pointer group relative overflow-hidden" onclick="location.href='#pizzaria-scan'" data-genero="Comédia" data-formato="Manga" data-frequencia="Irregular">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-yellow-600 to-yellow-400 opacity-60"></div>
+                    <div class="flex flex-col items-center gap-3 mb-4">
+                        <img src="https://raw.githubusercontent.com/keiyoushi/extensions/repo/icon/eu.kanade.tachiyomi.extension.pt.pizzariascan.png" alt="Ícone Pizzaria Scan" class="w-20 h-20 rounded-xl shadow border border-yellow-400 bg-[#181926] group-hover:scale-105 transition-transform duration-300">
+                        <h3 class="text-xl font-bold text-yellow-200 tracking-tight">Pizzaria Scan</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="font-bold text-yellow-300 text-lg">Nota:</span>
+                        <span class="font-bold text-yellow-100 text-lg">6.8</span>
+                    </div>
+                    <div class="mt-3 text-xs text-yellow-300 text-center">Scan com títulos únicos e traduções divertidas</div>
+                    <a href="#pizzaria-scan" class="mt-5 inline-block bg-[#232946] hover:bg-yellow-800 text-yellow-100 px-5 py-1.5 rounded-lg font-semibold shadow transition text-sm tracking-wide border border-yellow-800">Ver Detalhes</a>
                 </div>
             </div>
         </section>
@@ -2666,6 +2763,13 @@
                             <p><strong>Frequência de Atualização:</strong> Mediana</p>
                             <p><strong>Observação:</strong> Um dos maiores acervos em português.</p>
                         </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('manga-terra', 'Manga Terra')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
+                        </div>
                     </div>
                     <!-- Manga BR -->
                     <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="manga-br" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
@@ -2691,6 +2795,13 @@
                             <p><strong>Frequência de Atualização:</strong> Semanal</p>
                             <p><strong>Observação:</strong> Após um período fora do ar, a plataforma retornou com servidores hospedados fora do Brasil, dificultando ações para derrubá-la. <span class="adult-warning">Pode ter conteúdo adulto.</span></p>
                         </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('manga-br', 'Manga BR')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
+                        </div>
                     </div>
                     <!-- Leitor de Manga -->
                     <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="leitor-manga" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
@@ -2715,6 +2826,13 @@
                             <p><strong>Tamanho do Acervo:</strong> 40 obras</p>
                             <p><strong>Frequência de Atualização:</strong> Mensal</p>
                             <p><strong>Observação:</strong> Após períodos de instabilidade e bloqueios, o site retornou com servidores hospedados fora do Brasil.</p>
+                        </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('leitor-manga', 'Leitor de Manga')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
                         </div>
                     </div>
                     <!-- Toomics -->
@@ -2924,6 +3042,13 @@
                             <p><strong>Tamanho do Acervo:</strong> 468 obras</p>
                             <p><strong>Frequência de Atualização:</strong> Semanal</p>
                             <p><strong>Observação:</strong> Boa qualidade de tradução.</p>
+                        </div>
+                        
+                        <!-- Botão de Comentários -->
+                        <div class="mt-4 text-center">
+                            <button onclick="event.stopPropagation(); toggleComentarios('yushuke-mangas', 'Yushuke Mangas')" class="comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+                                💬 Ver Comentários
+                            </button>
                         </div>
                     </div>
                     <!-- Taiyõ -->
@@ -5296,11 +5421,62 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Sistema de cache local para comentários
         const COMENTARIOS_STORAGE_KEY = 'mek_over_comentarios_local';
+        const COMENTARIOS_JSON_FILE = './comentarios.json';
+        const JSON_MODE = true; // Usar arquivo JSON local
+        let comentariosData = null; // Cache dos dados do JSON
+        
+        // Função para carregar dados do arquivo JSON
+        async function carregarComentariosJSON() {
+            try {
+                const response = await fetch(COMENTARIOS_JSON_FILE);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                comentariosData = await response.json();
+                console.log('✅ Comentários carregados do JSON:', Object.keys(comentariosData.comentarios).length + ' extensões');
+                return comentariosData;
+            } catch (error) {
+                console.warn('⚠️ Erro ao carregar JSON, usando localStorage:', error);
+                // Fallback para localStorage se JSON não estiver disponível
+                const localData = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                comentariosData = {
+                    comentarios: localData,
+                    estatisticas: {
+                        total_comentarios: Object.values(localData).reduce((total, comentarios) => total + comentarios.length, 0),
+                        total_extensoes_avaliadas: Object.keys(localData).length,
+                        media_geral: 0
+                    }
+                };
+                return comentariosData;
+            }
+        }
+        
+        // Função para salvar dados no arquivo JSON (simulação com localStorage)
+        async function salvarComentariosJSON(data) {
+            try {
+                // Em ambiente real, isso enviaria para um backend
+                // Por ora, salvamos no localStorage como backup
+                localStorage.setItem(COMENTARIOS_STORAGE_KEY, JSON.stringify(data.comentarios));
+                comentariosData = data;
+                console.log('✅ Comentários salvos (localStorage backup)');
+                return true;
+            } catch (error) {
+                console.error('❌ Erro ao salvar comentários:', error);
+                return false;
+            }
+        }
         
         // Função para salvar comentários localmente
         function salvarComentarioLocal(extensaoId, comentarioData) {
             try {
-                let comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                // Priorizar dados do JSON se disponível
+                let comentariosLocais;
+                
+                if (JSON_MODE && comentariosData) {
+                    comentariosLocais = comentariosData.comentarios;
+                } else {
+                    comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                }
                 
                 if (!comentariosLocais[extensaoId]) {
                     comentariosLocais[extensaoId] = [];
@@ -5312,12 +5488,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 comentarioData.status = 'ativo';
                 
                 comentariosLocais[extensaoId].push(comentarioData);
+                
+                // Atualizar dados em memória
+                if (JSON_MODE && comentariosData) {
+                    comentariosData.comentarios = comentariosLocais;
+                    comentariosData.estatisticas.total_comentarios++;
+                    comentariosData.updated = new Date().toISOString();
+                    
+                    // Recalcular média geral
+                    const todasAvaliacoes = [];
+                    Object.values(comentariosLocais).forEach(comentarios => {
+                        comentarios.forEach(c => {
+                            if (c.rating && c.rating > 0) todasAvaliacoes.push(c.rating);
+                        });
+                    });
+                    
+                    if (todasAvaliacoes.length > 0) {
+                        comentariosData.estatisticas.media_geral = (todasAvaliacoes.reduce((a, b) => a + b, 0) / todasAvaliacoes.length).toFixed(1);
+                    }
+                }
+                
+                // Backup no localStorage
                 localStorage.setItem(COMENTARIOS_STORAGE_KEY, JSON.stringify(comentariosLocais));
                 
-                console.log('💾 Comentário salvo localmente para:', extensaoId);
-                
-                // Salvar também no arquivo JSON local (se disponível)
-                salvarComentarioArquivoJSON(extensaoId, comentarioData);
+                console.log('💾 Comentário salvo para:', extensaoId, '- Total:', comentariosLocais[extensaoId].length);
                 
                 return true;
             } catch (error) {
@@ -5326,10 +5520,39 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
+        // Função para calcular média geral de todas as avaliações
+        function calcularMediaGeral(comentariosLocais) {
+            let totalRatings = 0;
+            let totalComentarios = 0;
+            
+            for (const extensao of Object.values(comentariosLocais)) {
+                for (const comentario of extensao) {
+                    if (comentario.rating && comentario.rating > 0) {
+                        totalRatings += comentario.rating;
+                        totalComentarios++;
+                    }
+                }
+            }
+            
+            return totalComentarios > 0 ? (totalRatings / totalComentarios).toFixed(1) : 0;
+        }
+        
         // Função para carregar comentários locais
-        function carregarComentariosLocais(extensaoId) {
+        async function carregarComentariosLocais(extensaoId) {
             try {
-                const comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                let comentariosLocais;
+                
+                // Priorizar dados do JSON se disponível
+                if (JSON_MODE && !comentariosData) {
+                    await carregarComentariosJSON();
+                }
+                
+                if (JSON_MODE && comentariosData) {
+                    comentariosLocais = comentariosData.comentarios;
+                } else {
+                    comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                }
+                
                 return comentariosLocais[extensaoId] || [];
             } catch (error) {
                 console.error('❌ Erro ao carregar comentários:', error);
@@ -5374,7 +5597,91 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Função para criar display de estrelas
+        /*
+         * ========================================
+         * SISTEMA DE COMENTÁRIOS E AVALIAÇÕES JSON
+         * ========================================
+         * 
+         * COMO FUNCIONA:
+         * 1. O sistema carrega dados do arquivo 'comentarios.json'
+         * 2. Comentários novos são salvos na memória e localStorage (backup)
+         * 3. As avaliações são calculadas automaticamente e exibidas nos cards
+         * 4. Sistema de backup/restore permite exportar/importar dados
+         * 
+         * FUNCIONALIDADES:
+         * ✅ Carregar comentários do arquivo JSON
+         * ✅ Salvar novos comentários (memória + localStorage)
+         * ✅ Calcular médias automaticamente
+         * ✅ Exibir estrelas nas extensões
+         * ✅ Sistema de backup/restore
+         * ✅ Interface de gerenciamento
+         * ✅ Atalhos de teclado
+         * 
+         * ATALHOS:
+         * - Ctrl+B: Abrir interface de backup
+         * - Ctrl+E: Exportar backup rapidamente
+         * - Ctrl+Shift+D: Debug dos dados
+         * 
+         * ARQUIVO JSON (comentarios.json):
+         * {
+         *   "version": "1.0.0",
+         *   "updated": "2025-01-08T15:30:00.000Z",
+         *   "comentarios": {
+         *     "extensao-id": [
+         *       {
+         *         "id": "timestamp_random",
+         *         "timestamp": "2025-01-08T10:00:00.000Z",
+         *         "nome": "Nome do usuário",
+         *         "comentario": "Texto do comentário",
+         *         "rating": 5,
+         *         "status": "ativo"
+         *       }
+         *     ]
+         *   },
+         *   "estatisticas": {
+         *     "total_comentarios": 15,
+         *     "total_extensoes_avaliadas": 10,
+         *     "media_geral": 4.5
+         *   },
+         *   "config": {
+         *     "max_comentarios_por_usuario": 3,
+         *     "min_caracteres_comentario": 10,
+         *     "max_caracteres_comentario": 500,
+         *     "moderacao_ativa": false,
+         *     "permitir_comentarios_anonimos": true,
+         *     "auto_save": true
+         *   }
+         * }
+         * 
+         * CONFIGURAÇÕES:
+         * - JSON_MODE: true (usar arquivo JSON) / false (só localStorage)
+         * - COMENTARIOS_JSON_FILE: './comentarios.json' (caminho do arquivo)
+         * - COMENTARIOS_STORAGE_KEY: chave do localStorage para backup
+         * 
+         * LIMITAÇÕES BROWSER:
+         * - Não é possível salvar diretamente no arquivo JSON pelo browser
+         * - Novos comentários ficam na memória + localStorage
+         * - Use o sistema de backup para atualizar o arquivo JSON manualmente
+         * - Para persistência real, implemente um backend
+         * 
+         * ========================================
+         */
+        
+        /*
+         * SISTEMA DE AVALIAÇÕES MELHORADO - VISUAL FINAL
+         * 
+         * Características do design:
+         * 1. Nota pessoal: Mantida apenas a original do card (sem duplicação)
+         * 2. Comunidade: Apenas as estrelas votadas + contagem
+         * 3. Layout limpo: Sem elementos redundantes
+         * 4. Máxima economia: Espaço mínimo necessário
+         * 5. Funcional: Informações essenciais sem duplicação
+         * 6. Integração: Trabalha com as notas existentes nos cards
+         * 
+         * Aplicado automaticamente em todos os cards de extensões.
+         */
+        
+        // Função para criar display de estrelas - melhorado
         function criarDisplayEstrelas(rating, tamanho = 'text-sm') {
             const ratingNum = parseFloat(rating) || 0;
             const estrelasCompletas = Math.floor(ratingNum);
@@ -5382,20 +5689,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             let estrelasHtml = '';
             
-            // Estrelas completas (douradas)
+            // Estrelas completas (douradas com efeito)
             for (let i = 0; i < estrelasCompletas; i++) {
-                estrelasHtml += '<span class="' + tamanho + '" style="color: #fbbf24;">⭐</span>';
+                estrelasHtml += '<span class="' + tamanho + '" style="color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));">⭐</span>';
             }
             
             // Meia estrela se necessário
             if (temMeiaEstrela) {
-                estrelasHtml += '<span class="' + tamanho + '" style="color: #fbbf24;">✨</span>';
+                estrelasHtml += '<span class="' + tamanho + '" style="color: #fbbf24; text-shadow: 0 0 6px rgba(251, 191, 36, 0.4); filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));">✨</span>';
             }
             
-            // Estrelas vazias (cinzas)
+            // Estrelas vazias (cinzas com efeito sutil)
             const estrelasVazias = 5 - estrelasCompletas - (temMeiaEstrela ? 1 : 0);
             for (let i = 0; i < estrelasVazias; i++) {
-                estrelasHtml += '<span class="' + tamanho + '" style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                estrelasHtml += '<span class="' + tamanho + '" style="color: #6b7280; opacity: 0.4; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));">⭐</span>';
             }
             
             return estrelasHtml;
@@ -5405,65 +5712,121 @@ document.addEventListener('DOMContentLoaded', function() {
         function atualizarAvaliacaoExtensoes() {
             console.log('🔄 Atualizando avaliações de todas as extensões...');
             
-            // Lista de IDs de extensões principais
+            // Lista completa de IDs de extensões (todas as seções) - ATUALIZADA
             const extensoes = [
+                // Recomendações do Mês
                 'manhastro',
                 'manga-livre', 
                 'sussy-toons',
                 'ler-mangas',
                 'sagrado-imperio',
                 'remangas',
-                'seita-celestial'
+                'seita-celestial',
+                
+                // Melhores Extensões
+                'manga-terra',
+                'manga-br',
+                'leitor-manga',
+                'toomics',
+                'br-mangas',
+                'manga-plus',
+                'ninemanga-br',
+                'flowermanga',
+                'saikai-scan',
+                'cerise-scan',
+                'yushuke-mangas',
+                'global-comix',
+                
+                // Detalhes de Todas as Extensões - Extensões Adicionais
+                'taiyo',
+                'hq-now',
+                'one-piece-teca',
+                'yomo-mangas',
+                'argo-comics',
+                'kakusei-project',
+                'crystal-comics',
+                'pizzaria-scan',
+                'fenix-project',
+                'minitwo-scan',
+                'novelcool',
+                'hunter-scan',
+                'namicomi',
+                
+                // Extensões com variações de nomes (compatibilidade)
+                'manga-bull',
+                'mangabull',
+                'union-mangas',
+                'unionmangas',
+                'manga-yabu',
+                'mangayabu',
+                'comic-walker',
+                'comicwalker',
+                'viz-shonen-jump',
+                'vizshonenjump',
+                'crunchyroll',
+                'funimation',
+                'comic-fury',
+                'comicfury'
             ];
             
             extensoes.forEach(extensaoId => {
                 atualizarAvaliacaoExtensao(extensaoId);
             });
+            
+            console.log('✅ Avaliações atualizadas para ' + extensoes.length + ' extensões');
         }
         
         // Função para atualizar avaliação de uma extensão específica
-        function atualizarAvaliacaoExtensao(extensaoId) {
+        async function atualizarAvaliacaoExtensao(extensaoId) {
             try {
-                const comentarios = carregarComentariosLocais(extensaoId);
+                const comentarios = await carregarComentariosLocais(extensaoId);
                 const mediaAvaliacoes = calcularMediaAvaliacoes(comentarios);
                 
                 console.log('📊 Avaliação para ' + extensaoId + ':', mediaAvaliacoes, 'com', comentarios.length, 'comentários');
                 
-                if (mediaAvaliacoes > 0) {
-                    // Encontrar o card da extensão
-                    const cardExtensao = document.querySelector('[onclick*="' + extensaoId + '"]') || 
-                                        document.querySelector('[data-extensao="' + extensaoId + '"]');
+                // Encontrar todos os cards da extensão (nas diferentes seções)
+                const cardsExtensao = document.querySelectorAll('[onclick*="' + extensaoId + '"], [data-extensao="' + extensaoId + '"], [id="' + extensaoId + '"]');
+                
+                cardsExtensao.forEach(function(cardExtensao) {
+                    // Encontrar ou criar container de avaliações
+                    let containerAvaliacoes = cardExtensao.querySelector('.avaliacoes-container');
                     
-                    if (cardExtensao) {
-                        // Encontrar o elemento de nota atual
-                        const elementoNota = cardExtensao.querySelector('.font-bold.text-purple-100.text-lg');
+                    if (!containerAvaliacoes) {
+                        // Procurar onde inserir as avaliações (depois da nota ou do h3)
+                        const elementoNota = cardExtensao.querySelector('.flex.items-center.gap-2.mt-2') || 
+                                            cardExtensao.querySelector('h3') ||
+                                            cardExtensao.querySelector('.text-center.mb-5');
                         
                         if (elementoNota) {
-                            // Atualizar nota com a média calculada
-                            elementoNota.textContent = mediaAvaliacoes;
+                            containerAvaliacoes = document.createElement('div');
+                            containerAvaliacoes.className = 'avaliacoes-container mt-3 space-y-2 text-center';
                             
-                            // Adicionar estrelas se ainda não existirem
-                            let containerEstrelas = cardExtensao.querySelector('.rating-stars-container');
-                            if (!containerEstrelas) {
-                                containerEstrelas = document.createElement('div');
-                                containerEstrelas.className = 'rating-stars-container flex items-center justify-center mt-1';
-                                
-                                const estrelasHtml = criarDisplayEstrelas(mediaAvaliacoes, 'text-sm');
-                                containerEstrelas.innerHTML = estrelasHtml;
-                                
-                                // Inserir após o elemento de nota
-                                const containerNota = elementoNota.parentElement;
-                                containerNota.parentElement.insertBefore(containerEstrelas, containerNota.nextSibling);
-                            } else {
-                                // Atualizar estrelas existentes
-                                const estrelasHtml = criarDisplayEstrelas(mediaAvaliacoes, 'text-sm');
-                                containerEstrelas.innerHTML = estrelasHtml;
-                            }
-                            
-                            console.log('✅ Avaliação atualizada para ' + extensaoId + ': ' + mediaAvaliacoes + ' estrelas');
+                            // Inserir após o elemento encontrado
+                            elementoNota.parentElement.insertBefore(containerAvaliacoes, elementoNota.nextSibling);
                         }
                     }
-                }
+                    
+                    if (containerAvaliacoes) {
+                        // Layout apenas para avaliação da comunidade - nota pessoal já existe no card
+                        let avaliacoesHtml = '';
+                        
+                        // Apenas avaliação da comunidade - sem duplicar nota pessoal
+                        if (mediaAvaliacoes > 0 && comentarios.length > 0) {
+                            const estrelasHtml = criarDisplayEstrelas(mediaAvaliacoes, 'text-sm');
+                            avaliacoesHtml = '<div class="flex flex-col items-center gap-1">' +
+                                            '<div class="flex items-center gap-1">' + estrelasHtml + '</div>' +
+                                            '<span class="text-xs text-blue-200">(' + comentarios.length + (comentarios.length === 1 ? ' avaliação' : ' avaliações') + ')</span>' +
+                                            '</div>';
+                        } else {
+                            avaliacoesHtml = '<div class="flex flex-col items-center gap-1">' +
+                                            '<span class="text-xs text-gray-500">Sem avaliações</span>' +
+                                            '</div>';
+                        }
+                        
+                        containerAvaliacoes.innerHTML = avaliacoesHtml;
+                    }
+                });
+                
             } catch (error) {
                 console.error('❌ Erro ao atualizar avaliação de ' + extensaoId + ':', error);
             }
@@ -6563,6 +6926,16 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('✅ Sistema de estrelas carregado e pronto para uso');
             console.log('✅ Sistema de comentários inicializado com sucesso');
             
+            // Adicionar sistema visual de estrelas na Sessão 1.2: Melhores Extensões
+            setTimeout(() => {
+                adicionarEstrelasNasMelhoresExtensoes();
+            }, 300);
+            
+            // Adicionar botões de comentários nas extensões da seção detalhes
+            setTimeout(() => {
+                adicionarBotoesComentarios();
+            }, 500);
+            
             // Inicializar avaliações das extensões com dados salvos
             setTimeout(() => {
                 console.log('🔄 Carregando avaliações salvas...');
@@ -6576,6 +6949,272 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Redirecionando para carregamento do card de comentários');
             return carregarComentariosCard(extensaoId);
         }
+
+        // ...existing code...
+        
+        // Função para adicionar botões de comentários automaticamente - VERSÃO FINAL COMPLETA
+        function adicionarBotoesComentarios() {
+            console.log('🔧 Adicionando botões de comentários nas seções relevantes...');
+            
+            // Lista COMPLETA de IDs de extensões da seção "Detalhes de Todas as Extensões"
+            const extensoesParaProcessar = [
+                // Extensões com botões existentes
+                'manhastro', 'manga-livre', 'sussy-toons', 'ler-mangas', 
+                'sagrado-imperio', 'remangas', 'seita-celestial', 'manga-terra', 
+                'manga-br', 'leitor-manga','toomics', 'mugiwara',
+                
+                // Extensões que precisam de botões
+                'toomics', 'br-mangas', 'manga-plus', 'ninemanga-br', 'flowermanga', 
+                'saikai-scan', 'global-comix', 'cerise-scan', 'yushuke-mangas', 
+                'taiyo', 'hq-now', 'one-piece-teca', 'yomo-mangas', 'argo-comics', 
+                'kakusei-project', 'crystal-comics', 'pizzaria-scan', 'fenix-project', 
+                'minitwo-scan', 'novelcool', 'hunter-scan', 'namicomi', 'mugiwara', 
+                'league-legends', 'tsundoku', 'neroxus', 'manga-online-blog', 
+                'winter-scan', 'manga-online', 'yomo-comics', 'apecomics', 
+                'tatakae-scan', 'atemporal', 'alone-scanlator', 'next-scan', 
+                'infinixscan', 'animexnovel', 'kami-sama', 'comick', 'mangadex', 
+                'mangafire'
+            ];
+            
+            extensoesParaProcessar.forEach(function(extensaoId) {
+                // Tentar encontrar o card da extensão
+                let cardExtensao = document.getElementById(extensaoId) || 
+                                   document.querySelector('[data-extensao="' + extensaoId + '"]');
+                
+                if (!cardExtensao) {
+                    console.log('⚠️ Card não encontrado para: ' + extensaoId);
+                    return;
+                }
+                
+                // Verificar se já possui botão de comentários
+                const botaoExistente = cardExtensao.querySelector('button[onclick*="toggleComentarios"]') ||
+                                      cardExtensao.querySelector('.comentarios-toggle-btn');
+                if (botaoExistente) {
+                    console.log('✅ Botão já existe para: ' + extensaoId);
+                    return;
+                }
+                
+                // Adicionar botão de comentários no final do card
+                const containerBotao = document.createElement('div');
+                containerBotao.className = 'mt-4 text-center';
+                
+                const botaoComentarios = document.createElement('button');
+                botaoComentarios.onclick = function(event) {
+                    event.stopPropagation();
+                    toggleComentarios(extensaoId, getNomeExtensao(extensaoId));
+                };
+                botaoComentarios.className = 'comentarios-toggle-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300';
+                botaoComentarios.textContent = '💬 Ver Comentários';
+                
+                containerBotao.appendChild(botaoComentarios);
+                cardExtensao.appendChild(containerBotao);
+                
+                console.log('✅ Botão adicionado para: ' + extensaoId);
+            });
+            
+            console.log('🎯 Processo de adição de botões concluído');
+        }
+        
+        // Função auxiliar para obter nome da extensão baseado no ID - COMPLETA
+        function getNomeExtensao(extensaoId) {
+            const nomes = {
+                'manhastro': 'Manhastro',
+                'manga-livre': 'Manga Livre',
+                'sussy-toons': 'Sussy Toons',
+                'ler-mangas': 'Ler Mangas',
+                'sagrado-imperio': 'Sagrado Império',
+                'remangas': 'Remangas',
+                'seita-celestial': 'Seita Celestial',
+                'manga-terra': 'Manga Terra',
+                'manga-br': 'Manga BR',
+                'leitor-manga': 'Leitor de Manga',
+                'toomics': 'Toomics',
+                'br-mangas': 'BR Mangas',
+                'manga-plus': 'Manga Plus',
+                'ninemanga-br': 'NineMangaBR',
+                'flowermanga': 'FlowerManga',
+                'saikai-scan': 'Saikai Scan',
+                'cerise-scan': 'Cerise Scan',
+                'yushuke-mangas': 'Yushuke Mangas',
+                'global-comix': 'Global Comix',
+                'taiyo': 'Taiyõ',
+                'hq-now': 'HQ Now',
+                'one-piece-teca': 'One Piece Teca',
+                'yomo-mangas': 'Yomo Mangas',
+                'argo-comics': 'Argo Comics',
+                'kakusei-project': 'Kakusei Project',
+                'crystal-comics': 'Crystal Comics',
+                'pizzaria-scan': 'Pizzaria Scan',
+                'fenix-project': 'Fenix Project',
+                'minitwo-scan': 'Minitwo Scan',
+                'novelcool': 'NovelCool',
+                'hunter-scan': 'Hunter Scan',
+                'namicomi': 'Namicomi',
+                'mugiwara': 'Mugiwara Oficial',
+                'league-legends': 'League of Legends',
+                'tsundoku': 'Tsundoku',
+                'neroxus': 'Neroxus',
+                'manga-online-blog': 'Manga Online Blog',
+                'winter-scan': 'Winter Scan',
+                'manga-online': 'Manga Online',
+                'yomo-comics': 'Yomo Comics',
+                'apecomics': 'ApeComics',
+                'tatakae-scan': 'Tatakae Scan',
+                'atemporal': 'Atemporal',
+                'alone-scanlator': 'Alone Scanlator',
+                'next-scan': 'Next Scan',
+                'infinixscan': 'InfinixScan',
+                'animexnovel': 'AnimeXNovel',
+                'kami-sama': 'Kami Sama Explorer',
+                'comick': 'Comick',
+                'mangadex': 'MangaDex',
+                'mangafire': 'MangaFire'
+            };
+            
+            return nomes[extensaoId] || extensaoId.charAt(0).toUpperCase() + extensaoId.slice(1);
+        }
+        
+        // Função para adicionar estrelas da comunidade nas "Melhores Extensões" - NOVA
+        function adicionarEstrelasNasMelhoresExtensoes() {
+            console.log('⭐ Adicionando estrelas da comunidade na seção Melhores Extensões...');
+            
+            // IDs das extensões da seção Melhores Extensões
+            const melhoresExtensoes = [
+                'manga-terra',
+'manga-br', 'leitor-manga', 'toomics', 'br-mangas', 'manga-plus',
+'ninemanga-br', 'flowermanga', 'saikai-scan', 'cerise-scan',
+'yushuke-mangas', 'global-comix', 'crystal-comics', 'fenix-project',
+'minitwo-scan', 'novelcool', 'hunter-scan', 'namicomi', 'mugiwara',
+'league-legends', 'tsundoku', 'neroxus', 'manga-online-blog',
+'winter-scan', 'manga-online', 'yomo-comics', 'apecomics',
+'tatakae-scan', 'atemporal', 'alone-scanlator', 'kami-sama',
+'comick', 'mangadex', 'mangafire', 'infinixscan', 'animexnovel',
+'next-scan', 'taiyo', 'hq-now', 'one-piece-teca', 'yomo-mangas',
+'argo-comics', 'kakusei-project', 'pizzaria-scan'
+            ];
+            
+            melhoresExtensoes.forEach(function(extensaoId) {
+                // Encontrar o card na seção "Melhores Extensões" (não na seção detalhes)
+                const cardsExtensao = document.querySelectorAll('[onclick*="' + extensaoId + '"]');
+                
+                cardsExtensao.forEach(function(cardExtensao) {
+                    // Verificar se está na seção Melhores Extensões (não na seção detalhes)
+                    const secaoMelhores = cardExtensao.closest('section');
+                    const tituloSecao = secaoMelhores ? secaoMelhores.querySelector('h2') : null;
+                    
+                    if (tituloSecao && tituloSecao.textContent.includes('Melhores Extensões')) {
+                        console.log('🎯 Processando card na seção Melhores: ' + extensaoId);
+                        
+                        // Verificar se já possui container de avaliações
+                        let containerAvaliacoes = cardExtensao.querySelector('.avaliacoes-container');
+                        
+                        if (!containerAvaliacoes) {
+                            // Encontrar onde inserir (após a nota pessoal)
+                            const notaPessoal = cardExtensao.querySelector('.flex.items-center.gap-2.mt-2');
+                            
+                            if (notaPessoal) {
+                                containerAvaliacoes = document.createElement('div');
+                                containerAvaliacoes.className = 'avaliacoes-container mt-3 space-y-2 text-center';
+                                
+                                // Inserir após a nota pessoal
+                                notaPessoal.parentNode.insertBefore(containerAvaliacoes, notaPessoal.nextSibling);
+                                
+                                console.log('✅ Container de avaliações criado para: ' + extensaoId);
+                            }
+                        }
+                        
+                        // Atualizar a avaliação para esta extensão específica
+                        if (containerAvaliacoes) {
+                            atualizarAvaliacaoExtensao(extensaoId);
+                        }
+                    }
+                });
+            });
+            
+            console.log('⭐ Estrelas adicionadas na seção Melhores Extensões');
+        }
+        
+        // Função para inicializar o sistema de comentários
+        async function inicializarSistemaComentarios() {
+            console.log('🚀 Inicializando sistema de comentários...');
+            
+            try {
+                // Carregar dados do JSON
+                await carregarComentariosJSON();
+                
+                // Atualizar todas as avaliações das extensões
+                await atualizarAvaliacaoExtensoes();
+                
+                // Adicionar estrelas na seção Melhores Extensões
+                adicionarEstrelasNasMelhoresExtensoes();
+                
+                // Criar botão de backup
+                criarBotaoBackup();
+                
+                // Mostrar status do sistema
+                setTimeout(mostrarStatusSistema, 1000);
+                
+                console.log('✅ Sistema de comentários inicializado com sucesso!');
+                console.log('📊 Total de comentários:', comentariosData?.estatisticas?.total_comentarios || 0);
+                console.log('📈 Média geral:', comentariosData?.estatisticas?.media_geral || 0);
+                console.log('💡 Atalhos: Ctrl+B (Backup), Ctrl+E (Exportar), Ctrl+S (Status), Ctrl+Shift+D (Debug)');
+                console.log('🗂️ Arquivo JSON carregado com sucesso!');
+                console.log('🎯 Avaliações aplicadas automaticamente nos cards das extensões');
+                
+            } catch (error) {
+                console.warn('⚠️ Erro na inicialização, usando dados locais:', error);
+                
+                // Fallback para localStorage se houver problemas
+                await atualizarAvaliacaoExtensoes();
+                adicionarEstrelasNasMelhoresExtensoes();
+                criarBotaoBackup();
+            }
+        }
+        
+        // Inicializar quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aguardar um momento para garantir que tudo está carregado
+            setTimeout(inicializarSistemaComentarios, 500);
+        });
+
+        // Adicionar atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+B para abrir interface de backup
+            if (e.ctrlKey && e.key === 'b') {
+                e.preventDefault();
+                criarInterfaceBackup();
+            }
+            
+            // Ctrl+E para exportar comentários
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                exportarComentariosJSON();
+            }
+            
+            // Ctrl+S para mostrar status
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                mostrarStatusSistema();
+            }
+            
+            // Ctrl+Shift+D para debug
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                e.preventDefault();
+                console.log('🔍 DEBUG - Dados atuais:', comentariosData);
+                console.log('🔍 DEBUG - localStorage:', JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}'));
+                mostrarStatusSistema();
+            }
+        });
+        
+        // Exportar funções para debug no console
+        window.debug = {
+            carregarJSON: carregarComentariosJSON,
+            atualizarAvaliacoes: atualizarAvaliacaoExtensoes,
+            dados: () => comentariosData,
+            reinicializar: inicializarSistemaComentarios
+        };
+        
+        // ...existing code...
     </script>
 
 </body>
