@@ -5540,20 +5540,47 @@ document.addEventListener('DOMContentLoaded', function() {
         // Função para carregar comentários locais
         async function carregarComentariosLocais(extensaoId) {
             try {
-                let comentariosLocais;
+                let comentariosJSON = [];
+                let comentariosLocalStorage = [];
                 
-                // Priorizar dados do JSON se disponível
+                // Carregar dados do JSON se disponível
                 if (JSON_MODE && !comentariosData) {
                     await carregarComentariosJSON();
                 }
                 
-                if (JSON_MODE && comentariosData) {
-                    comentariosLocais = comentariosData.comentarios;
-                } else {
-                    comentariosLocais = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                if (JSON_MODE && comentariosData && comentariosData.comentarios) {
+                    comentariosJSON = comentariosData.comentarios[extensaoId] || [];
                 }
                 
-                return comentariosLocais[extensaoId] || [];
+                // Carregar dados do localStorage
+                const localData = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
+                comentariosLocalStorage = localData[extensaoId] || [];
+                
+                // Mesclar dados: JSON + novos do localStorage
+                const todosComentarios = [...comentariosJSON];
+                
+                // Adicionar comentários do localStorage que não estão no JSON
+                comentariosLocalStorage.forEach(comentarioLocal => {
+                    const jaExiste = todosComentarios.some(comentarioJSON => 
+                        comentarioJSON.id === comentarioLocal.id
+                    );
+                    
+                    if (!jaExiste) {
+                        todosComentarios.push(comentarioLocal);
+                        console.log('➕ Adicionado comentário do localStorage:', comentarioLocal.id);
+                    }
+                });
+                
+                // Ordenar por timestamp (mais recente primeiro)
+                todosComentarios.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                console.log('📊 Comentários carregados para', extensaoId + ':', {
+                    'do_JSON': comentariosJSON.length,
+                    'do_localStorage': comentariosLocalStorage.length,
+                    'total_mesclado': todosComentarios.length
+                });
+                
+                return todosComentarios;
             } catch (error) {
                 console.error('❌ Erro ao carregar comentários:', error);
                 return [];
@@ -7144,6 +7171,65 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('⭐ Estrelas adicionadas na seção Melhores Extensões');
         }
         
+        // Função para criar interface de gerenciamento de backup
+        function criarInterfaceBackup() {
+            const interfaceHTML = `
+                <div id="backup-interface" style="position: fixed; bottom: 20px; right: 20px; background: rgba(24, 25, 38, 0.95); border: 1px solid #fbbf24; border-radius: 12px; padding: 16px; z-index: 9999; backdrop-filter: blur(10px); min-width: 280px;">
+                    <div style="color: #fbbf24; font-weight: bold; margin-bottom: 12px; text-align: center;">
+                        🗂️ Gerenciar Comentários
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button onclick="sincronizarComentariosJSON()" style="background: #f59e0b; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                            🔄 Sincronizar Dados
+                        </button>
+                        <button onclick="exportarComentariosJSON()" style="background: #22c55e; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                            📥 Exportar Backup
+                        </button>
+                        <label style="background: #3b82f6; color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; text-align: center; display: block;">
+                            📤 Importar Backup
+                            <input type="file" accept=".json" onchange="importarComentariosJSON(event)" style="display: none;">
+                        </label>
+                        <button onclick="mostrarStatusSistema()" style="background: #8b5cf6; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                            📊 Ver Status
+                        </button>
+                        <button onclick="document.getElementById('backup-interface').remove()" style="background: #ef4444; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 11px;">
+                            ✕ Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Remover interface existente
+            const interfaceExistente = document.getElementById('backup-interface');
+            if (interfaceExistente) interfaceExistente.remove();
+            
+            // Adicionar nova interface
+            document.body.insertAdjacentHTML('beforeend', interfaceHTML);
+        }
+        
+        // Criar botão flutuante para acesso rápido ao sistema de backup
+        function criarBotaoBackup() {
+            const botaoHTML = `
+                <div id="backup-btn" onclick="criarInterfaceBackup()" style="position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; cursor: pointer; z-index: 9998; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4); transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.2);" title="Gerenciar Comentários (Ctrl+B)">
+                    <span style="font-size: 24px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">🗂️</span>
+                </div>
+                <style>
+                    #backup-btn:hover {
+                        transform: scale(1.1);
+                        box-shadow: 0 6px 25px rgba(251, 191, 36, 0.6);
+                    }
+                    
+                    @keyframes pulse {
+                        0% { box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4); }
+                        50% { box-shadow: 0 4px 25px rgba(251, 191, 36, 0.7); }
+                        100% { box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4); }
+                    }
+                </style>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', botaoHTML);
+        }
+
         // Função para inicializar o sistema de comentários
         async function inicializarSistemaComentarios() {
             console.log('🚀 Inicializando sistema de comentários...');
@@ -7161,13 +7247,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Criar botão de backup
                 criarBotaoBackup();
                 
+                // Iniciar auto-sincronização
+                iniciarAutoSincronizacao();
+                
+                // Sincronizar dados imediatamente
+                setTimeout(() => {
+                    sincronizarComentariosJSON();
+                }, 2000);
+                
                 // Mostrar status do sistema
                 setTimeout(mostrarStatusSistema, 1000);
                 
                 console.log('✅ Sistema de comentários inicializado com sucesso!');
                 console.log('📊 Total de comentários:', comentariosData?.estatisticas?.total_comentarios || 0);
                 console.log('📈 Média geral:', comentariosData?.estatisticas?.media_geral || 0);
-                console.log('💡 Atalhos: Ctrl+B (Backup), Ctrl+E (Exportar), Ctrl+S (Status), Ctrl+Shift+D (Debug)');
+                console.log('💡 Atalhos: Ctrl+B (Backup), Ctrl+E (Exportar), Ctrl+S (Status), Ctrl+Y (Sincronizar), Ctrl+Shift+D (Debug)');
                 console.log('🗂️ Arquivo JSON carregado com sucesso!');
                 console.log('🎯 Avaliações aplicadas automaticamente nos cards das extensões');
                 
@@ -7205,6 +7299,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
                 mostrarStatusSistema();
+            }
+            
+            // Ctrl+Y para sincronizar dados
+            if (e.ctrlKey && e.key === 'y') {
+                e.preventDefault();
+                sincronizarComentariosJSON();
             }
             
             // Ctrl+Shift+D para debug
