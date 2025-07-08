@@ -6302,49 +6302,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            try {
-                // Carregar do cache local
-                const comentariosCache = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
-                const comentariosLocal = comentariosCache[extensaoId] || [];
-                
-                if (comentariosLocal.length === 0) {
-                    container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
-                    console.log('📝 Nenhum comentário encontrado');
-                    return;
-                }
-                
-                const comentariosHtml = comentariosLocal.map(function(comentario) {
-                    const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
-                    const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            // Mostrar loading
+            container.innerHTML = '<div class="loading-comentarios p-4 text-center text-gray-400">📡 Carregando comentários...</div>';
+            
+            // Usar a função async que carrega do JSON primeiro, depois localStorage
+            carregarComentariosLocais(extensaoId).then(function(comentariosLocal) {
+                try {
+                    if (comentariosLocal.length === 0) {
+                        container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
+                        console.log('📝 Nenhum comentário encontrado para:', extensaoId);
+                        return;
+                    }
                     
-                    const estrelas = Array(5).fill('⭐').map(function(star, index) {
-                        return index < comentario.rating ? 
-                            '<span style="color: #fbbf24;">⭐</span>' : 
-                            '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                    const comentariosHtml = comentariosLocal.map(function(comentario) {
+                        const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
+                        const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                        
+                        const estrelas = Array(5).fill('⭐').map(function(star, index) {
+                            return index < comentario.rating ? 
+                                '<span style="color: #fbbf24;">⭐</span>' : 
+                                '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                        }).join('');
+                        
+                        return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
+                               '<div class="flex justify-between items-start mb-2">' +
+                               '<div class="flex items-center gap-2">' +
+                               '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
+                               '<div class="flex text-sm">' + estrelas + '</div>' +
+                               '</div>' +
+                               '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
+                               '</div>' +
+                               '<p class="text-gray-200">' + comentario.comentario + '</p>' +
+                               '</div>';
                     }).join('');
                     
-                    return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
-                           '<div class="flex justify-between items-start mb-2">' +
-                           '<div class="flex items-center gap-2">' +
-                           '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
-                           '<div class="flex text-sm">' + estrelas + '</div>' +
-                           '</div>' +
-                           '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
-                           '</div>' +
-                           '<p class="text-gray-200">' + comentario.comentario + '</p>' +
-                           '</div>';
-                }).join('');
-                
-                container.innerHTML = '<div class="mb-4">' +
-                                     '<h4 class="text-lg font-semibold text-white">� Comentários (' + comentariosLocal.length + ')</h4>' +
-                                     '</div>' + comentariosHtml;
-                
-                console.log('✅ ' + comentariosLocal.length + ' comentários carregados');
-                
-            } catch (error) {
+                    container.innerHTML = '<div class="mb-4">' +
+                                         '<h4 class="text-lg font-semibold text-white">📝 Comentários (' + comentariosLocal.length + ')</h4>' +
+                                         '</div>' + comentariosHtml;
+                    
+                    console.log('✅ ' + comentariosLocal.length + ' comentários carregados para:', extensaoId);
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao carregar comentários:', error);
+                    container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
+                }
+            }).catch(function(error) {
                 console.error('❌ Erro ao carregar comentários:', error);
                 container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
-            }
+            });
         }
         function exibirComentarios(data, listaComentarios, extensaoId) {
             // Processar os dados baseado no formato da resposta
@@ -6830,49 +6835,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            try {
-                // Carregar do cache local
-                const comentariosCache = JSON.parse(localStorage.getItem(COMENTARIOS_STORAGE_KEY) || '{}');
-                const comentariosLocal = comentariosCache[extensaoId] || [];
-                
-                if (comentariosLocal.length === 0) {
-                    container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
-                    console.log('📝 Nenhum comentário encontrado');
-                    return;
-                }
-                
-                const comentariosHtml = comentariosLocal.map(function(comentario) {
-                    const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
-                    const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            // Mostrar loading
+            container.innerHTML = '<div class="loading-comentarios p-4 text-center text-gray-400">📡 Carregando comentários...</div>';
+            
+            // Usar a função async que carrega do JSON primeiro, depois localStorage
+            carregarComentariosLocais(extensaoId).then(function(comentariosLocal) {
+                try {
+                    if (comentariosLocal.length === 0) {
+                        container.innerHTML = '<div class="no-comentarios p-4 text-center text-gray-500">💭 Nenhum comentário ainda. Seja o primeiro a comentar!</div>';
+                        console.log('📝 Nenhum comentário encontrado para:', extensaoId);
+                        return;
+                    }
                     
-                    const estrelas = Array(5).fill('⭐').map(function(star, index) {
-                        return index < comentario.rating ? 
-                            '<span style="color: #fbbf24;">⭐</span>' : 
-                            '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                    const comentariosHtml = comentariosLocal.map(function(comentario) {
+                        const dataFormatada = new Date(comentario.timestamp).toLocaleDateString('pt-BR');
+                        const horaFormatada = new Date(comentario.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                        
+                        const estrelas = Array(5).fill('⭐').map(function(star, index) {
+                            return index < comentario.rating ? 
+                                '<span style="color: #fbbf24;">⭐</span>' : 
+                                '<span style="color: #6b7280; opacity: 0.5;">⭐</span>';
+                        }).join('');
+                        
+                        return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
+                               '<div class="flex justify-between items-start mb-2">' +
+                               '<div class="flex items-center gap-2">' +
+                               '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
+                               '<div class="flex text-sm">' + estrelas + '</div>' +
+                               '</div>' +
+                               '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
+                               '</div>' +
+                               '<p class="text-gray-200">' + comentario.comentario + '</p>' +
+                               '</div>';
                     }).join('');
                     
-                    return '<div class="bg-gray-600 rounded-lg p-4 mb-3">' +
-                           '<div class="flex justify-between items-start mb-2">' +
-                           '<div class="flex items-center gap-2">' +
-                           '<span class="font-semibold text-white">' + comentario.nome + '</span>' +
-                           '<div class="flex text-sm">' + estrelas + '</div>' +
-                           '</div>' +
-                           '<span class="text-xs text-gray-400">' + dataFormatada + ' às ' + horaFormatada + '</span>' +
-                           '</div>' +
-                           '<p class="text-gray-200">' + comentario.comentario + '</p>' +
-                           '</div>';
-                }).join('');
-                
-                container.innerHTML = '<div class="mb-4">' +
-                                     '<h4 class="text-lg font-semibold text-white">📝 Comentários (' + comentariosLocal.length + ')</h4>' +
-                                     '</div>' + comentariosHtml;
-                
-                console.log('✅ ' + comentariosLocal.length + ' comentários carregados');
-                
-            } catch (error) {
+                    container.innerHTML = '<div class="mb-4">' +
+                                         '<h4 class="text-lg font-semibold text-white">📝 Comentários (' + comentariosLocal.length + ')</h4>' +
+                                         '</div>' + comentariosHtml;
+                    
+                    console.log('✅ ' + comentariosLocal.length + ' comentários carregados do JSON/localStorage para:', extensaoId);
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao processar comentários:', error);
+                    container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
+                }
+            }).catch(function(error) {
                 console.error('❌ Erro ao carregar comentários:', error);
                 container.innerHTML = '<div class="p-4 text-center text-red-400">❌ Erro ao carregar comentários</div>';
-            }
+            });
         }
 
         function createStarDisplay(rating) {
