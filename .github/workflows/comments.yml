@@ -9,6 +9,18 @@ on:
         description: 'Teste manual do workflow'
         required: false
         default: 'false'
+      username:
+        description: 'Nome do usuário (teste)'
+        required: false
+        default: 'Usuario Teste'
+      comment:
+        description: 'Comentário (teste)'
+        required: false
+        default: 'Este é um comentário de teste!'
+      rating:
+        description: 'Avaliação (teste)'
+        required: false
+        default: '5'
 
 jobs:
   process-comment:
@@ -21,40 +33,83 @@ jobs:
     - name: Debug - Mostrar evento recebido
       run: |
         echo "Tipo de evento: ${{ github.event.action }}"
+        echo "Event name: ${{ github.event_name }}"
         echo "Dados recebidos:"
         echo '${{ toJson(github.event.client_payload) }}'
+        echo "Inputs (se workflow_dispatch):"
+        echo '${{ toJson(github.event.inputs) }}'
         
     - name: Processar novo comentário
-      if: github.event.action == 'new-comment'
+      if: github.event.action == 'new-comment' || (github.event_name == 'workflow_dispatch' && github.event.inputs.test == 'false')
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_CLASSIC }}
         DISCUSSION_ID: "D_kwDONItOJ84AtXqV"
       run: |
         echo "Processando comentário..."
-        echo "Usuário: ${{ github.event.client_payload.username }}"
-        echo "Avaliação: ${{ github.event.client_payload.rating }}/5 estrelas"
-        echo "Comentário: ${{ github.event.client_payload.comment }}"
+        
+        # Definir variáveis baseadas no tipo de evento
+        if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+          USERNAME="${{ github.event.client_payload.username }}"
+          COMMENT="${{ github.event.client_payload.comment }}"
+          RATING="${{ github.event.client_payload.rating }}"
+        else
+          USERNAME="${{ github.event.inputs.username }}"
+          COMMENT="${{ github.event.inputs.comment }}"  
+          RATING="${{ github.event.inputs.rating }}"
+        fi
+        
+        echo "Usuário: $USERNAME"
+        echo "Avaliação: $RATING/5 estrelas"
+        echo "Comentário: $COMMENT"
+        
+        # Verificar se o token existe
+        if [ -z "$GITHUB_TOKEN" ]; then
+          echo "❌ ERRO: Token TOKEN_CLASSIC não encontrado!"
+          echo "Configure o secret no repositório."
+          exit 1
+        fi
+        
+        echo "✅ Token encontrado!"
         
         # Preparar corpo do comentário
-        COMMENT_BODY="👤 **${{ github.event.client_payload.username }}**
+        COMMENT_BODY="👤 **$USERNAME**
 
-        ⭐ **Avaliação:** ${{ github.event.client_payload.rating }}/5 estrelas
+⭐ **Avaliação:** $RATING/5 estrelas
 
-        💬 **Comentário:**
-        ${{ github.event.client_payload.comment }}
+💬 **Comentário:**
+$COMMENT
 
-        ---
-        *Enviado via sistema de comentários automático*"
+---
+*Enviado via sistema de comentários automático em $(date)*"
         
-        # Enviar para GitHub Discussions (só funciona se o token tiver permissões)
-        curl -X POST \
+        echo "Enviando para GitHub Discussions..."
+        
+        # Enviar para GitHub Discussions usando GraphQL
+        response=$(curl -s -w "%{http_code}" \
+          -X POST \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "Content-Type: application/json" \
           -H "Accept: application/vnd.github.v3+json" \
           -d "{
-            \"query\": \"mutation { addDiscussionComment(input: { discussionId: \\\"$DISCUSSION_ID\\\", body: \\\"$COMMENT_BODY\\\" }) { comment { id } } }\"
+            \"query\": \"mutation { addDiscussionComment(input: { discussionId: \\\"$DISCUSSION_ID\\\", body: \\\"$(echo "$COMMENT_BODY" | sed 's/"/\\"/g' | tr '\n' ' ')\\\" }) { comment { id url } } }\"
           }" \
-          https://api.github.com/graphql || echo "Token sem permissão ou erro na API - comentário registrado nos logs"
+          https://api.github.com/graphql)
+        
+        http_code=${response: -3}
+        response_body=${response%???}
+        
+        echo "Código HTTP: $http_code"
+        echo "Resposta: $response_body"
+        
+        if [ "$http_code" = "200" ]; then
+          echo "✅ Comentário enviado com sucesso para GitHub Discussions!"
+        else
+          echo "❌ Erro ao enviar comentário:"
+          echo "Possíveis causas:"
+          echo "- Token sem permissão 'write:discussion'"
+          echo "- Discussion ID incorreto"
+          echo "- Discussions não ativadas"
+        fi
 
     - name: Processar nova sugestão
       if: github.event.action == 'new-suggestion'
@@ -70,23 +125,35 @@ jobs:
         # Preparar corpo da sugestão
         SUGGESTION_BODY="👤 **${{ github.event.client_payload.username }}**
 
-        📝 **${{ github.event.client_payload.title }}**
+📝 **${{ github.event.client_payload.title }}**
 
-        💡 **Sugestão:**
-        ${{ github.event.client_payload.suggestion }}
+💡 **Sugestão:**
+${{ github.event.client_payload.suggestion }}
 
-        ---
-        *Enviado via sistema de sugestões automático*"
+---
+*Enviado via sistema de sugestões automático em $(date)*"
         
-        # Enviar para GitHub Discussions (só funciona se o token tiver permissões)
-        curl -X POST \
+        echo "Enviando sugestão para GitHub Discussions..."
+        
+        # Enviar para GitHub Discussions usando GraphQL
+        response=$(curl -s -w "%{http_code}" \
+          -X POST \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "Content-Type: application/json" \
           -H "Accept: application/vnd.github.v3+json" \
           -d "{
-            \"query\": \"mutation { addDiscussionComment(input: { discussionId: \\\"$DISCUSSION_ID\\\", body: \\\"$SUGGESTION_BODY\\\" }) { comment { id } } }\"
+            \"query\": \"mutation { addDiscussionComment(input: { discussionId: \\\"$DISCUSSION_ID\\\", body: \\\"$(echo "$SUGGESTION_BODY" | sed 's/"/\\"/g' | tr '\n' ' ')\\\" }) { comment { id url } } }\"
           }" \
-          https://api.github.com/graphql || echo "Token sem permissão ou erro na API - sugestão registrada nos logs"
+          https://api.github.com/graphql)
+        
+        http_code=${response: -3}
+        echo "Código HTTP: $http_code"
+        
+        if [ "$http_code" = "200" ]; then
+          echo "✅ Sugestão enviada com sucesso!"
+        else
+          echo "❌ Erro ao enviar sugestão"
+        fi
           
     - name: Log de confirmação
       run: |
