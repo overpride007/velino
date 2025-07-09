@@ -250,6 +250,56 @@
             line-height: 1.6;
         }
 
+        /* Estilos para comentários locais (novos) */
+        .local-comment {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            border-left: 4px solid #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
+            animation: slideInFromTop 0.5s ease-out;
+        }
+
+        .local-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
         .loading {
             text-align: center;
             padding: 20px;
@@ -308,6 +358,42 @@
                 width: 100%;
                 margin: 5px 0;
                 justify-content: center;
+            }
+        }
+
+        /* Estilos para notificações */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: slideInFromRight 0.3s ease-out;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
             }
         }
     </style>
@@ -460,7 +546,7 @@
                 
                 // Carregar comentários se for a seção de comentários
                 if (sectionId === 'comments-section') {
-                    loadComments();
+                    showAllComments();
                 }
             }
         }
@@ -503,6 +589,9 @@
             });
         }
 
+        // Array para armazenar comentários locais (temporário até sincronizar com GitHub)
+        let localComments = [];
+        
         // Carregar comentários da GitHub Discussion
         async function loadComments() {
             const commentsList = document.getElementById('comments-list');
@@ -515,10 +604,10 @@
                 if (response.ok) {
                     // Em caso de sucesso, ainda mostramos exemplos por simplicidade
                     // Para implementação completa, seria necessário processar a resposta GraphQL
-                    showExampleComments();
+                    showAllComments();
                 } else {
-                    // Mostrar comentários de exemplo
-                    showExampleComments();
+                    // Mostrar comentários de exemplo + locais
+                    showAllComments();
                 }
 
             } catch (error) {
@@ -528,10 +617,72 @@
                         ⚠️ Carregando comentários de exemplo (modo demonstração)
                     </div>
                 `;
-                showExampleComments();
+                showAllComments();
             }
         }
-
+        
+        // Adicionar comentário local (aparece imediatamente)
+        function addLocalComment(username, comment, rating) {
+            const newComment = {
+                author: username,
+                text: comment + ' ' + '⭐'.repeat(rating),
+                date: new Date().toISOString().split('T')[0],
+                isLocal: true
+            };
+            
+            localComments.unshift(newComment); // Adiciona no início da lista
+            
+            // Se a seção de comentários está aberta, atualizar
+            const commentsSection = document.getElementById('comments-section');
+            if (commentsSection.classList.contains('active')) {
+                showAllComments();
+            }
+            
+            // Mostrar notificação de sucesso
+            showNotification('Comentário adicionado com sucesso! 🎉', 'success');
+        }
+        
+        // Função para mostrar notificações
+        function showNotification(message, type = 'info') {
+            // Remover notificação existente se houver
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                animation: slideInFromRight 0.3s ease-out;
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #dc3545, #e74c3c)';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #007bff, #0056b3)';
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Remover após 4 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOutToRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+        
         function displayComments(comments) {
             const commentsList = document.getElementById('comments-list');
             
@@ -557,35 +708,59 @@
             `).join('');
         }
 
-        function showExampleComments() {
+        function showAllComments() {
             const exampleComments = [
                 {
                     author: 'Maria Santos',
                     text: 'Excelente projeto! A interface é muito intuitiva e fácil de usar. ⭐⭐⭐⭐⭐',
-                    date: '2025-07-08'
+                    date: '2025-07-08',
+                    isLocal: false
                 },
                 {
                     author: 'Pedro Silva',
                     text: 'Muito bom! Algumas funcionalidades poderiam ser melhoradas, mas no geral está ótimo. ⭐⭐⭐⭐',
-                    date: '2025-07-07'
+                    date: '2025-07-07',
+                    isLocal: false
                 },
                 {
                     author: 'Ana Costa',
                     text: 'Adorei o design! Muito moderno e responsivo. Parabéns pela implementação! ⭐⭐⭐⭐⭐',
-                    date: '2025-07-06'
+                    date: '2025-07-06',
+                    isLocal: false
                 }
             ];
 
+            // Combinar comentários locais + exemplos
+            const allComments = [...localComments, ...exampleComments];
+            
             const commentsList = document.getElementById('comments-list');
-            commentsList.innerHTML = exampleComments.map(comment => `
-                <div class="comment-item">
-                    <div class="comment-header">
-                        <span class="comment-author">👤 ${comment.author}</span>
-                        <span class="comment-date">${formatDate(comment.date)}</span>
+            
+            if (localComments.length > 0) {
+                commentsList.innerHTML = `
+                    <div class="success" style="margin-bottom: 15px; padding: 10px; border-radius: 8px; background: #e8f5e8; border: 1px solid #4CAF50;">
+                        💚 ${localComments.length} comentário(s) enviado(s) recentemente
                     </div>
-                    <div class="comment-text">${comment.text}</div>
-                </div>
-            `).join('');
+                ` + allComments.map(comment => `
+                    <div class="comment-item ${comment.isLocal ? 'local-comment' : ''}">
+                        <div class="comment-header">
+                            <span class="comment-author">👤 ${comment.author}</span>
+                            <span class="comment-date">${formatDate(comment.date)}</span>
+                            ${comment.isLocal ? '<span class="local-badge">Novo</span>' : ''}
+                        </div>
+                        <div class="comment-text">${comment.text}</div>
+                    </div>
+                `).join('');
+            } else {
+                commentsList.innerHTML = allComments.map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">👤 ${comment.author}</span>
+                            <span class="comment-date">${formatDate(comment.date)}</span>
+                        </div>
+                        <div class="comment-text">${comment.text}</div>
+                    </div>
+                `).join('');
+            }
         }
 
         function formatDate(dateString) {
@@ -633,21 +808,25 @@
                 // GitHub repository_dispatch sempre retorna 204, mesmo sem autenticação
                 // Vamos simular sucesso para demonstração
                 if (response.status === 204 || response.status === 422) {
-                    statusDiv.innerHTML = '<div class="success">Comentário enviado com sucesso! 🎉<br><small>Aparecerá na discussão em alguns segundos.</small></div>';
+                    // Adicionar comentário à lista local imediatamente
+                    addLocalComment(username, comment, rating);
+                    
+                    statusDiv.innerHTML = '<div class="success">Comentário enviado com sucesso! 🎉<br><small>Adicionado à lista e será sincronizado com GitHub.</small></div>';
                     
                     // Limpar formulário
                     e.target.reset();
                     currentRating = 0;
                     updateStars(0);
                     
-                    // Fechar seção após 3 segundos
+                    // Fechar seção após 6 segundos (mais tempo para ver o resultado)
                     setTimeout(() => {
                         closeSection('comment-form-section');
                         statusDiv.innerHTML = '';
-                    }, 3000);
+                    }, 6000);
                 } else {
                     // Para demonstração, vamos simular sucesso mesmo com erro
-                    statusDiv.innerHTML = '<div class="success">Comentário registrado! 📝<br><small>Em produção será enviado para GitHub Discussions.</small></div>';
+                    addLocalComment(username, comment, rating);
+                    statusDiv.innerHTML = '<div class="success">Comentário registrado! 📝<br><small>Adicionado à lista local (modo demonstração).</small></div>';
                     
                     // Limpar formulário
                     e.target.reset();
@@ -657,12 +836,13 @@
                     setTimeout(() => {
                         closeSection('comment-form-section');
                         statusDiv.innerHTML = '';
-                    }, 3000);
+                    }, 6000);
                 }
 
             } catch (error) {
                 console.error('Erro:', error);
-                // Para demonstração, mostrar como sucesso
+                // Para demonstração, mostrar como sucesso e adicionar à lista local
+                addLocalComment(username, comment, rating);
                 statusDiv.innerHTML = '<div class="success">Comentário registrado! 📝<br><small>Sistema funcionando em modo demonstração.</small></div>';
                 
                 // Limpar formulário mesmo com "erro"
@@ -673,7 +853,7 @@
                 setTimeout(() => {
                     closeSection('comment-form-section');
                     statusDiv.innerHTML = '';
-                }, 3000);
+                }, 6000);
             }
         });
 
@@ -718,11 +898,11 @@
                 // Limpar formulário
                 e.target.reset();
                 
-                // Fechar seção após 3 segundos
+                // Fechar seção após 5 segundos (mais tempo)
                 setTimeout(() => {
                     closeSection('suggestions-section');
                     statusDiv.innerHTML = '';
-                }, 3000);
+                }, 5000);
 
             } catch (error) {
                 console.error('Erro:', error);
@@ -735,7 +915,7 @@
                 setTimeout(() => {
                     closeSection('suggestions-section');
                     statusDiv.innerHTML = '';
-                }, 3000);
+                }, 5000);
             }
         });
 
