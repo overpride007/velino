@@ -3,6 +3,12 @@ name: Processar Comentários
 on:
   repository_dispatch:
     types: [new-comment, new-suggestion]
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Teste manual do workflow'
+        required: false
+        default: 'false'
 
 jobs:
   process-comment:
@@ -12,30 +18,78 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       
+    - name: Debug - Mostrar evento recebido
+      run: |
+        echo "Tipo de evento: ${{ github.event.action }}"
+        echo "Dados recebidos:"
+        echo '${{ toJson(github.event.client_payload) }}'
+        
     - name: Processar novo comentário
       if: github.event.action == 'new-comment'
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_CLASSIC }}
-        DISCUSSION_ID: "8561037"
+        DISCUSSION_ID: "D_kwDONItOJ84AtXqV"
       run: |
+        echo "Processando comentário..."
+        echo "Usuário: ${{ github.event.client_payload.username }}"
+        echo "Avaliação: ${{ github.event.client_payload.rating }}/5 estrelas"
+        echo "Comentário: ${{ github.event.client_payload.comment }}"
+        
+        # Preparar corpo do comentário
+        COMMENT_BODY="👤 **${{ github.event.client_payload.username }}**
+
+        ⭐ **Avaliação:** ${{ github.event.client_payload.rating }}/5 estrelas
+
+        💬 **Comentário:**
+        ${{ github.event.client_payload.comment }}
+
+        ---
+        *Enviado via sistema de comentários automático*"
+        
+        # Enviar para GitHub Discussions (só funciona se o token tiver permissões)
         curl -X POST \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "Content-Type: application/json" \
-          -d '{
-            "query": "mutation { addDiscussionComment(input: { discussionId: \"'$DISCUSSION_ID'\", body: \"👤 **'${{ github.event.client_payload.username }}'**\n\n⭐ Avaliação: '${{ github.event.client_payload.rating }}'/5 estrelas\n\n💬 **Comentário:**\n'${{ github.event.client_payload.comment }}'\n\n---\n*Enviado via sistema de comentários*\" }) { comment { id } } }"
-          }' \
-          https://api.github.com/graphql
+          -H "Accept: application/vnd.github.v3+json" \
+          -d "{
+            \"query\": \"mutation { addDiscussionComment(input: { discussionId: \\\"$DISCUSSION_ID\\\", body: \\\"$COMMENT_BODY\\\" }) { comment { id } } }\"
+          }" \
+          https://api.github.com/graphql || echo "Token sem permissão ou erro na API - comentário registrado nos logs"
 
     - name: Processar nova sugestão
       if: github.event.action == 'new-suggestion'
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_CLASSIC }}
-        DISCUSSION_ID: "8561048"
+        DISCUSSION_ID: "D_kwDONItOJ84AtXqY"
       run: |
+        echo "Processando sugestão..."
+        echo "Usuário: ${{ github.event.client_payload.username }}"
+        echo "Título: ${{ github.event.client_payload.title }}"
+        echo "Sugestão: ${{ github.event.client_payload.suggestion }}"
+        
+        # Preparar corpo da sugestão
+        SUGGESTION_BODY="👤 **${{ github.event.client_payload.username }}**
+
+        📝 **${{ github.event.client_payload.title }}**
+
+        💡 **Sugestão:**
+        ${{ github.event.client_payload.suggestion }}
+
+        ---
+        *Enviado via sistema de sugestões automático*"
+        
+        # Enviar para GitHub Discussions (só funciona se o token tiver permissões)
         curl -X POST \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "Content-Type: application/json" \
-          -d '{
-            "query": "mutation { addDiscussionComment(input: { discussionId: \"'$DISCUSSION_ID'\", body: \"👤 **'${{ github.event.client_payload.username }}'**\n\n📝 **'${{ github.event.client_payload.title }}'**\n\n💡 **Sugestão:**\n'${{ github.event.client_payload.suggestion }}'\n\n---\n*Enviado via sistema de sugestões*\" }) { comment { id } } }"
-          }' \
-          https://api.github.com/graphql
+          -H "Accept: application/vnd.github.v3+json" \
+          -d "{
+            \"query\": \"mutation { addDiscussionComment(input: { discussionId: \\\"$DISCUSSION_ID\\\", body: \\\"$SUGGESTION_BODY\\\" }) { comment { id } } }\"
+          }" \
+          https://api.github.com/graphql || echo "Token sem permissão ou erro na API - sugestão registrada nos logs"
+          
+    - name: Log de confirmação
+      run: |
+        echo "✅ Processamento concluído!"
+        echo "Timestamp: $(date)"
+        echo "Evento processado: ${{ github.event.action }}"
