@@ -1,0 +1,41 @@
+name: Processar Comentários
+
+on:
+  repository_dispatch:
+    types: [new-comment, new-suggestion]
+
+jobs:
+  process-comment:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Processar novo comentário
+      if: github.event.action == 'new-comment'
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_CLASSIC }}
+        DISCUSSION_ID: "8561037"
+      run: |
+        curl -X POST \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "query": "mutation { addDiscussionComment(input: { discussionId: \"'$DISCUSSION_ID'\", body: \"👤 **'${{ github.event.client_payload.username }}'**\n\n⭐ Avaliação: '${{ github.event.client_payload.rating }}'/5 estrelas\n\n💬 **Comentário:**\n'${{ github.event.client_payload.comment }}'\n\n---\n*Enviado via sistema de comentários*\" }) { comment { id } } }"
+          }' \
+          https://api.github.com/graphql
+
+    - name: Processar nova sugestão
+      if: github.event.action == 'new-suggestion'
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_CLASSIC }}
+        DISCUSSION_ID: "8561048"
+      run: |
+        curl -X POST \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "query": "mutation { addDiscussionComment(input: { discussionId: \"'$DISCUSSION_ID'\", body: \"👤 **'${{ github.event.client_payload.username }}'**\n\n📝 **'${{ github.event.client_payload.title }}'**\n\n💡 **Sugestão:**\n'${{ github.event.client_payload.suggestion }}'\n\n---\n*Enviado via sistema de sugestões*\" }) { comment { id } } }"
+          }' \
+          https://api.github.com/graphql
