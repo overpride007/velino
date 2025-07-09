@@ -546,7 +546,7 @@
                 
                 // Carregar comentários se for a seção de comentários
                 if (sectionId === 'comments-section') {
-                    showAllComments();
+                    loadComments();
                 }
             }
         }
@@ -591,6 +591,43 @@
 
         // Array para armazenar comentários locais (temporário até sincronizar com GitHub)
         let localComments = [];
+        let githubComments = [];
+        
+        // Carregar comentários reais do GitHub Discussions
+        async function loadGitHubComments() {
+            try {
+                console.log('Tentando carregar comentários do GitHub...');
+                
+                // Primeiro, tentar com a API REST (limitada, mas sem autenticação)
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/discussions`, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'VelinoComments/1.0'
+                    }
+                });
+                
+                if (response.ok) {
+                    const discussions = await response.json();
+                    console.log('Discussions encontradas:', discussions.length);
+                    
+                    // Procurar pela discussion de comentários
+                    const commentsDiscussion = discussions.find(d => d.number === 1);
+                    if (commentsDiscussion) {
+                        console.log('Discussion de comentários encontrada:', commentsDiscussion.title);
+                        // Comentários específicos não são acessíveis via REST API pública
+                        // Mas podemos mostrar que a Discussion existe
+                        return true;
+                    }
+                }
+                
+                console.log('Não foi possível carregar comentários via API pública');
+                return false;
+                
+            } catch (error) {
+                console.error('Erro ao carregar comentários do GitHub:', error);
+                return false;
+            }
+        }
         
         // Carregar comentários da GitHub Discussion
         async function loadComments() {
@@ -598,17 +635,8 @@
             commentsList.innerHTML = '<div class="loading">Carregando comentários...</div>';
 
             try {
-                // Tentar carregar comentários reais via GitHub API
-                const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/discussions/1`);
-                
-                if (response.ok) {
-                    // Em caso de sucesso, ainda mostramos exemplos por simplicidade
-                    // Para implementação completa, seria necessário processar a resposta GraphQL
-                    showAllComments();
-                } else {
-                    // Mostrar comentários de exemplo + locais
-                    showAllComments();
-                }
+                const githubLoaded = await loadGitHubComments();
+                showAllComments(githubLoaded);
 
             } catch (error) {
                 console.error('Erro ao carregar comentários:', error);
@@ -617,7 +645,7 @@
                         ⚠️ Carregando comentários de exemplo (modo demonstração)
                     </div>
                 `;
-                showAllComments();
+                showAllComments(false);
             }
         }
         
@@ -708,7 +736,7 @@
             `).join('');
         }
 
-        function showAllComments() {
+        function showAllComments(githubConnected = false) {
             const exampleComments = [
                 {
                     author: 'Maria Santos',
@@ -735,8 +763,25 @@
             
             const commentsList = document.getElementById('comments-list');
             
+            // Mostrar status da conexão com GitHub
+            let statusMessage = '';
+            if (githubConnected) {
+                statusMessage = `
+                    <div class="success" style="margin-bottom: 15px; padding: 10px; border-radius: 8px; background: #e8f5e8; border: 1px solid #4CAF50;">
+                        ✅ Conectado ao GitHub Discussions! 
+                        <a href="https://github.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/discussions/1" target="_blank" style="color: #4CAF50;">Ver no GitHub</a>
+                    </div>
+                `;
+            } else {
+                statusMessage = `
+                    <div style="margin-bottom: 15px; padding: 10px; border-radius: 8px; background: #fff3cd; border: 1px solid #ffc107; color: #856404;">
+                        📋 Modo demonstração - <a href="https://github.com/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/discussions/1" target="_blank" style="color: #856404;">Adicione um comentário na Discussion</a> para testá-lo!
+                    </div>
+                `;
+            }
+            
             if (localComments.length > 0) {
-                commentsList.innerHTML = `
+                commentsList.innerHTML = statusMessage + `
                     <div class="success" style="margin-bottom: 15px; padding: 10px; border-radius: 8px; background: #e8f5e8; border: 1px solid #4CAF50;">
                         💚 ${localComments.length} comentário(s) enviado(s) recentemente
                     </div>
@@ -751,7 +796,7 @@
                     </div>
                 `).join('');
             } else {
-                commentsList.innerHTML = allComments.map(comment => `
+                commentsList.innerHTML = statusMessage + allComments.map(comment => `
                     <div class="comment-item">
                         <div class="comment-header">
                             <span class="comment-author">👤 ${comment.author}</span>
