@@ -1,0 +1,53 @@
+name: Teste do Token
+on:
+  workflow_dispatch:
+    inputs:
+      teste:
+        description: 'Teste manual'
+        required: false
+        default: 'true'
+
+jobs:
+  test-token:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Testar Token
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_CLASSIC }}
+      run: |
+        echo "Testando se o token está configurado..."
+        
+        if [ -z "$GITHUB_TOKEN" ]; then
+          echo "❌ ERRO: Token não encontrado!"
+          echo "Verifique se o secret TOKEN_CLASSIC está configurado."
+          exit 1
+        else
+          echo "✅ Token encontrado!"
+          echo "Comprimento do token: ${#GITHUB_TOKEN} caracteres"
+        fi
+        
+        echo "Testando acesso à API do GitHub..."
+        response=$(curl -s -w "%{http_code}" -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user)
+        http_code=${response: -3}
+        
+        if [ "$http_code" = "200" ]; then
+          echo "✅ Token válido! Acesso à API funcionando."
+        else
+          echo "❌ Token inválido ou sem permissões adequadas."
+          echo "Código HTTP: $http_code"
+        fi
+        
+        echo "Testando acesso ao repositório..."
+        repo_response=$(curl -s -w "%{http_code}" -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/overpride007/velino)
+        repo_http_code=${repo_response: -3}
+        
+        if [ "$repo_http_code" = "200" ]; then
+          echo "✅ Acesso ao repositório funcionando!"
+        else
+          echo "❌ Sem acesso ao repositório."
+          echo "Código HTTP: $repo_http_code"
+        fi

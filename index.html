@@ -818,11 +818,11 @@
                     currentRating = 0;
                     updateStars(0);
                     
-                    // Fechar seção após 6 segundos (mais tempo para ver o resultado)
+                    // Fechar seção após 3 segundos
                     setTimeout(() => {
                         closeSection('comment-form-section');
                         statusDiv.innerHTML = '';
-                    }, 6000);
+                    }, 3000);
                 } else {
                     // Para demonstração, vamos simular sucesso mesmo com erro
                     addLocalComment(username, comment, rating);
@@ -836,7 +836,7 @@
                     setTimeout(() => {
                         closeSection('comment-form-section');
                         statusDiv.innerHTML = '';
-                    }, 6000);
+                    }, 3000);
                 }
 
             } catch (error) {
@@ -853,7 +853,7 @@
                 setTimeout(() => {
                     closeSection('comment-form-section');
                     statusDiv.innerHTML = '';
-                }, 6000);
+                }, 3000);
             }
         });
 
@@ -898,11 +898,11 @@
                 // Limpar formulário
                 e.target.reset();
                 
-                // Fechar seção após 5 segundos (mais tempo)
+                // Fechar seção após 3 segundos
                 setTimeout(() => {
                     closeSection('suggestions-section');
                     statusDiv.innerHTML = '';
-                }, 5000);
+                }, 3000);
 
             } catch (error) {
                 console.error('Erro:', error);
@@ -915,7 +915,7 @@
                 setTimeout(() => {
                     closeSection('suggestions-section');
                     statusDiv.innerHTML = '';
-                }, 5000);
+                }, 3000);
             }
         });
 
