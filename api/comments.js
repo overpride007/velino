@@ -50,7 +50,7 @@ app.get('/api/comments', async (req, res) => {
         }
         const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/discussions/${DISCUSSION_NUMBER}/comments`, {
             headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Authorization': `Bearer ${GITHUB_TOKEN}`,
                 'Accept': 'application/vnd.github+json'
             }
         });
@@ -80,7 +80,7 @@ app.post('/api/comments', async (req, res) => {
         const response = await fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/discussions/' + DISCUSSION_NUMBER + '/comments', {
             method: 'POST',
             headers: {
-                'Authorization': 'token ' + GITHUB_TOKEN,
+                'Authorization': 'Bearer ' + GITHUB_TOKEN,
                 'Accept': 'application/vnd.github+json',
                 'Content-Type': 'application/json'
             },
@@ -112,7 +112,7 @@ app.post('/api/suggestions', async (req, res) => {
         const response = await fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/discussions/' + DISCUSSION_NUMBER + '/comments', {
             method: 'POST',
             headers: {
-                'Authorization': 'token ' + GITHUB_TOKEN,
+                'Authorization': 'Bearer ' + GITHUB_TOKEN,
                 'Accept': 'application/vnd.github+json',
                 'Content-Type': 'application/json'
             },
