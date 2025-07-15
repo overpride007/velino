@@ -51,17 +51,13 @@ app.post('/api/comments', async (req, res) => {
             throw new Error('Nome, avaliação e comentário são obrigatórios');
         }
 
-        const params = new URLSearchParams();
-        params.append('action', 'addComment');
-        params.append('name', name);
-        params.append('age', age || '');
-        params.append('rating', rating);
-        params.append('comment', comment);
-
-        const url = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
-        const response = await fetch(url, { method: 'POST' });
+        const url = `${GOOGLE_SCRIPT_URL}?action=addComment`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, age, rating, comment })
+        });
         const data = await response.json();
-        
         if (data.error) throw new Error(data.error);
         res.json(data);
     } catch (error) {
@@ -77,16 +73,13 @@ app.post('/api/suggestions', async (req, res) => {
             throw new Error('Nome e sugestão são obrigatórios');
         }
 
-        const params = new URLSearchParams();
-        params.append('action', 'addSuggestion');
-        params.append('name', name);
-        params.append('email', email || '');
-        params.append('suggestion', suggestion);
-
-        const url = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
-        const response = await fetch(url, { method: 'POST' });
+        const url = `${GOOGLE_SCRIPT_URL}?action=addSuggestion`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, suggestion })
+        });
         const data = await response.json();
-        
         if (data.error) throw new Error(data.error);
         res.json(data);
     } catch (error) {
