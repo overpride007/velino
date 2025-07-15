@@ -44,11 +44,11 @@ app.get('/api/status', (req, res) => {
 // Endpoint para carregar comentários da Discussion
 app.get('/api/comments', async (req, res) => {
     try {
-        const ISSUE_NUMBER = 1; // Issue para comentários/avaliações
+        const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
         if (!GITHUB_OWNER || !GITHUB_REPO) {
             throw new Error('Variáveis GITHUB_OWNER ou GITHUB_REPO não configuradas');
         }
-        const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues/${ISSUE_NUMBER}/comments`, {
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/discussions/${DISCUSSION_NUMBER}/comments`, {
             headers: {
                 'Authorization': `Bearer ${GITHUB_TOKEN}`,
                 'Accept': 'application/vnd.github+json'
@@ -68,7 +68,7 @@ app.get('/api/comments', async (req, res) => {
 // Endpoint para enviar comentário para a Discussion
 app.post('/api/comments', async (req, res) => {
     try {
-        const ISSUE_NUMBER = 1; // Issue para comentários/avaliações
+        const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
         if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
             throw new Error('Variáveis de ambiente não configuradas');
         }
@@ -77,10 +77,10 @@ app.post('/api/comments', async (req, res) => {
             throw new Error('Nome, avaliação e comentário são obrigatórios');
         }
         var commentBody = 'Nome: ' + name + '\nIdade: ' + age + '\nAvaliação: ' + rating + '\nComentário: ' + comment;
-        const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues/${ISSUE_NUMBER}/comments`, {
+        const response = await fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/discussions/' + DISCUSSION_NUMBER + '/comments', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Authorization': 'Bearer ' + GITHUB_TOKEN,
                 'Accept': 'application/vnd.github+json',
                 'Content-Type': 'application/json'
             },
@@ -100,7 +100,7 @@ app.post('/api/comments', async (req, res) => {
 // Endpoint para enviar sugestão para a Discussion
 app.post('/api/suggestions', async (req, res) => {
     try {
-        const ISSUE_NUMBER = 2; // Issue para sugestões
+        const DISCUSSION_NUMBER = 2; // Discussion para sugestões
         if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
             throw new Error('Variáveis de ambiente não configuradas');
         }
@@ -109,10 +109,10 @@ app.post('/api/suggestions', async (req, res) => {
             throw new Error('Nome e sugestão são obrigatórios');
         }
         var suggestionBody = 'Nome: ' + name + '\n' + (email ? 'Email: ' + email + '\n' : '') + 'Sugestão: ' + suggestion;
-        const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues/${ISSUE_NUMBER}/comments`, {
+        const response = await fetch('https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/discussions/' + DISCUSSION_NUMBER + '/comments', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Authorization': 'Bearer ' + GITHUB_TOKEN,
                 'Accept': 'application/vnd.github+json',
                 'Content-Type': 'application/json'
             },
