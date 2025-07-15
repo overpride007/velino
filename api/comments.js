@@ -1,15 +1,3 @@
-const CONFIG = {
-  GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-  GITHUB_OWNER: process.env.GITHUB_OWNER,
-  GITHUB_REPO: process.env.GITHUB_REPO
-};
-
-// Crasha o servidor cedo se variáveis essenciais estiverem faltando
-if (!CONFIG.GITHUB_TOKEN || !CONFIG.GITHUB_OWNER || !CONFIG.GITHUB_REPO) {
-  console.error("❌ Variáveis de ambiente críticas não configuradas no Railway!");
-  process.exit(1); // Encerra o processo com erro
-}
-
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
