@@ -66,9 +66,6 @@ app.get('/api/comments', async (req, res) => {
 });
 
 // Endpoint para enviar comentário
-Idade: ${age}
-Avaliação: ${rating}
-Comentário: ${comment}`;
 app.post('/api/comments', async (req, res) => {
     try {
         const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
