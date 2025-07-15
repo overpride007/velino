@@ -374,6 +374,10 @@ function parseCommentBody(body) {
     };
     
     // Tentar extrair dados estruturados do comentário
+    let commentStartIndex = -1;
+    let isCommentSection = false;
+    const commentLines = [];
+    
     lines.forEach((line, index) => {
         if (line.startsWith('Nome:')) {
             data.name = line.replace('Nome:', '').trim();
@@ -382,12 +386,30 @@ function parseCommentBody(body) {
         } else if (line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
         } else if (line.startsWith('Comentário:')) {
-            // Pegar tudo que vem depois de "Comentário:"
-            data.comment = lines.slice(index + 1).join('\n').trim();
+            commentStartIndex = index;
+            isCommentSection = true;
+            // Pegar apenas o texto na mesma linha após "Comentário:"
+            const commentOnSameLine = line.replace('Comentário:', '').trim();
+            if (commentOnSameLine) {
+                commentLines.push(commentOnSameLine);
+            }
+        } else if (isCommentSection && index > commentStartIndex) {
+            // Coletar todas as linhas após "Comentário:" que não sejam campos estruturados
+            if (!line.startsWith('Nome:') && 
+                !line.startsWith('Idade:') && 
+                !line.startsWith('Avaliação:') && 
+                !line.startsWith('Comentário:')) {
+                commentLines.push(line);
+            }
         }
     });
     
-    // Se não encontrou o comentário estruturado, usar o body completo
+    // Montar o comentário final
+    if (commentLines.length > 0) {
+        data.comment = commentLines.join('\n').trim();
+    }
+    
+    // Se ainda não encontrou o comentário estruturado, usar o body completo
     if (!data.comment || data.comment === '') {
         data.comment = body.trim();
     }
