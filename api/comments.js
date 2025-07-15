@@ -44,7 +44,7 @@ app.get('/api/status', (req, res) => {
 // Endpoint para carregar comentários da Discussion
 app.get('/api/comments', async (req, res) => {
     try {
-        const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
+        const DISCUSSION_NUMBER = 6; // Discussion para comentários/avaliações (novo teste)
         if (!GITHUB_OWNER || !GITHUB_REPO) {
             throw new Error('Variáveis GITHUB_OWNER ou GITHUB_REPO não configuradas');
         }
@@ -68,7 +68,7 @@ app.get('/api/comments', async (req, res) => {
 // Endpoint para enviar comentário para a Discussion
 app.post('/api/comments', async (req, res) => {
     try {
-        const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
+        const DISCUSSION_NUMBER = 6; // Discussion para comentários/avaliações (novo teste)
         if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
             throw new Error('Variáveis de ambiente não configuradas');
         }
