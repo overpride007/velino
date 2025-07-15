@@ -41,7 +41,7 @@ app.get('/api/status', (req, res) => {
     res.json(status);
 });
 
-// Endpoint para carregar comentários
+// Endpoint para carregar comentários da Discussion
 app.get('/api/comments', async (req, res) => {
     try {
         const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
@@ -65,7 +65,7 @@ app.get('/api/comments', async (req, res) => {
     }
 });
 
-// Endpoint para enviar comentário
+// Endpoint para enviar comentário para a Discussion
 app.post('/api/comments', async (req, res) => {
     try {
         const DISCUSSION_NUMBER = 1; // Discussion para comentários/avaliações
@@ -97,7 +97,7 @@ app.post('/api/comments', async (req, res) => {
     }
 });
 
-// Endpoint para enviar sugestão
+// Endpoint para enviar sugestão para a Discussion
 app.post('/api/suggestions', async (req, res) => {
     try {
         const DISCUSSION_NUMBER = 2; // Discussion para sugestões
