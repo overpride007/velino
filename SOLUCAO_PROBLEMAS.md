@@ -1,16 +1,23 @@
 # 🚨 Resolução de Problemas
 
-## ❌ **Erro: "Unexpected token '<'"**
+## 🔥 **ERRO PRINCIPAL: "Unexpected token '<'"**
 
-Esse erro significa que o servidor está retornando HTML em vez de JSON. Principais causas:
+**📖 [GUIA COMPLETO DETALHADO →](ERRO_UNEXPECTED_TOKEN.md)**
 
-### 🔍 **1. Verificar se o Railway está online**
-- Acesse seu dashboard do Railway
-- Verifique se o deploy foi bem-sucedido
-- Olhe os logs na aba "Deployments"
+Este é o erro mais comum e tem um guia específico. Principais soluções rápidas:
 
-### 🔧 **2. Verificar variáveis de ambiente**
-No Railway, vá em **Variables** e confirme:
+### ⚡ **Solução Rápida 1: Página de Diagnóstico**
+1. Acesse: `https://seu-app.up.railway.app/diagnostico.html`
+2. Execute todos os testes
+3. Veja onde está falhando
+
+### ⚡ **Solução Rápida 2: Verificar Railway**
+1. Railway.app → Seu projeto → Deployments
+2. Último deploy deve estar VERDE ✅
+3. Se vermelho ❌, veja os logs de erro
+
+### ⚡ **Solução Rápida 3: Variáveis de Ambiente**
+No Railway → Variables, confirme:
 ```
 GITHUB_OWNER=overpride007
 GITHUB_REPO=velino  
@@ -18,36 +25,9 @@ GITHUB_TOKEN=seu_token_real
 PORT=3000
 ```
 
-### 🔑 **3. Verificar o token GitHub**
-- Token deve ter permissões `repo` ou `public_repo`
-- Token não pode estar expirado
-- Gere um novo se necessário
+---
 
-### 📊 **4. Verificar logs do Railway**
-No Railway:
-1. Vá para seu projeto
-2. Clique em "Deployments"
-3. Veja os logs para erros
-
-### 🧪 **5. Testar localmente**
-```bash
-# Teste local primeiro
-npm install
-npm start
-# Acesse http://localhost:3000
-```
-
-### ⚡ **6. Usar botão de diagnóstico**
-- Clique em "Ver Comentários"
-- Se der erro, clique em "Testar Conexão"
-- Veja o resultado do diagnóstico
-
-## 📋 **Checklist de verificação:**
-
-- [ ] Railway está online (sem erro 500)
-- [ ] Variáveis de ambiente configuradas
-- [ ] Token GitHub válido e não expirado
-- [ ] Issues habilitadas no repositório
+## ❌ **Outros Erros Comuns**
 - [ ] Repositório público ou token com permissão `repo`
 
 ## 🔧 **Soluções rápidas:**

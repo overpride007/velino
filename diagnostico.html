@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico do Sistema - Velino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        
+        .test-section h3 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #b8daff;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5a6fd8;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+        
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnóstico do Sistema Velino</h1>
+        
+        <div class="test-section">
+            <h3>1. Informações do Ambiente</h3>
+            <div id="env-info" class="result info">
+                <strong>URL Atual:</strong> <span id="current-url"></span><br>
+                <strong>User Agent:</strong> <span id="user-agent"></span><br>
+                <strong>Data/Hora:</strong> <span id="current-time"></span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Teste de Conectividade</h3>
+            <button onclick="testConnection()">🌐 Testar Conexão com API</button>
+            <div id="connection-result" class="result info">Clique no botão para testar...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Status do Servidor</h3>
+            <button onclick="testServerStatus()">📊 Verificar Status</button>
+            <div id="status-result" class="result info">Clique no botão para verificar...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Teste de Carregamento de Comentários</h3>
+            <button onclick="testLoadComments()">💬 Carregar Comentários</button>
+            <div id="comments-result" class="result info">Clique no botão para testar...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Teste de Envio de Comentário</h3>
+            <button onclick="testSendComment()">📝 Enviar Comentário de Teste</button>
+            <div id="send-result" class="result info">Clique no botão para testar...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>6. Log de Eventos</h3>
+            <button onclick="clearLog()">🗑️ Limpar Log</button>
+            <div id="event-log" class="result info">
+                <pre id="log-content">Sistema iniciado...\n</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração
+        const config = {
+            apiBaseUrl: window.location.origin
+        };
+
+        // Log de eventos
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logContent = document.getElementById('log-content');
+            logContent.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            logContent.scrollTop = logContent.scrollHeight;
+            console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('current-url').textContent = window.location.href;
+            document.getElementById('user-agent').textContent = navigator.userAgent;
+            document.getElementById('current-time').textContent = new Date().toLocaleString();
+            log('Página de diagnóstico carregada');
+        });
+
+        // Teste de conectividade básica
+        async function testConnection() {
+            const resultDiv = document.getElementById('connection-result');
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '<div class="loading">Testando conectividade...</div>';
+            
+            try {
+                log('Iniciando teste de conectividade');
+                
+                const startTime = Date.now();
+                const response = await fetch(`${config.apiBaseUrl}/api/status`);
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+                
+                log(`Resposta recebida em ${responseTime}ms: ${response.status}`);
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        ✅ <strong>Conectividade OK</strong><br>
+                        • Status: ${response.status}<br>
+                        • Tempo de resposta: ${responseTime}ms<br>
+                        • Content-Type: ${response.headers.get('content-type')}
+                    `;
+                } else {
+                    throw new Error(`Status ${response.status}: ${response.statusText}`);
+                }
+                
+            } catch (error) {
+                log(`Erro de conectividade: ${error.message}`, 'error');
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ <strong>Falha na conectividade:</strong><br>${error.message}`;
+            }
+        }
+
+        // Teste de status do servidor
+        async function testServerStatus() {
+            const resultDiv = document.getElementById('status-result');
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '<div class="loading">Verificando status do servidor...</div>';
+            
+            try {
+                log('Verificando status do servidor');
+                
+                const response = await fetch(`${config.apiBaseUrl}/api/status`);
+                const data = await response.json();
+                
+                log('Status do servidor obtido com sucesso');
+                
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>Servidor Online</strong><br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                log(`Erro ao verificar status: ${error.message}`, 'error');
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ <strong>Erro:</strong><br>${error.message}`;
+            }
+        }
+
+        // Teste de carregamento de comentários
+        async function testLoadComments() {
+            const resultDiv = document.getElementById('comments-result');
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '<div class="loading">Carregando comentários...</div>';
+            
+            try {
+                log('Testando carregamento de comentários');
+                
+                const response = await fetch(`${config.apiBaseUrl}/api/comments`);
+                
+                if (!response.ok) {
+                    throw new Error(`Status ${response.status}: ${response.statusText}`);
+                }
+                
+                const comments = await response.json();
+                
+                log(`${comments.length} comentários carregados`);
+                
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>Comentários carregados:</strong> ${comments.length} encontrados<br>
+                    <pre>${JSON.stringify(comments.slice(0, 2), null, 2)}</pre>
+                    ${comments.length > 2 ? `<em>... e mais ${comments.length - 2} comentários</em>` : ''}
+                `;
+                
+            } catch (error) {
+                log(`Erro ao carregar comentários: ${error.message}`, 'error');
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ <strong>Erro:</strong><br>${error.message}`;
+            }
+        }
+
+        // Teste de envio de comentário
+        async function testSendComment() {
+            const resultDiv = document.getElementById('send-result');
+            resultDiv.className = 'result info';
+            resultDiv.innerHTML = '<div class="loading">Enviando comentário de teste...</div>';
+            
+            try {
+                log('Testando envio de comentário');
+                
+                const testComment = {
+                    name: 'Teste Diagnóstico',
+                    age: '25',
+                    rating: 5,
+                    comment: `Comentário de teste enviado em ${new Date().toLocaleString()}`
+                };
+                
+                const response = await fetch(`${config.apiBaseUrl}/api/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testComment)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `Status ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                log('Comentário de teste enviado com sucesso');
+                
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>Comentário enviado com sucesso!</strong><br>
+                    • Issue #${result.number}<br>
+                    • URL: <a href="${result.html_url}" target="_blank">${result.html_url}</a>
+                `;
+                
+            } catch (error) {
+                log(`Erro ao enviar comentário: ${error.message}`, 'error');
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ <strong>Erro:</strong><br>${error.message}`;
+            }
+        }
+
+        // Limpar log
+        function clearLog() {
+            document.getElementById('log-content').textContent = 'Log limpo...\n';
+            log('Log limpo pelo usuário');
+        }
+    </script>
+</body>
+</html>

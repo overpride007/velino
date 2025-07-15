@@ -173,48 +173,83 @@ async function loadComments() {
     try {
         elements.commentsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando comentários...</div>';
         
-        console.log('📡 Testando conexão com servidor...');
+        console.log('� Carregando comentários...');
+        console.log('📍 URL da API:', `${config.apiBaseUrl}/api/comments`);
         
         const response = await fetch(`${config.apiBaseUrl}/api/comments`);
         
-        console.log('📊 Status da resposta:', response.status);
+        console.log('📊 Resposta:', {
+            status: response.status,
+            ok: response.ok,
+            contentType: response.headers.get('content-type')
+        });
         
-        if (!response.ok) {
-            const contentType = response.headers.get('content-type');
-            let errorMessage = `Erro ${response.status}: ${response.statusText}`;
+        // Verificar se a resposta é JSON antes de tentar fazer parse
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const htmlContent = await response.text();
+            console.error('❌ Resposta não é JSON:', htmlContent.substring(0, 500));
             
-            if (contentType && contentType.includes('application/json')) {
-                const errorData = await response.json();
-                errorMessage = errorData.error || errorMessage;
-                if (errorData.details) {
-                    errorMessage += `\n${errorData.details}`;
-                }
-            } else {
-                errorMessage = 'Servidor não está respondendo corretamente.';
+            if (htmlContent.includes('Application error') || htmlContent.includes('railway')) {
+                throw new Error('Aplicação não está funcionando no Railway. Verifique os logs do Railway.');
             }
             
+            throw new Error('Servidor não está retornando dados JSON válidos.');
+        }
+        
+        if (!response.ok) {
+            let errorMessage;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorData.message || `Erro ${response.status}`;
+                if (errorData.details) {
+                    errorMessage += ` - ${errorData.details}`;
+                }
+            } catch (parseError) {
+                const errorText = await response.text();
+                console.error('❌ Erro ao fazer parse da resposta de erro:', errorText);
+                errorMessage = `Erro ${response.status}: Resposta inválida do servidor`;
+            }
             throw new Error(errorMessage);
         }
         
         const issues = await response.json();
+        console.log(`✅ ${issues.length} comentários carregados`);
+        
         commentsCache = issues;
         displayComments(issues);
         
     } catch (error) {
         console.error('❌ Erro ao carregar comentários:', error);
         
+        let userFriendlyMessage = error.message;
+        
+        // Melhorar mensagens de erro para o usuário
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            userFriendlyMessage = 'Não foi possível conectar ao servidor. Verifique se o Railway está online.';
+        } else if (error.message.includes('Unexpected token')) {
+            userFriendlyMessage = 'Servidor retornou dados inválidos. Possível problema na configuração do Railway.';
+        } else if (error.message.includes('SyntaxError')) {
+            userFriendlyMessage = 'Dados recebidos do servidor estão corrompidos.';
+        }
+        
         const errorHtml = `
             <div class="no-comments">
                 <i class="fas fa-exclamation-triangle"></i>
                 <p><strong>Erro ao carregar comentários:</strong></p>
-                <p>${error.message}</p>
+                <p>${userFriendlyMessage}</p>
                 <br>
                 <button onclick="testServerConnection()" class="primary-btn">
                     <i class="fas fa-stethoscope"></i> Testar Conexão
                 </button>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-                    Verifique se o Railway está online e as variáveis de ambiente estão configuradas.
-                </p>
+                <button onclick="loadComments()" class="secondary-btn" style="margin-left: 10px;">
+                    <i class="fas fa-redo"></i> Tentar Novamente
+                </button>
+                <br><br>
+                <details style="text-align: left; font-size: 0.8rem; color: #666;">
+                    <summary>Detalhes técnicos (clique para expandir)</summary>
+                    <pre style="margin-top: 10px; white-space: pre-wrap;">${error.stack || error.message}</pre>
+                </details>
             </div>
         `;
         
@@ -227,9 +262,34 @@ async function testServerConnection() {
     try {
         showAlert('🔍 Testando conexão...', 'info');
         
-        const response = await fetch(`${config.apiBaseUrl}/api/status`);
-        const status = await response.json();
+        console.log('🌐 URL de teste:', `${config.apiBaseUrl}/api/status`);
         
+        const response = await fetch(`${config.apiBaseUrl}/api/status`);
+        
+        console.log('📊 Resposta recebida:', {
+            status: response.status,
+            ok: response.ok,
+            headers: {
+                'content-type': response.headers.get('content-type'),
+                'server': response.headers.get('server')
+            }
+        });
+        
+        // Verificar se a resposta é JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const htmlContent = await response.text();
+            console.error('❌ Servidor retornou HTML ao invés de JSON:', htmlContent.substring(0, 300));
+            
+            // Verificar se é página do Railway
+            if (htmlContent.includes('railway') || htmlContent.includes('Railway')) {
+                throw new Error('Aplicação não está rodando no Railway. Verifique se o deploy foi bem-sucedido.');
+            }
+            
+            throw new Error('Servidor não está retornando JSON. Possível problema de configuração.');
+        }
+        
+        const status = await response.json();
         console.log('📊 Status do servidor:', status);
         
         let message = `✅ Servidor online!\n\n`;
@@ -239,16 +299,37 @@ async function testServerConnection() {
         message += `• GitHub Token: ${status.environment.GITHUB_TOKEN}\n`;
         message += `• Porta: ${status.environment.PORT}`;
         
-        showAlert(message, 'success');
+        // Verificar se as configurações estão corretas
+        const missingConfigs = [];
+        if (status.environment.GITHUB_OWNER === 'NÃO CONFIGURADO') missingConfigs.push('GITHUB_OWNER');
+        if (status.environment.GITHUB_REPO === 'NÃO CONFIGURADO') missingConfigs.push('GITHUB_REPO');
+        if (status.environment.GITHUB_TOKEN === 'NÃO CONFIGURADO') missingConfigs.push('GITHUB_TOKEN');
         
-        // Tentar carregar comentários novamente
-        setTimeout(() => {
-            loadComments();
-        }, 2000);
+        if (missingConfigs.length > 0) {
+            message += `\n\n⚠️ ATENÇÃO: Variáveis não configuradas:\n• ${missingConfigs.join('\n• ')}`;
+            showAlert(message, 'warning');
+        } else {
+            showAlert(message, 'success');
+            
+            // Tentar carregar comentários novamente
+            setTimeout(() => {
+                loadComments();
+            }, 2000);
+        }
         
     } catch (error) {
         console.error('❌ Erro no teste de conexão:', error);
-        showAlert(`❌ Falha na conexão: ${error.message}`, 'error');
+        
+        let errorMessage = error.message;
+        
+        // Melhorar diagnóstico de erros
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            errorMessage = `Não foi possível conectar ao servidor.\n\nPossíveis causas:\n• Railway está offline\n• URL incorreta: ${config.apiBaseUrl}\n• Aplicação não foi deployada corretamente`;
+        } else if (error.message.includes('Unexpected token')) {
+            errorMessage = `Servidor retornou HTML ao invés de JSON.\n\nPossíveis causas:\n• Aplicação não está rodando no Railway\n• Erro de configuração no servidor\n• URL do Railway incorreta`;
+        }
+        
+        showAlert(`❌ Falha na conexão:\n\n${errorMessage}`, 'error');
     }
 }
 
