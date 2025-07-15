@@ -10,208 +10,88 @@ const PORT = process.env.PORT || 8080;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_OWNER = process.env.GITHUB_OWNER || 'overpride007';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'Velino';
+const COMMENTS_DISCUSSION_ID = 1; // Confirme este número no GitHub
+const SUGGESTIONS_DISCUSSION_ID = 2; // Confirme este número no GitHub
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('.')); // Serve arquivos estáticos
+app.use(express.static('.'));
 
-// Middleware para log de requisições
+// Middleware de logs
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
     next();
 });
 
-// Endpoint de status para diagnóstico
-app.get('/api/status', (req, res) => {
-    const status = {
-        status: 'online',
-        timestamp: new Date().toISOString(),
-        environment: {
-            GITHUB_OWNER: GITHUB_OWNER,
-            GITHUB_REPO: GITHUB_REPO,
-            GITHUB_TOKEN: GITHUB_TOKEN ? 'CONFIGURADO (Railway)' : 'NÃO CONFIGURADO',
-            PORT: PORT,
-            NODE_ENV: process.env.NODE_ENV || 'development',
-            RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT || 'production',
-            RAILWAY_PROJECT_NAME: process.env.RAILWAY_PROJECT_NAME || 'abundant-motivation'
-        },
-        endpoints: [
-            'GET /api/status',
-            'GET /api/comments',
-            'POST /api/comments',
-            'POST /api/suggestions'
-        ],
-        debug: process.env.NODE_ENV !== 'production' ? {
-            repo_url: `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}`,
-            discussions_url: `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/discussions`
-        } : undefined
-    };
-    
-    console.log('🔍 Status check:', {
-        ...status,
-        GITHUB_TOKEN_PREFIX: GITHUB_TOKEN ? `${GITHUB_TOKEN.substring(0, 5)}...` : null
-    });
-    res.json(status);
-});
-
-// Endpoint para carregar comentários da Discussion
-app.get('/api/comments', async (req, res) => {
-    try {
-        const DISCUSSION_NUMBER = 1;
-        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/discussions/${DISCUSSION_NUMBER}/comments`;
-        
-        console.log(`📨 GET Request to: ${apiUrl}`);
-        
-        const response = await fetch(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
-                'Accept': 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28'
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('❌ GitHub API Error:', {
-                status: response.status,
-                url: apiUrl,
-                error: errorData
-            });
-            throw new Error(`GitHub API Error ${response.status}: ${JSON.stringify(errorData)}`);
-        }
-
-        const data = await response.json();
-        console.log(`✅ Successfully fetched ${data.length} comments`);
-        res.json(data);
-    } catch (error) {
-        console.error('💥 Error in /api/comments:', error);
-        res.status(500).json({ 
-            error: error.message,
-            details: process.env.NODE_ENV !== 'production' ? error.stack : undefined
-        });
-    }
-});
-
-// Endpoint para enviar comentário para a Discussion
+// Endpoint para enviar comentário (VERSÃO CORRIGIDA)
 app.post('/api/comments', async (req, res) => {
     try {
-        const DISCUSSION_NUMBER = 1;
-        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/discussions/${DISCUSSION_NUMBER}/comments`;
+        console.log('Iniciando postagem de comentário...');
         
-        console.log(`📤 POST Request to: ${apiUrl}`);
-        console.log('Request body:', req.body);
+        if (!GITHUB_TOKEN) {
+            throw new Error('Token do GitHub não configurado');
+        }
 
         const { name, age, rating, comment } = req.body;
+        console.log('Dados recebidos:', { name, age, rating, comment });
+
         if (!name || !rating || !comment) {
             throw new Error('Nome, avaliação e comentário são obrigatórios');
         }
 
         const commentBody = `### Nova Avaliação\n\n**Nome:** ${name}\n**Idade:** ${age || 'Não informada'}\n**Avaliação:** ${rating}/5\n**Comentário:** ${comment}`;
         
+        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/discussions/${COMMENTS_DISCUSSION_ID}/comments`;
+        console.log('URL da API:', apiUrl);
+
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
-                'Accept': 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28',
-                'Content-Type': 'application/json'
+                'Authorization': `token ${GITHUB_TOKEN}`, // Alterado de 'Bearer' para 'token'
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+                'X-GitHub-Api-Version': '2022-11-28'
             },
             body: JSON.stringify({ body: commentBody })
         });
 
+        console.log('Status da resposta:', response.status);
+
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('❌ GitHub API Error:', {
-                status: response.status,
-                url: apiUrl,
-                error: errorData
-            });
-            throw new Error(`GitHub API Error ${response.status}: ${JSON.stringify(errorData)}`);
+            console.error('Erro detalhado:', errorData);
+            
+            // Verificação específica para repositório não encontrado
+            if (response.status === 404) {
+                throw new Error(`Discussion não encontrada. Verifique:
+- O repositório existe: https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}
+- A discussion #${COMMENTS_DISCUSSION_ID} existe
+- O token tem permissões de escrita`);
+            }
+            
+            throw new Error(`Erro na API do GitHub: ${response.status} - ${JSON.stringify(errorData)}`);
         }
 
         const data = await response.json();
-        console.log('✅ Comment successfully posted:', {
-            commentId: data.id,
-            createdAt: data.created_at
-        });
+        console.log('Comentário postado com sucesso:', data);
         res.json(data);
     } catch (error) {
-        console.error('💥 Error in /api/comments POST:', error);
+        console.error('Erro completo:', error);
         res.status(500).json({ 
             error: error.message,
-            details: process.env.NODE_ENV !== 'production' ? error.stack : undefined
+            stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined
         });
     }
 });
 
-// Endpoint para enviar sugestão para a Discussion
-app.post('/api/suggestions', async (req, res) => {
-    try {
-        const DISCUSSION_NUMBER = 2;
-        const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/discussions/${DISCUSSION_NUMBER}/comments`;
-        
-        console.log(`📤 POST Request to: ${apiUrl}`);
-        console.log('Request body:', req.body);
-
-        const { name, email, suggestion } = req.body;
-        if (!name || !suggestion) {
-            throw new Error('Nome e sugestão são obrigatórios');
-        }
-
-        const suggestionBody = `### Nova Sugestão\n\n**Nome:** ${name}\n${email ? `**Email:** ${email}\n` : ''}**Sugestão:** ${suggestion}`;
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
-                'Accept': 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ body: suggestionBody })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('❌ GitHub API Error:', {
-                status: response.status,
-                url: apiUrl,
-                error: errorData
-            });
-            throw new Error(`GitHub API Error ${response.status}: ${JSON.stringify(errorData)}`);
-        }
-
-        const data = await response.json();
-        console.log('✅ Suggestion successfully posted:', {
-            commentId: data.id,
-            createdAt: data.created_at
-        });
-        res.json(data);
-    } catch (error) {
-        console.error('💥 Error in /api/suggestions POST:', error);
-        res.status(500).json({ 
-            error: error.message,
-            details: process.env.NODE_ENV !== 'production' ? error.stack : undefined
-        });
-    }
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error('🚨 Unhandled error:', err);
-    res.status(500).json({ 
-        error: 'Internal Server Error',
-        message: err.message
-    });
-});
+// ... (mantenha os outros endpoints como estão)
 
 app.listen(PORT, () => {
-    console.log('\n--- Server Startup ---');
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-    console.log('🔧 Configurações:');
-    console.log(`- Porta: ${PORT}`);
-    console.log(`- Repositório: ${GITHUB_OWNER}/${GITHUB_REPO}`);
-    console.log(`- Token: ${GITHUB_TOKEN ? 'Presente' : 'Ausente'}`);
-    console.log(`- Ambiente: ${process.env.NODE_ENV || 'development'}`);
-    console.log('----------------------\n');
+    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log('Variáveis de ambiente:', {
+        GITHUB_OWNER,
+        GITHUB_REPO,
+        GITHUB_TOKEN: GITHUB_TOKEN ? '***' + GITHUB_TOKEN.slice(-4) : 'null',
+        NODE_ENV: process.env.NODE_ENV
+    });
 });
