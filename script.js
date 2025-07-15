@@ -334,6 +334,8 @@ async function testServerConnection() {
 }
 
 function displayComments(comments) {
+    console.log('📋 Displaying comments:', comments.length);
+    
     if (comments.length === 0) {
         elements.commentsList.innerHTML = `
             <div class="no-comments">
@@ -347,14 +349,20 @@ function displayComments(comments) {
     
     elements.commentsList.innerHTML = '';
     
-    comments.forEach(comment => {
+    comments.forEach((comment, index) => {
+        console.log(`📝 Processing comment ${index + 1}:`, comment);
+        
         const commentData = parseCommentBody(comment.body);
         const commentElement = createCommentElement(commentData, comment);
         elements.commentsList.appendChild(commentElement);
     });
+    
+    console.log('✅ Comments displayed successfully');
 }
 
 function parseCommentBody(body) {
+    console.log('🔍 Parsing comment body:', body);
+    
     const lines = body.split('\n');
     const data = {
         name: 'Usuário',
@@ -364,7 +372,9 @@ function parseCommentBody(body) {
     };
     
     // Tentar extrair dados estruturados do comentário
-    lines.forEach(line => {
+    let commentStartIndex = -1;
+    
+    lines.forEach((line, index) => {
         if (line.startsWith('Nome:')) {
             data.name = line.replace('Nome:', '').trim();
         } else if (line.startsWith('Idade:')) {
@@ -372,14 +382,27 @@ function parseCommentBody(body) {
         } else if (line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
         } else if (line.startsWith('Comentário:')) {
-            data.comment = lines.slice(lines.indexOf(line) + 1).join('\n').trim();
+            commentStartIndex = index;
         }
     });
     
+    // Extrair o comentário propriamente dito
+    if (commentStartIndex !== -1 && commentStartIndex + 1 < lines.length) {
+        data.comment = lines.slice(commentStartIndex + 1).join('\n').trim();
+    }
+    
+    // Se não encontrou estrutura, usar o body completo
+    if (!data.comment || data.comment === '') {
+        data.comment = body;
+    }
+    
+    console.log('📋 Parsed data:', data);
     return data;
 }
 
 function createCommentElement(data, originalIssue) {
+    console.log('🎨 Creating comment element for:', data.name);
+    
     const commentDiv = document.createElement('div');
     commentDiv.className = 'comment-item';
     
@@ -392,17 +415,34 @@ function createCommentElement(data, originalIssue) {
         minute: '2-digit'
     });
     
+    // Escapar HTML para segurança
+    const safeName = data.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const safeAge = data.age ? data.age.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+    const safeComment = data.comment.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+    
     commentDiv.innerHTML = `
         <div class="comment-header">
-            <div class="comment-author">${data.name}</div>
+            <div class="comment-author">
+                <i class="fas fa-user"></i> ${safeName}
+            </div>
             <div class="comment-meta">
-                ${data.age ? `${data.age} anos • ` : ''}${date}
+                ${safeAge ? `<i class="fas fa-birthday-cake"></i> ${safeAge} anos • ` : ''}
+                <i class="fas fa-clock"></i> ${date}
             </div>
         </div>
-        ${data.rating > 0 ? `<div class="comment-rating">${stars}</div>` : ''}
-        <div class="comment-text">${data.comment}</div>
+        ${data.rating > 0 ? `
+            <div class="comment-rating">
+                <span class="rating-label">Avaliação:</span>
+                <span class="stars">${stars}</span>
+            </div>
+        ` : ''}
+        <div class="comment-text">
+            <i class="fas fa-quote-left"></i>
+            <span class="comment-content">${safeComment}</span>
+        </div>
     `;
     
+    console.log('✅ Comment element created');
     return commentDiv;
 }
 
@@ -637,3 +677,18 @@ const alertStyles = `
 
 // Adicionar estilos de alerta ao documento
 document.head.insertAdjacentHTML('beforeend', alertStyles);
+
+// Função de debug para verificar dados
+function showDebugInfo() {
+    let debugInfo = `🔍 INFORMAÇÕES DE DEBUG:\n\n`;
+    debugInfo += `📍 URL Base: ${config.apiBaseUrl}\n`;
+    debugInfo += `🗂️ Cache de comentários: ${commentsCache.length} items\n\n`;
+    
+    if (commentsCache.length > 0) {
+        debugInfo += `📝 Primeiro comentário:\n`;
+        debugInfo += JSON.stringify(commentsCache[0], null, 2);
+    }
+    
+    console.log(debugInfo);
+    showAlert(debugInfo, 'info');
+}
