@@ -24,10 +24,10 @@ app.get('/api/status', (req, res) => {
         status: 'online',
         timestamp: new Date().toISOString(),
         environment: {
-            GITHUB_OWNER: GITHUB_OWNER || 'NÃO CONFIGURADO',
-            GITHUB_REPO: GITHUB_REPO || 'NÃO CONFIGURADO',
-            GITHUB_TOKEN: GITHUB_TOKEN ? 'CONFIGURADO' : 'NÃO CONFIGURADO',
-            PORT: PORT || 3000
+            GITHUB_OWNER: GITHUB_OWNER || 'overpride007',
+            GITHUB_REPO: GITHUB_REPO || 'velino',
+            GITHUB_TOKEN: GITHUB_TOKEN ? 'CONFIGURADO',
+            PORT: PORT || 8080
         },
         endpoints: [
             'GET /api/status',
