@@ -33,6 +33,23 @@ npm start
 ### 4. **Acesse o sistema**
 Abra: http://localhost:3000
 
+---
+
+## 🤔 **"Preciso deixar meu PC ligado?"**
+
+### **Para desenvolvimento local:** SIM
+- Você precisa rodar `npm start` no seu PC
+- Servidor funciona apenas enquanto terminal estiver ativo
+
+### **Para produção online:** NÃO! 🎉
+- Use plataformas gratuitas de hospedagem
+- Site fica online 24/7 sem seu PC ligado
+- Atualizações automáticas do GitHub
+
+**📖 [Ver guia completo de deploy →](DEPLOY_RAILWAY.md)**
+
+---
+
 ## 🔐 **Por que essa solução é segura?**
 
 ### ❌ **Problema anterior:**
@@ -61,22 +78,52 @@ velino/
 └── .gitignore         # Protege arquivos sensíveis
 ```
 
-## 🌐 **Deploy em Produção:**
+## 🌐 **Deploy em Produção (GRATUITO):**
 
-### **Opção 1: Railway**
-1. Conecte seu repositório
-2. Configure as variáveis de ambiente
-3. Deploy automático
+### **Opção 1: Railway (Recomendado) 🚂**
+**100% Gratuito para projetos pequenos**
 
-### **Opção 2: Heroku**
-1. `heroku create seu-app`
-2. `heroku config:set GITHUB_TOKEN=seu_token`
-3. `git push heroku main`
+1. Acesse: https://railway.app
+2. Faça login com GitHub
+3. Clique em "New Project" → "Deploy from GitHub repo"
+4. Selecione seu repositório `velino`
+5. Configure as variáveis de ambiente:
+   - `GITHUB_OWNER` = overpride007
+   - `GITHUB_REPO` = velino
+   - `GITHUB_TOKEN` = seu_token_aqui
+   - `PORT` = 3000
+6. Deploy automático! 🚀
 
-### **Opção 3: Vercel**
-1. Conecte repositório
-2. Configure environment variables
-3. Deploy automático
+**URL final:** `https://seu-projeto.up.railway.app`
+
+### **Opção 2: Render 🎨**
+**Gratuito para sempre**
+
+1. Acesse: https://render.com
+2. Conecte com GitHub
+3. "New" → "Web Service" → Selecione repositório
+4. Configure:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+5. Adicione Environment Variables
+6. Deploy!
+
+### **Opção 3: Heroku 📦**
+**Gratuito por 550 horas/mês**
+
+```bash
+# Instale Heroku CLI
+heroku create seu-app-comentarios
+heroku config:set GITHUB_OWNER=overpride007
+heroku config:set GITHUB_REPO=velino
+heroku config:set GITHUB_TOKEN=seu_token_aqui
+git push heroku main
+```
+
+### **Opção 4: Vercel (Serverless) ⚡**
+**Limitações: Não suporta servidor persistente**
+- Melhor para sites estáticos
+- Precisaria de adaptações
 
 ## ❓ **Resolvendo Problemas:**
 
