@@ -173,10 +173,27 @@ async function loadComments() {
     try {
         elements.commentsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando comentários...</div>';
         
+        console.log('📡 Testando conexão com servidor...');
+        
         const response = await fetch(`${config.apiBaseUrl}/api/comments`);
         
+        console.log('📊 Status da resposta:', response.status);
+        
         if (!response.ok) {
-            throw new Error(`Erro ${response.status}: ${response.statusText}`);
+            const contentType = response.headers.get('content-type');
+            let errorMessage = `Erro ${response.status}: ${response.statusText}`;
+            
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorMessage;
+                if (errorData.details) {
+                    errorMessage += `\n${errorData.details}`;
+                }
+            } else {
+                errorMessage = 'Servidor não está respondendo corretamente.';
+            }
+            
+            throw new Error(errorMessage);
         }
         
         const issues = await response.json();
@@ -184,14 +201,54 @@ async function loadComments() {
         displayComments(issues);
         
     } catch (error) {
-        console.error('Erro ao carregar comentários:', error);
-        elements.commentsList.innerHTML = `
+        console.error('❌ Erro ao carregar comentários:', error);
+        
+        const errorHtml = `
             <div class="no-comments">
                 <i class="fas fa-exclamation-triangle"></i>
-                <p>Erro ao carregar comentários: ${error.message}</p>
-                <p>Verifique se o servidor está rodando.</p>
+                <p><strong>Erro ao carregar comentários:</strong></p>
+                <p>${error.message}</p>
+                <br>
+                <button onclick="testServerConnection()" class="primary-btn">
+                    <i class="fas fa-stethoscope"></i> Testar Conexão
+                </button>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                    Verifique se o Railway está online e as variáveis de ambiente estão configuradas.
+                </p>
             </div>
         `;
+        
+        elements.commentsList.innerHTML = errorHtml;
+    }
+}
+
+// Função para testar conexão com o servidor
+async function testServerConnection() {
+    try {
+        showAlert('🔍 Testando conexão...', 'info');
+        
+        const response = await fetch(`${config.apiBaseUrl}/api/status`);
+        const status = await response.json();
+        
+        console.log('📊 Status do servidor:', status);
+        
+        let message = `✅ Servidor online!\n\n`;
+        message += `🔧 Configurações:\n`;
+        message += `• GitHub Owner: ${status.environment.GITHUB_OWNER}\n`;
+        message += `• GitHub Repo: ${status.environment.GITHUB_REPO}\n`;
+        message += `• GitHub Token: ${status.environment.GITHUB_TOKEN}\n`;
+        message += `• Porta: ${status.environment.PORT}`;
+        
+        showAlert(message, 'success');
+        
+        // Tentar carregar comentários novamente
+        setTimeout(() => {
+            loadComments();
+        }, 2000);
+        
+    } catch (error) {
+        console.error('❌ Erro no teste de conexão:', error);
+        showAlert(`❌ Falha na conexão: ${error.message}`, 'error');
     }
 }
 
@@ -308,20 +365,56 @@ async function handleCommentSubmission(e) {
 }
 
 async function submitComment(data) {
-    const response = await fetch(`${config.apiBaseUrl}/api/comments`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-    
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Erro ${response.status}`);
+    try {
+        console.log('📤 Enviando comentário:', data);
+        
+        const response = await fetch(`${config.apiBaseUrl}/api/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        console.log('📊 Status da resposta:', response.status);
+        
+        // Verificar se a resposta é JSON válido
+        const contentType = response.headers.get('content-type');
+        console.log('📋 Content-Type:', contentType);
+        
+        if (!response.ok) {
+            let errorMessage = `Erro ${response.status}`;
+            
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorData.message || errorMessage;
+                if (errorData.details) {
+                    errorMessage += ` - ${errorData.details}`;
+                }
+            } else {
+                // Se não é JSON, provavelmente é HTML (página de erro)
+                const errorText = await response.text();
+                console.error('❌ Resposta não-JSON:', errorText.substring(0, 200));
+                errorMessage = 'Servidor não está respondendo corretamente. Verifique se está online no Railway.';
+            }
+            
+            throw new Error(errorMessage);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Comentário enviado com sucesso!');
+        return result;
+        
+    } catch (error) {
+        console.error('❌ Erro detalhado:', error);
+        
+        // Verificar se é erro de conexão
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            throw new Error('Não foi possível conectar ao servidor. Verifique se o Railway está online.');
+        }
+        
+        throw error;
     }
-    
-    return response.json();
 }
 
 // Submissão de sugestões
