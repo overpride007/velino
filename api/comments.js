@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Configuração
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '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';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_OWNER = process.env.GITHUB_OWNER || 'overpride007';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'Velino';
 
