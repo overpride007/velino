@@ -23,12 +23,12 @@ app.get('/api/status', (req, res) => {
         environment: {
             GITHUB_OWNER: GITHUB_OWNER || 'overpride007',
             GITHUB_REPO: GITHUB_REPO || 'Velino',
-            GITHUB_TOKEN: GITHUB_TOKEN ? 'CONFIGURADO (Railway)' : 'NÃO CONFIGURADO',
+            GITHUB_TOKEN: GITHUB_TOKEN ? 'CONFIGURADO (Railway)',
             PORT: PORT || 8080,
             // Adicione estas linhas para diagnóstico do ambiente:
             NODE_ENV: process.env.NODE_ENV || 'development',
-            RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT || 'Não detectado',
-            RAILWAY_PROJECT_NAME: process.env.RAILWAY_PROJECT_NAME || 'Não detectado'
+            RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT || 'production',
+            RAILWAY_PROJECT_NAME: process.env.RAILWAY_PROJECT_NAME || 'abundant-motivation'
         },
         endpoints: [
             'GET /api/status',
