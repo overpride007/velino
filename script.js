@@ -1,8 +1,7 @@
-// Configuração do GitHub
+// Configuração da API (sem token exposto!)
 const config = {
-    owner: 'overpride007',  // ALTERE AQUI: seu usuário do GitHub
-    repo: 'velino',        // ALTERE AQUI: nome do seu repositório
-    token: 'SEU_TOKEN_AQUI' // ALTERE AQUI: seu Personal Access Token
+    apiBaseUrl: window.location.origin, // Usa a mesma origem do site
+    // Token fica seguro no servidor backend
 };
 
 // Estado da aplicação
@@ -174,7 +173,7 @@ async function loadComments() {
     try {
         elements.commentsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando comentários...</div>';
         
-        const response = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/issues?labels=comment&state=all&sort=created&direction=desc`);
+        const response = await fetch(`${config.apiBaseUrl}/api/comments`);
         
         if (!response.ok) {
             throw new Error(`Erro ${response.status}: ${response.statusText}`);
@@ -190,7 +189,7 @@ async function loadComments() {
             <div class="no-comments">
                 <i class="fas fa-exclamation-triangle"></i>
                 <p>Erro ao carregar comentários: ${error.message}</p>
-                <p>Verifique se o repositório e token estão configurados corretamente.</p>
+                <p>Verifique se o servidor está rodando.</p>
             </div>
         `;
     }
@@ -285,17 +284,11 @@ function generateStarRating(rating) {
 async function handleCommentSubmission(e) {
     e.preventDefault();
     
-    if (config.token === 'SEU_TOKEN_AQUI') {
-        showAlert('⚠️ Configure seu GitHub token primeiro!', 'warning');
-        return;
-    }
-    
     if (currentRating === 0) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
     
-    const formData = new FormData(elements.commentForm);
     const commentData = {
         name: document.getElementById('username').value,
         age: document.getElementById('age').value,
@@ -315,29 +308,17 @@ async function handleCommentSubmission(e) {
 }
 
 async function submitComment(data) {
-    const issueBody = `Nome: ${data.name}
-Idade: ${data.age}
-Avaliação: ${data.rating}
-Comentário: ${data.comment}`;
-    
-    const issueData = {
-        title: `Comentário de ${data.name} - ${data.rating} estrelas`,
-        body: issueBody,
-        labels: ['comment']
-    };
-    
-    const response = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/issues`, {
+    const response = await fetch(`${config.apiBaseUrl}/api/comments`, {
         method: 'POST',
         headers: {
-            'Authorization': `token ${config.token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(issueData)
+        body: JSON.stringify(data)
     });
     
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || `Erro ${response.status}`);
+        throw new Error(errorData.error || `Erro ${response.status}`);
     }
     
     return response.json();
@@ -346,11 +327,6 @@ Comentário: ${data.comment}`;
 // Submissão de sugestões
 async function handleSuggestionSubmission(e) {
     e.preventDefault();
-    
-    if (config.token === 'SEU_TOKEN_AQUI') {
-        showAlert('⚠️ Configure seu GitHub token primeiro!', 'warning');
-        return;
-    }
     
     const suggestionData = {
         name: document.getElementById('suggestion-name').value,
@@ -369,28 +345,17 @@ async function handleSuggestionSubmission(e) {
 }
 
 async function submitSuggestion(data) {
-    const issueBody = `Nome: ${data.name}
-${data.email ? `Email: ${data.email}` : ''}
-Sugestão: ${data.suggestion}`;
-    
-    const issueData = {
-        title: `Sugestão de ${data.name}`,
-        body: issueBody,
-        labels: ['suggestion', 'enhancement']
-    };
-    
-    const response = await fetch(`https://api.github.com/repos/${config.owner}/${config.repo}/issues`, {
+    const response = await fetch(`${config.apiBaseUrl}/api/suggestions`, {
         method: 'POST',
         headers: {
-            'Authorization': `token ${config.token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(issueData)
+        body: JSON.stringify(data)
     });
     
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || `Erro ${response.status}`);
+        throw new Error(errorData.error || `Erro ${response.status}`);
     }
     
     return response.json();

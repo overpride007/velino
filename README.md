@@ -46,25 +46,50 @@ const config = {
 5. Clique em **Generate token**
 6. **IMPORTANTE**: Copie o token gerado (você não conseguirá vê-lo novamente)
 
-### 3. Configurar o Sistema
+### 3. Configuração Segura 🔐
 
-Edite o arquivo `script.js` e altere as seguintes linhas:
+**⚠️ NUNCA coloque o token diretamente no código!**
 
-```javascript
-const config = {
-    owner: 'seu-usuario',        // ← Seu usuário do GitHub
-    repo: 'velino',              // ← Nome do seu repositório
-    token: 'SEU_TOKEN_AQUI'      // ← Seu Personal Access Token
-};
-```
+1. Copie `.env.example` para `.env`:
+   ```bash
+   copy .env.example .env
+   ```
+
+2. Edite o arquivo `.env` com seus dados:
+   ```env
+   GITHUB_OWNER=overpride007
+   GITHUB_REPO=velino
+   GITHUB_TOKEN=seu_token_aqui
+   PORT=3000
+   ```
+
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+4. Execute o servidor:
+   ```bash
+   npm start
+   ```
+
+5. Acesse: http://localhost:3000
+
+📖 **[Ver guia completo de instalação](INSTALACAO.md)**
 
 ## 📁 Estrutura do Projeto
 
 ```
 velino/
+├── api/
+│   └── comments.js     # Backend seguro (Node.js)
 ├── index.html          # Página principal
 ├── styles.css          # Estilos CSS
-├── script.js           # JavaScript principal
+├── script.js           # JavaScript (SEM token)
+├── package.json        # Dependências Node.js
+├── .env.example        # Modelo de configuração
+├── .env               # Suas configurações (SECRETO)
+├── .gitignore         # Proteção de arquivos sensíveis
 └── README.md           # Este arquivo
 ```
 
