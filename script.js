@@ -442,11 +442,13 @@ async function handleCommentSubmission(e) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
-    // Monta o comentário no formato solicitado
-    const nome = document.getElementById('username').value;
-    const idade = document.getElementById('age').value;
+    // Monta o comentário exatamente no formato solicitado
+    const nome = document.getElementById('username').value.trim();
+    const idade = document.getElementById('age').value.trim();
     const avaliacao = currentRating;
-    const comentario = document.getElementById('comment-text').value;
+    let comentario = document.getElementById('comment-text').value.trim();
+    // Remove qualquer ocorrência de campos extras do texto do comentário
+    comentario = comentario.replace(/Extensão:.*/gi, '').replace(/Nome:.*/gi, '').replace(/Idade:.*/gi, '').replace(/Avaliação:.*/gi, '').replace(/comentario:.*/gi, '').trim();
     const extensao = currentExtension;
     const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
@@ -458,6 +460,7 @@ async function handleCommentSubmission(e) {
     try {
         await submitComment(commentData);
         showAlert('✅ Comentário enviado com sucesso!', 'success');
+        document.getElementById('comment-text').value = '';
         showViewCommentsSection();
         loadComments();
     } catch (error) {
