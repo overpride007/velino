@@ -10,6 +10,12 @@
     
     <!-- Sistema de Proteção com Chave de Acesso -->
     <script>
+// Impede propagação do clique nos elementos do sistema de comentários do card Sagrado Império
+document.querySelectorAll('#sagrado-imperio .show-comments-btn, #sagrado-imperio .hide-comments-btn, #sagrado-imperio .write-comment-btn, #sagrado-imperio .cancel-comment-btn, #sagrado-imperio .star, #sagrado-imperio .username, #sagrado-imperio textarea, #sagrado-imperio form').forEach(el => {
+    el.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+});
         // Chave de acesso válida (será alterada mensalmente)
         const CHAVE_ACESSO_VALIDA = "d#Di2^kV8@iwlhY2rIl!eAELLNrFy%HIH@6hins!9usIc7oW#i";
         
@@ -313,7 +319,7 @@
         }
         
         .star.empty {
-            color: #374151; /* Cor mais escura para estrelas vazias */
+            color: #515137; /* Cor mais escura para estrelas vazias */
         }
         
         .rating-stars:hover .star {
@@ -364,6 +370,13 @@
         transition: all 0.2s ease;
         filter: grayscale(100%);
         opacity: 0.5;
+    }
+
+    .star-rating .star.text-yellow-400,
+    .star-rating .star.active {
+        color: #FFD700 !important; /* Dourado vibrante */
+        filter: grayscale(0%) !important;
+        opacity: 1 !important;
     }
     
     .star-rating .star:hover,
@@ -2139,6 +2152,7 @@
             </div>
         </div>
                     <!-- Sagrado Império de Britania -->
+                    <!-- Card principal da extensão Sagrado Império de Britania -->
                     <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4 flex flex-col" id="sagrado-imperio" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
                         <!-- Overlay de cópia -->
                         <div class="copy-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 pointer-events-none z-20">
@@ -2162,61 +2176,58 @@
                             <p><strong>Frequência de Atualização:</strong> Média</p>
                             <p><strong>Observação:</strong> Títulos bem selecionados e conteúdo atualizado.</p>
                         </div>
-
-                        <!-- Integração do sistema de comentários -->
-                        <div class="card-content">
-                            <!-- BOTÃO VER COMENTÁRIOS -->
-                            <button class="show-comments-btn w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold rounded-lg mt-4">
-                                Ver Comentários
-                            </button>
-                        </div>
-
-                        <!-- CARD DE COMENTÁRIOS (inicialmente escondido) -->
-                        <div class="comments-card hidden mt-4 p-6 bg-gray-800 rounded-xl border border-gray-700">
-                            <h3 class="text-yellow-300 text-xl font-bold mb-4">Comentários</h3>
-                            <!-- LISTA DE COMENTÁRIOS (vai aparecer aqui) -->
-                            <div class="comments-list space-y-3 mb-4">
-                                <p class="text-gray-400">Carregando comentários...</p>
-                            </div>
-                            <!-- BOTÕES -->
-                            <button class="write-comment-btn w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg mb-2">
-                                ✍️ Escrever Comentário
-                            </button>
-                            <button class="hide-comments-btn w-full py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg">
-                             Fechar
-                            </button>
-                        </div>
-
-                        <!-- FORMULÁRIO (inicialmente escondido) -->
-                        <div class="comment-form hidden mt-4 p-6 bg-gray-800 rounded-xl border border-gray-700">
-                            <h3 class="text-yellow-300 text-xl font-bold mb-4">Deixe sua avaliação</h3>
-                            <form class="space-y-4">
-                                <!-- Nome -->
-                                <input type="text" class="username w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white" placeholder="Seu nome" required>
-                                <!-- Estrelas -->
-                                <div class="rating flex gap-1">
-                                    <span class="star text-2xl cursor-pointer" data-value="1">☆</span>
-                                    <span class="star text-2xl cursor-pointer" data-value="2">☆</span>
-                                    <span class="star text-2xl cursor-pointer" data-value="3">☆</span>
-                                    <span class="star text-2xl cursor-pointer" data-value="4">☆</span>
-                                    <span class="star text-2xl cursor-pointer" data-value="5">☆</span>
-                                    <input type="hidden" class="rating-value" required>
-                                </div>
-                                <!-- Comentário -->
-                                <textarea class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white" rows="4" placeholder="Seu comentário..." required></textarea>
-                                <!-- Botões -->
-                                <div class="flex gap-2">
-                                    <button type="submit" class="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg">
-                                        ✅ Enviar
-                                    </button>
-                                    <button type="button" class="flex-1 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg cancel-comment-btn">
-                                        ❌ Cancelar
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                        
+<!-- COMENTÁRIOS E AVALIAÇÕES - SAGRADO IMPÉRIO -->
+<div class="mt-8" data-extension-id="sagrado-imperio">
+    <!-- Botão para mostrar comentários -->
+    <button class="show-comments-btn bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-semibold shadow transition mb-2">
+        💬 Ver Comentários <span class="comments-count">(0)</span>
+    </button>
+    <!-- Card de comentários (inicialmente oculto) -->
+    <div class="comments-card bg-gray-900/95 p-5 rounded-xl shadow-lg border border-blue-700 mt-2 hidden">
+        <div class="flex justify-between items-center mb-3">
+            <h4 class="text-lg font-bold text-blue-200">Comentários</h4>
+            <button class="hide-comments-btn text-blue-400 hover:text-blue-200 font-bold text-xl px-2 py-1 rounded transition" title="Fechar">&times;</button>
+        </div>
+        <!-- Lista de comentários dinâmica -->
+        <div class="comments-list space-y-4 mb-4"></div>
+        <button class="write-comment-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold shadow transition">
+            Escrever Comentário
+        </button>
+    </div>
+    <!-- Formulário de comentário (inicialmente oculto) -->
+    <div class="comment-form bg-gray-900/95 p-5 rounded-xl shadow-lg border border-blue-700 mt-2 hidden">
+        <div class="flex justify-between items-center mb-3">
+            <h4 class="text-lg font-bold text-blue-200">Deixe seu comentário</h4>
+            <button class="cancel-comment-btn text-blue-400 hover:text-blue-200 font-bold text-xl px-2 py-1 rounded transition" title="Cancelar">&times;</button>
+        </div>
+        <form>
+            <div class="mb-3">
+                <label class="block text-blue-300 font-semibold mb-1" for="username-sagrado">Nome</label>
+                <input id="username-sagrado" name="username" type="text" maxlength="20" required class="username-input w-full px-3 py-2 rounded bg-gray-800 text-blue-100 border border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Seu nome ou apelido">
+            </div>
+            <div class="mb-3">
+                <label class="block text-blue-300 font-semibold mb-1">Avaliação</label>
+<div class="rating star-rating flex gap-1 mb-1" style="font-size:1.5rem;">
+    <span class="star text-gray-500" data-value="1">☆</span>
+    <span class="star text-gray-500" data-value="2">☆</span>
+    <span class="star text-gray-500" data-value="3">☆</span>
+    <span class="star text-gray-500" data-value="4">☆</span>
+    <span class="star text-gray-500" data-value="5">☆</span>
+    <input type="hidden" class="rating-value" name="rating" value="0">
+</div>
+            </div>
+            <div class="mb-3">
+                <label class="block text-blue-300 font-semibold mb-1" for="comment-sagrado">Comentário</label>
+                <textarea id="comment-sagrado" name="comment" rows="3" maxlength="300" required class="comment-input w-full px-3 py-2 rounded bg-gray-800 text-blue-100 border border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Escreva seu comentário"></textarea>
+            </div>
+            <div class="flex gap-3 mt-4">
+                <button type="submit" class="submit-comment-btn bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition">Enviar</button>
+                <button type="button" class="cancel-comment-btn bg-gray-700 hover:bg-gray-800 text-blue-200 px-5 py-2 rounded-lg font-semibold shadow transition">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
                           
                     <!-- Remangas -->
                     <div class="extension-card bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-7 rounded-2xl border border-gray-700 shadow-xl relative mx-2 my-4" id="remangas" style="box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(251,191,36,0.10);">
