@@ -272,7 +272,7 @@ function displayComments(comments) {
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment-item';
         commentDiv.innerHTML = `
-            <div class="comment-extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">Extensão: ${currentExtension || ''}</div>
+            <div class="extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">Extensão: ${currentExtension || ''}</div>
             <div><strong>Nome:</strong> ${data.name}</div>
             <div><strong>Idade:</strong> ${data.age}</div>
             <div><strong>Avaliação:</strong> ${data.rating}</div>
@@ -443,18 +443,21 @@ async function handleCommentSubmission(e) {
         return;
     }
     // Monta o comentário exatamente no formato solicitado
+    const extensao = currentExtension;
     const nome = document.getElementById('username').value.trim();
     const idade = document.getElementById('age').value.trim();
     const avaliacao = currentRating;
     let comentario = document.getElementById('comment-text').value.trim();
-    // Filtra cada linha, removendo campos do sistema
-    comentario = comentario
-        .split(/\r?\n/)
-        .filter(l => !/^\s*(Extensão:|Nome:|Idade:|Avaliação:|comentario:|Comentário:)/i.test(l.trim()))
-        .join(' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-    const extensao = currentExtension;
+    // Adiciona a extensão no topo do comentário
+    comentario = `Extensão: ${extensao}\n` + comentario;
+    // Remove todos os campos do sistema, mesmo se o usuário colar tudo misturado
+    comentario = comentario.replace(/Extensão:[^\n]*\n?/gi, '')
+                         .replace(/Nome:[^\n]*\n?/gi, '')
+                         .replace(/Idade:[^\n]*\n?/gi, '')
+                         .replace(/Avaliação:[^\n]*\n?/gi, '')
+                         .replace(/Comentário:[^\n]*\n?/gi, '')
+                         .replace(/\s+/g, ' ')
+                         .trim();
     // Monta o comentário do zero, sempre no formato correto
     const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
