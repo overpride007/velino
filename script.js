@@ -1,4 +1,3 @@
-
 let currentExtension = null;
 
 function abrirModalComentarios(extensao) {
@@ -268,47 +267,42 @@ function displayComments(comments) {
     elements.commentsList.innerHTML = '';
     comments.forEach((comment) => {
         const data = parseCommentBody(comment.comment);
-        // Monta o bloco do comentário no formato correto
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment-item';
         commentDiv.innerHTML = `
-            <div class="extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">Extensão: ${currentExtension || ''}</div>
+            <div class="extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">
+                Extensão: ${data.extension || currentExtension || ''}
+            </div>
             <div><strong>Nome:</strong> ${data.name}</div>
             <div><strong>Idade:</strong> ${data.age}</div>
             <div><strong>Avaliação:</strong> ${data.rating}</div>
-            <div><strong>comentario:</strong> ${data.comment}</div>
+            <div><strong>Comentário:</strong> ${data.comment}</div>
         `;
         elements.commentsList.appendChild(commentDiv);
     });
 }
 
 function parseCommentBody(body) {
-    if (!body) return { name: '', age: '', rating: 0, comment: '' };
-    let lines = body.split('\n');
-    // Remove todas as linhas que começam com 'Extensão:' exceto a primeira
-    if (lines[0].startsWith('Extensão: ')) {
-        lines = lines.slice(1);
-    } else {
-        lines = lines.filter(line => !line.startsWith('Extensão: '));
-    }
+    if (!body) return { extension: '', name: '', age: '', rating: 0, comment: '' };
     const data = {
+        extension: '',
         name: '',
         age: '',
         rating: 0,
         comment: ''
     };
-    let foundComment = false;
+    const lines = body.split('\n');
     lines.forEach(line => {
-        if (foundComment) return; // Ignora qualquer coisa após o campo comentario
-        if (!data.name && line.startsWith('Nome:')) {
+        if (line.startsWith('Extensão:')) {
+            data.extension = line.replace('Extensão:', '').trim();
+        } else if (line.startsWith('Nome:')) {
             data.name = line.replace('Nome:', '').trim();
-        } else if (!data.age && line.startsWith('Idade:')) {
+        } else if (line.startsWith('Idade:')) {
             data.age = line.replace('Idade:', '').trim();
-        } else if (!data.rating && line.startsWith('Avaliação:')) {
+        } else if (line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
         } else if (line.startsWith('comentario:')) {
             data.comment = line.replace('comentario:', '').trim();
-            foundComment = true;
         }
     });
     return data;
@@ -442,14 +436,27 @@ async function handleCommentSubmission(e) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
-    // Monta o comentário exatamente no formato solicitado
+    // Monta o comentário exatamente no formato solicitado, SEM duplicidade
     const extensao = currentExtension;
     const nome = document.getElementById('username').value.trim();
     const idade = document.getElementById('age').value.trim();
     const avaliacao = currentRating;
     let comentario = document.getElementById('comment-text').value.trim();
-   
-    // Monta o comentário do zero, sempre no formato correto
+
+    // Remove campos do sistema do texto do usuário
+    comentario = comentario
+        .split('\n')
+        .filter(line =>
+            !/^Extensão:/i.test(line) &&
+            !/^Nome:/i.test(line) &&
+            !/^Idade:/i.test(line) &&
+            !/^Avaliação:/i.test(line) &&
+            !/^comentario:/i.test(line)
+        )
+        .join('\n')
+        .trim();
+
+    // Monta o comentário final
     const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
         name: nome,
