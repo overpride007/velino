@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 // Configuração
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -27,7 +27,7 @@ app.get('/api/status', (req, res) => {
             GITHUB_OWNER: GITHUB_OWNER || 'NÃO CONFIGURADO',
             GITHUB_REPO: GITHUB_REPO || 'NÃO CONFIGURADO',
             GITHUB_TOKEN: GITHUB_TOKEN ? 'CONFIGURADO' : 'NÃO CONFIGURADO',
-            PORT: PORT || 8080
+            PORT: PORT || 3000
         },
         endpoints: [
             'GET /api/status',
@@ -99,13 +99,13 @@ app.post('/api/comments', async (req, res) => {
     }
 });
 
-// Endpoint para enviar sugestão para a Issue 7
+// Endpoint para enviar sugestão para a Issue 8
 app.post('/api/suggestions', async (req, res) => {
     try {
         if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {
             throw new Error('Variáveis de ambiente não configuradas');
         }
-        const ISSUE_NUMBER = 7; // Issue fixa para comentários/sugestões
+        const ISSUE_NUMBER = 8; // Issue fixa para sugestões
         const { name, email, suggestion } = req.body;
         if (!name || !suggestion) {
             throw new Error('Nome e sugestão são obrigatórios');
