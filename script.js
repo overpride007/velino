@@ -1,3 +1,29 @@
+// Lógica para abrir modal de comentários filtrando por extensão
+document.getElementById('view-comments-mangabr').addEventListener('click', function() {
+    abrirModalComentarios('Manga BR');
+});
+document.getElementById('view-comments-mangaterra').addEventListener('click', function() {
+    abrirModalComentarios('Manga Terra');
+});
+
+function abrirModalComentarios(extensao) {
+    const modal = document.getElementById('comments-modal');
+    const overlay = document.getElementById('overlay');
+    modal.classList.add('active');
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modal-title').textContent = `Comentários - ${extensao}`;
+    showViewCommentsSection();
+    // Aqui você pode filtrar os comentários por extensão se desejar
+}
+
+// Fechar modal de comentários
+document.getElementById('close-modal').addEventListener('click', function() {
+    document.getElementById('comments-modal').classList.remove('active');
+    document.getElementById('overlay').classList.add('hidden');
+    document.body.style.overflow = '';
+    document.getElementById('modal-title').textContent = 'Comentários';
+});
 // Configuração da API (sem token exposto!)
 const config = {
     apiBaseUrl: window.location.origin, // Usa a mesma origem do site
