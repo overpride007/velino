@@ -301,9 +301,9 @@ function parseCommentBody(body) {
             data.age = line.replace('Idade:', '').trim();
         } else if (line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
-        } else if (line.startsWith('Comentário:')) {
-            data.comment = line.replace('Comentário:', '').trim();
-        } else if (!line.startsWith('Nome:') && !line.startsWith('Idade:') && !line.startsWith('Avaliação:') && !line.startsWith('Comentário:')) {
+        } else if (line.startsWith('Comentário:') || line.startsWith('comentario:')) {
+            data.comment = line.replace(/Comentário:|comentario:/, '').trim();
+        } else if (!line.startsWith('Nome:') && !line.startsWith('Idade:') && !line.startsWith('Avaliação:') && !line.startsWith('Comentário:') && !line.startsWith('comentario:')) {
             if (data.comment) {
                 data.comment += '\n' + line.trim();
             } else {
