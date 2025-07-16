@@ -455,12 +455,15 @@ async function handleCommentSubmission(e) {
         .join('\n')
         .trim();
 
+    // Monta o corpo do comentário com todos os campos, incluindo 'Extensão:'
+    const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${currentRating}\nComentário: ${comentario}`;
+
     const commentData = {
         extension: currentExtension,
         name: nome,
         age: idade,
         rating: currentRating,
-        comment: comentario
+        comment: commentBody
     };
     try {
         await submitComment(commentData);
