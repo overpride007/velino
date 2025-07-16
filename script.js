@@ -267,18 +267,18 @@ function displayComments(comments) {
     }
     elements.commentsList.innerHTML = '';
     comments.forEach((comment, index) => {
-        // Exibe o nome da extensão no topo do comentário
-        const commentData = parseCommentBody(comment.comment);
-        const commentElement = createCommentElement(commentData, comment);
-        // Adiciona título de extensão
-        const extTitle = document.createElement('div');
-        extTitle.className = 'comment-extension-title';
-        extTitle.style.fontWeight = 'bold';
-        extTitle.style.color = '#764ba2';
-        extTitle.style.marginBottom = '6px';
-        extTitle.textContent = `Extensão: ${currentExtension || ''}`;
-        commentElement.prepend(extTitle);
-        elements.commentsList.appendChild(commentElement);
+        const data = parseCommentBody(comment.comment);
+        // Monta o bloco do comentário no formato correto
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment-item';
+        commentDiv.innerHTML = `
+            <div class="comment-extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">Extensão: ${currentExtension || ''}</div>
+            <div><strong>Nome:</strong> ${data.name}</div>
+            <div><strong>Idade:</strong> ${data.age}</div>
+            <div><strong>Avaliação:</strong> ${data.rating}</div>
+            <div><strong>comentario:</strong> ${data.comment}</div>
+        `;
+        elements.commentsList.appendChild(commentDiv);
     });
 }
 
