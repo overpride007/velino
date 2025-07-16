@@ -258,6 +258,58 @@ async function loadComments() {
     }
 }
 
+function displayComments(comments) {
+    if (comments.length === 0) {
+        elements.commentsList.innerHTML = `
+            <div class="no-comments">
+                <i class="fas fa-comment-slash"></i>
+                <p>Ainda não há comentários.</p>
+                <p>Seja o primeiro a comentar!</p>
+            </div>
+        `;
+        return;
+    }
+    elements.commentsList.innerHTML = '';
+    comments.forEach((comment, index) => {
+        // Usa o campo correto para parse
+        const commentData = parseCommentBody(comment.comment);
+        const commentElement = createCommentElement(commentData, comment);
+        elements.commentsList.appendChild(commentElement);
+    });
+}
+
+function parseCommentBody(body) {
+    if (!body) return { name: '', age: '', rating: 0, comment: '' };
+    let lines = body.split('\n');
+    if (lines[0].startsWith('Extensão: ')) {
+        lines = lines.slice(1);
+    }
+    const data = {
+        name: '',
+        age: '',
+        rating: 0,
+        comment: ''
+    };
+    lines.forEach(line => {
+        if (line.startsWith('Nome:')) {
+            data.name = line.replace('Nome:', '').trim();
+        } else if (line.startsWith('Idade:')) {
+            data.age = line.replace('Idade:', '').trim();
+        } else if (line.startsWith('Avaliação:')) {
+            data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
+        } else if (line.startsWith('Comentário:')) {
+            data.comment = line.replace('Comentário:', '').trim();
+        } else if (!line.startsWith('Nome:') && !line.startsWith('Idade:') && !line.startsWith('Avaliação:') && !line.startsWith('Comentário:')) {
+            if (data.comment) {
+                data.comment += '\n' + line.trim();
+            } else {
+                data.comment = line.trim();
+            }
+        }
+    });
+    return data;
+}
+
 // Função para testar conexão com o servidor
 async function testServerConnection() {
     try {
@@ -332,86 +384,6 @@ async function testServerConnection() {
         
         showAlert(`❌ Falha na conexão:\n\n${errorMessage}`, 'error');
     }
-}
-
-function displayComments(comments) {
-    console.log('📋 Displaying comments:', comments.length, comments);
-    if (comments.length === 0) {
-        elements.commentsList.innerHTML = `
-            <div class="no-comments">
-                <i class="fas fa-comment-slash"></i>
-                <p>Ainda não há comentários.</p>
-                <p>Seja o primeiro a comentar!</p>
-            </div>
-        `;
-        return;
-    }
-    elements.commentsList.innerHTML = '';
-    comments.forEach((comment, index) => {
-        // Usa o campo correto para parse
-        const commentData = parseCommentBody(comment.comment || comment.body);
-        const commentElement = createCommentElement(commentData, comment);
-        elements.commentsList.appendChild(commentElement);
-    });
-    console.log('🎯 Total comments in DOM:', elements.commentsList.children.length);
-}
-
-function parseCommentBody(body) {
-    // Se o comentário começa com 'Extensão: ...', remove essa linha do texto exibido
-    let lines = body.split('\n');
-    if (lines[0].startsWith('Extensão: ')) {
-        lines = lines.slice(1);
-    }
-    const data = {
-        name: 'Usuário',
-        age: '',
-        rating: 0,
-        comment: lines.join('\n').trim()
-    };
-    
-    // Tentar extrair dados estruturados do comentário
-    let commentStartIndex = -1;
-    let isCommentSection = false;
-    const commentLines = [];
-    
-    lines.forEach((line, index) => {
-        if (line.startsWith('Nome:')) {
-            data.name = line.replace('Nome:', '').trim();
-        } else if (line.startsWith('Idade:')) {
-            data.age = line.replace('Idade:', '').trim();
-        } else if (line.startsWith('Avaliação:')) {
-            data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
-        } else if (line.startsWith('Comentário:')) {
-            commentStartIndex = index;
-            isCommentSection = true;
-            // Pegar apenas o texto na mesma linha após "Comentário:"
-            const commentOnSameLine = line.replace('Comentário:', '').trim();
-            if (commentOnSameLine) {
-                commentLines.push(commentOnSameLine);
-            }
-        } else if (isCommentSection && index > commentStartIndex) {
-            // Coletar todas as linhas após "Comentário:" que não sejam campos estruturados
-            if (!line.startsWith('Nome:') && 
-                !line.startsWith('Idade:') && 
-                !line.startsWith('Avaliação:') && 
-                !line.startsWith('Comentário:')) {
-                commentLines.push(line);
-            }
-        }
-    });
-    
-    // Montar o comentário final
-    if (commentLines.length > 0) {
-        data.comment = commentLines.join('\n').trim();
-    }
-    
-    // Se ainda não encontrou o comentário estruturado, usar o body completo
-    if (!data.comment || data.comment === '') {
-        data.comment = body.trim();
-    }
-    
-    console.log('📋 Parsed data:', data);
-    return data;
 }
 
 function createCommentElement(data, originalIssue) {
