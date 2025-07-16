@@ -282,15 +282,8 @@ async function loadComments() {
         let filtered = issues;
         if (currentExtension) {
             filtered = issues.filter(comment => {
-                // Se o campo "extension" existir, filtra por ele
-                if (comment.extension) {
-                    return comment.extension === currentExtension;
-                }
-                // Se não existir, tenta buscar no body
-                if (comment.body && comment.body.includes(`Extensão: ${currentExtension}`)) {
-                    return true;
-                }
-                return false;
+                // Busca pelo prefixo no body
+                return comment.body && comment.body.startsWith(`Extensão: ${currentExtension}`);
             });
         }
         
@@ -544,20 +537,16 @@ function generateStarRating(rating) {
 // Submissão de comentários
 async function handleCommentSubmission(e) {
     e.preventDefault();
-    
     if (currentRating === 0) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
-    
+    // Monta o corpo do comentário incluindo o nome da extensão no início
+    const extensionText = `Extensão: ${currentExtension}`;
+    const commentBody = `${extensionText}\nNome: ${document.getElementById('username').value}\nIdade: ${document.getElementById('age').value}\nAvaliação: ${currentRating}\nComentário: ${document.getElementById('comment-text').value}`;
     const commentData = {
-        name: document.getElementById('username').value,
-        age: document.getElementById('age').value,
-        rating: currentRating,
-        comment: document.getElementById('comment-text').value,
-        extension: currentExtension // Adiciona a extensão ao comentário
+        body: commentBody
     };
-    
     try {
         await submitComment(commentData);
         showAlert('✅ Comentário enviado com sucesso!', 'success');
