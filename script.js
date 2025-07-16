@@ -436,11 +436,8 @@ async function handleCommentSubmission(e) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
-    // Monta o comentário exatamente no formato solicitado, SEM duplicidade
-    const extensao = currentExtension;
     const nome = document.getElementById('username').value.trim();
     const idade = document.getElementById('age').value.trim();
-    const avaliacao = currentRating;
     let comentario = document.getElementById('comment-text').value.trim();
 
     // Remove campos do sistema do texto do usuário
@@ -456,13 +453,12 @@ async function handleCommentSubmission(e) {
         .join('\n')
         .trim();
 
-    // Monta o comentário final
-    const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
+        extension: currentExtension,
         name: nome,
         age: idade,
-        rating: avaliacao,
-        comment: commentText
+        rating: currentRating,
+        comment: comentario
     };
     try {
         await submitComment(commentData);
