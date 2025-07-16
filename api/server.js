@@ -12,7 +12,12 @@ app.use(cors());
 app.use(express.json());
 
 // Configurações do GitHub
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+// Railway: configure a variável de ambiente GITHUB_TOKEN no painel do Railway (Project > Variables)
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env['GITHUB_TOKEN'];
+if (!GITHUB_TOKEN) {
+  console.error('ERRO: A variável de ambiente GITHUB_TOKEN não está definida. Configure no Railway!');
+  process.exit(1);
+}
 const ISSUE_URL = 'https://api.github.com/repos/overpride007/velino/issues/9/comments';
 
 // Rotas da API
