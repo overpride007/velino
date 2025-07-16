@@ -455,17 +455,14 @@ async function handleCommentSubmission(e) {
             !/^Avaliação:/i.test(line) &&
             !/^Comentário:/i.test(line)
         )
-        .join('\n')
+        .join(' ')
         .trim();
 
     // Monta o corpo do comentário para o GitHub Issue
     const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${currentRating}\nComentário: ${comentario}`;
 
+    // Envia apenas o corpo formatado para o campo comment, sem campos extras no objeto
     const commentData = {
-        extension: currentExtension,
-        name: nome,
-        age: idade,
-        rating: currentRating,
         comment: commentBody
     };
     try {
