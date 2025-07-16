@@ -1,9 +1,3 @@
-document.getElementById('view-comments-mangabr').addEventListener('click', function() {
-    abrirModalComentarios('Manga BR');
-});
-document.getElementById('view-comments-mangaterra').addEventListener('click', function() {
-    abrirModalComentarios('Manga Terra');
-});
 
 let currentExtension = null;
 
