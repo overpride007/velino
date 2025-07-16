@@ -336,7 +336,6 @@ async function testServerConnection() {
 
 function displayComments(comments) {
     console.log('📋 Displaying comments:', comments.length, comments);
-    
     if (comments.length === 0) {
         elements.commentsList.innerHTML = `
             <div class="no-comments">
@@ -347,19 +346,13 @@ function displayComments(comments) {
         `;
         return;
     }
-    
     elements.commentsList.innerHTML = '';
-    
     comments.forEach((comment, index) => {
-        console.log(`📝 Processing comment ${index + 1}:`, comment);
-        
-        const commentData = parseCommentBody(comment.body);
+        // Usa o campo correto para parse
+        const commentData = parseCommentBody(comment.comment || comment.body);
         const commentElement = createCommentElement(commentData, comment);
         elements.commentsList.appendChild(commentElement);
-        
-        console.log(`✅ Comment ${index + 1} added to DOM`);
     });
-    
     console.log('🎯 Total comments in DOM:', elements.commentsList.children.length);
 }
 
