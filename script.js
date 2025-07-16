@@ -219,8 +219,11 @@ function showWriteCommentSection() {
 function showViewCommentsSection() {
     elements.writeCommentSection.classList.add('hidden');
     elements.viewCommentsSection.classList.remove('hidden');
-    document.getElementById('modal-title').textContent = 'Comentários';
+    // Mantém o título do modal com o nome da extensão
+    // document.getElementById('modal-title').textContent = 'Comentários';
     resetCommentForm();
+    // Recarrega os comentários da extensão ao voltar
+    loadComments();
 }
 
 // Carregamento de comentários
