@@ -229,7 +229,12 @@ function showViewCommentsSection() {
 async function loadComments() {
     try {
         elements.commentsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando comentários...</div>';
-        const response = await fetch(`${config.apiBaseUrl}/api/comments`);
+        // Busca apenas comentários da extensão atual
+        let url = `${config.apiBaseUrl}/api/comments`;
+        if (currentExtension) {
+            url += `?extension=${encodeURIComponent(currentExtension)}`;
+        }
+        const response = await fetch(url);
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             throw new Error('Servidor não está retornando dados JSON válidos.');
@@ -237,17 +242,9 @@ async function loadComments() {
         if (!response.ok) {
             throw new Error(`Erro ${response.status}`);
         }
-        const issues = await response.json();
-        // Filtrar comentários pela extensão selecionada
-        let filtered = issues;
-        if (currentExtension) {
-            filtered = issues.filter(comment => {
-                // Busca por 'Extensão: <NOME>' em qualquer parte do campo comment
-                return comment.comment && comment.comment.includes(`Extensão: ${currentExtension}`);
-            });
-        }
-        commentsCache = filtered;
-        displayComments(filtered, currentExtension);
+        const comments = await response.json();
+        commentsCache = comments;
+        displayComments(comments, currentExtension);
     } catch (error) {
         elements.commentsList.innerHTML = `<div class='no-comments'><i class='fas fa-exclamation-triangle'></i> Erro ao carregar comentários: ${error.message}</div>`;
     }
