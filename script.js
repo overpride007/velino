@@ -437,13 +437,24 @@ function generateStarRating(rating) {
 // Submissão de comentários
 async function handleCommentSubmission(e) {
     e.preventDefault();
-    if (currentRating === 0) {
-        showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
-        return;
-    }
     const nome = document.getElementById('username').value.trim();
     const idade = document.getElementById('age').value.trim();
     let comentario = document.getElementById('comment-text').value.trim();
+    const avaliacao = currentRating;
+
+    // Validação dos campos obrigatórios
+    if (!nome) {
+        showAlert('⚠️ O campo Nome é obrigatório!', 'warning');
+        return;
+    }
+    if (!avaliacao) {
+        showAlert('⚠️ O campo Avaliação é obrigatório!', 'warning');
+        return;
+    }
+    if (!comentario) {
+        showAlert('⚠️ O campo Comentário é obrigatório!', 'warning');
+        return;
+    }
 
     // Remove campos do sistema do texto do usuário
     comentario = comentario
@@ -459,9 +470,9 @@ async function handleCommentSubmission(e) {
         .trim();
 
     // Monta o corpo do comentário para o GitHub Issue
-    const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${currentRating}\nComentário: ${comentario}`;
+    const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\nComentário: ${comentario}`;
 
-    // Envia apenas o corpo formatado para o campo comment, sem campos extras no objeto
+    // Envia apenas o corpo formatado para o campo comment
     const commentData = {
         comment: commentBody
     };
