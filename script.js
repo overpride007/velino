@@ -17,6 +17,7 @@ function abrirModalComentarios(extensao) {
     document.getElementById('modal-title').textContent = `Comentários - ${extensao}`;
     showViewCommentsSection();
     loadComments();
+}
 
 
 // Fechar modal de comentários
