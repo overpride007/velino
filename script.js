@@ -1,3 +1,4 @@
+async function abrirModalComentarios(extensao) {
 // Lógica para abrir modal de comentários filtrando por extensão
 document.getElementById('view-comments-mangabr').addEventListener('click', function() {
     abrirModalComentarios('Manga BR');
@@ -18,8 +19,7 @@ function abrirModalComentarios(extensao) {
     document.getElementById('modal-title').textContent = `Comentários - ${extensao}`;
     showViewCommentsSection();
     loadComments();
-    // Agora, ao carregar, filtra por extensão
-}
+
 
 // Fechar modal de comentários
 document.getElementById('close-modal').addEventListener('click', function() {
@@ -248,11 +248,11 @@ async function loadComments() {
         if (currentExtension) {
             filtered = issues.filter(comment => {
                 // Busca pelo prefixo no campo comment
-                return comment.comment && comment.comment.startsWith(`Extensão: ${currentExtension}`);
+                return comment.comment && comment.comment.trim().startsWith(`Extensão: ${currentExtension}`);
             });
         }
         commentsCache = filtered;
-        displayComments(filtered);
+        displayComments(filtered, currentExtension);
     } catch (error) {
         elements.commentsList.innerHTML = `<div class='no-comments'><i class='fas fa-exclamation-triangle'></i> Erro ao carregar comentários: ${error.message}</div>`;
     }
@@ -280,7 +280,7 @@ function displayComments(comments) {
         extTitle.style.fontWeight = 'bold';
         extTitle.style.color = '#764ba2';
         extTitle.style.marginBottom = '6px';
-        extTitle.textContent = `Extensão: ${currentExtension}`;
+        extTitle.textContent = `Extensão: ${currentExtension || ''}`;
         commentElement.prepend(extTitle);
         elements.commentsList.appendChild(commentElement);
     });
