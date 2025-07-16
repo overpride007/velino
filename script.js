@@ -299,18 +299,16 @@ function parseCommentBody(body) {
     };
     let foundComment = false;
     lines.forEach(line => {
+        if (foundComment) return; // Ignora qualquer coisa após o campo comentario
         if (!data.name && line.startsWith('Nome:')) {
             data.name = line.replace('Nome:', '').trim();
         } else if (!data.age && line.startsWith('Idade:')) {
             data.age = line.replace('Idade:', '').trim();
         } else if (!data.rating && line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
-        } else if (!foundComment && line.startsWith('comentario:')) {
+        } else if (line.startsWith('comentario:')) {
             data.comment = line.replace('comentario:', '').trim();
             foundComment = true;
-        } else if (foundComment && !line.startsWith('Comentário:')) {
-            // Se já encontrou o campo comentario, adiciona o resto como texto do usuário, ignorando 'Comentário:' duplicado
-            data.comment += '\n' + line.trim();
         }
     });
     return data;
