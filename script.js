@@ -453,20 +453,17 @@ async function handleCommentSubmission(e) {
             !/^Nome:/i.test(line) &&
             !/^Idade:/i.test(line) &&
             !/^Avaliação:/i.test(line) &&
-            !/^Comentário:/i.test(line)
+            !/^comentario:/i.test(line)
         )
         .join('\n')
         .trim();
-
-    // Monta o corpo do comentário para o GitHub Issue
-    const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${currentRating}\nComentário: ${comentario}`;
 
     const commentData = {
         extension: currentExtension,
         name: nome,
         age: idade,
         rating: currentRating,
-        comment: commentBody
+        comment: comentario
     };
     try {
         await submitComment(commentData);
