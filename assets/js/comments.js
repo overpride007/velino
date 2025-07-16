@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Use sempre o endpoint do backend Railway
     const API_URL = 'https://overpridex.up.railway.app';
     
     // Sistema de estrelas
@@ -10,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (i < value) {
                     s.textContent = '★';
                     s.classList.add('text-yellow-400');
-                    s.classList.remove('text-yellow-400');
+                    s.classList.remove('text-gray-500');
                 } else {
                     s.textContent = '☆';
                     s.classList.remove('text-yellow-400');
-                    s.classList.add('text-yellow-400');
+                    s.classList.add('text-gray-500');
                 }
             });
             container.querySelector('.rating-value').value = value;
@@ -66,24 +67,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = this.querySelector('.username-input').value;
             const rating = this.querySelector('.rating-value').value;
             const comment = this.querySelector('.comment-input').value;
+            // Novo payload para o backend robusto
+            const payload = {
+                name: username,
+                rating: parseInt(rating),
+                comment: comment
+            };
             try {
-                const response = await fetch(`${API_URL}/api/comment`, {
+                const response = await fetch(`${API_URL}/api/comments`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ extensionId, username, rating, comment })
+                    body: JSON.stringify(payload)
                 });
-                const data = await response.json();
-                if (data.success) {
-                    this.reset();
-                    this.querySelectorAll('.star').forEach(s => {
-                        s.textContent = '☆';
-                        s.classList.add('text-gray-500');
-                        s.classList.remove('text-yellow-400');
-                    });
-                    wrapper.querySelector('.comment-form').classList.add('hidden');
-                    wrapper.querySelector('.comments-card').classList.remove('hidden');
-                    await loadComments(extensionId);
+                // Espera resposta JSON válida
+                if (!response.ok) {
+                    let msg = 'Erro ao enviar comentário';
+                    try {
+                        const err = await response.json();
+                        msg = err.error || err.message || msg;
+                    } catch {}
+                    alert(msg);
+                    return;
                 }
+                // Sucesso
+                this.reset();
+                this.querySelectorAll('.star').forEach(s => {
+                    s.textContent = '☆';
+                    s.classList.add('text-gray-500');
+                    s.classList.remove('text-yellow-400');
+                });
+                wrapper.querySelector('.comment-form').classList.add('hidden');
+                wrapper.querySelector('.comments-card').classList.remove('hidden');
+                await loadComments(extensionId);
             } catch (error) {
                 alert('Erro ao enviar comentário: ' + error.message);
             }
@@ -94,22 +109,28 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadComments(extensionId) {
         try {
             const response = await fetch(`${API_URL}/api/comments`);
-            const { data } = await response.json();
-            const filtered = data.filter(comment => 
-                comment.body.includes(`<!-- EXTENSION:${extensionId} -->`)
-            );
+            if (!response.ok) throw new Error('Erro ao buscar comentários');
+            const comments = await response.json();
+            // Se vier array, filtra por extensão (caso backend não filtre)
+            const filtered = Array.isArray(comments)
+                ? comments.filter(comment => comment.body && comment.body.includes(extensionId))
+                : [];
             const wrapper = document.querySelector(`[data-extension-id="${extensionId}"]`);
             const container = wrapper.querySelector('.comments-list');
             container.innerHTML = filtered.map(comment => {
-                const [meta, userLine, ratingLine, ...commentLines] = comment.body.split('\n');
-                const username = userLine?.replace('**Usuário:**', '').trim() || 'Anônimo';
-                const rating = ratingLine?.replace('**Avaliação:**', '').trim() || '0';
-                const commentText = commentLines.join(' ').replace('**Comentário:**', '').trim();
+                // Tenta extrair nome, avaliação e texto do padrão novo
+                const lines = comment.body.split('\n');
+                let name = 'Anônimo', rating = 0, commentText = '';
+                lines.forEach(line => {
+                    if (line.startsWith('Nome:')) name = line.replace('Nome:', '').trim();
+                    if (line.startsWith('Avaliação:')) rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
+                    if (line.startsWith('Comentário:')) commentText = line.replace('Comentário:', '').trim();
+                });
                 const date = new Date(comment.created_at).toLocaleDateString();
                 return `
                     <div class="comment p-4 bg-gray-800 rounded-lg">
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-yellow-300">${username}</h4>
+                            <h4 class="font-bold text-yellow-300">${name}</h4>
                             <div class="flex text-yellow-400">${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</div>
                         </div>
                         <p class="text-gray-300 mb-2">${commentText}</p>
