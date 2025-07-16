@@ -24,24 +24,21 @@ const ISSUE_URL = 'https://api.github.com/repos/overpride007/velino/issues/9/com
 app.post('/api/comment', async (req, res) => {
   try {
     const { extensionId, username, rating, comment } = req.body;
-    
-    const commentBody = `<!-- EXTENSION:${extensionId} -->
-**Usuário:** ${username}
-**Avaliação:** ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}
-**Comentário:** ${comment}`;
-
+    const commentBody = `<!-- EXTENSION:${extensionId} -->\n**Usuário:** ${username}\n**Avaliação:** ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}\n**Comentário:** ${comment}`;
     const response = await axios.post(ISSUE_URL, { body: commentBody }, {
       headers: {
         'Authorization': `token ${GITHUB_TOKEN}`,
         'Accept': 'application/vnd.github.v3+json'
       }
     });
-
     res.json({ success: true, data: response.data });
   } catch (error) {
+    // Log detalhado para depuração
+    console.error('Erro ao enviar comentário para o GitHub:', error.response?.status, error.response?.data || error.message);
     res.status(500).json({ 
       success: false, 
-      error: error.response?.data?.message || error.message 
+      error: error.response?.data?.message || error.message,
+      github: error.response?.data || null
     });
   }
 });
