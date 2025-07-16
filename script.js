@@ -266,7 +266,7 @@ function displayComments(comments) {
         return;
     }
     elements.commentsList.innerHTML = '';
-    comments.forEach((comment, index) => {
+    comments.forEach((comment) => {
         const data = parseCommentBody(comment.comment);
         // Monta o bloco do comentário no formato correto
         const commentDiv = document.createElement('div');
