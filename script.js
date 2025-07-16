@@ -78,22 +78,54 @@ document.addEventListener('DOMContentLoaded', function() {
 // Event Listeners
 function initializeEventListeners() {
     // Botões principais
-    elements.viewCommentsBtn.addEventListener('click', openCommentsModal);
-    elements.sendSuggestionBtn.addEventListener('click', openSuggestionsModal);
-    
+    if (elements.viewCommentsBtn) {
+        elements.viewCommentsBtn.addEventListener('click', openCommentsModal);
+    }
+    if (elements.sendSuggestionBtn) {
+        elements.sendSuggestionBtn.addEventListener('click', openSuggestionsModal);
+    }
+
+    // Botões dos cards de extensões
+    const btnMangabr = document.getElementById('view-comments-mangabr');
+    if (btnMangabr) {
+        btnMangabr.addEventListener('click', function() {
+            abrirModalComentarios('Manga BR');
+        });
+    }
+    const btnMangaterra = document.getElementById('view-comments-mangaterra');
+    if (btnMangaterra) {
+        btnMangaterra.addEventListener('click', function() {
+            abrirModalComentarios('Manga Terra');
+        });
+    }
+
     // Fechamento de modais
-    elements.closeModal.addEventListener('click', closeCommentsModal);
-    elements.closeSuggestionsModal.addEventListener('click', closeSuggestionsModal);
-    elements.overlay.addEventListener('click', closeAllModals);
-    
+    if (elements.closeModal) {
+        elements.closeModal.addEventListener('click', closeCommentsModal);
+    }
+    if (elements.closeSuggestionsModal) {
+        elements.closeSuggestionsModal.addEventListener('click', closeSuggestionsModal);
+    }
+    if (elements.overlay) {
+        elements.overlay.addEventListener('click', closeAllModals);
+    }
+
     // Navegação entre seções do modal
-    elements.writeCommentBtn.addEventListener('click', showWriteCommentSection);
-    elements.backToComments.addEventListener('click', showViewCommentsSection);
-    
+    if (elements.writeCommentBtn) {
+        elements.writeCommentBtn.addEventListener('click', showWriteCommentSection);
+    }
+    if (elements.backToComments) {
+        elements.backToComments.addEventListener('click', showViewCommentsSection);
+    }
+
     // Formulários
-    elements.commentForm.addEventListener('submit', handleCommentSubmission);
-    elements.suggestionForm.addEventListener('submit', handleSuggestionSubmission);
-    
+    if (elements.commentForm) {
+        elements.commentForm.addEventListener('submit', handleCommentSubmission);
+    }
+    if (elements.suggestionForm) {
+        elements.suggestionForm.addEventListener('submit', handleSuggestionSubmission);
+    }
+
     // Tecla ESC para fechar modais
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
