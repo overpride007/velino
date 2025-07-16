@@ -305,11 +305,11 @@ function parseCommentBody(body) {
             data.age = line.replace('Idade:', '').trim();
         } else if (!data.rating && line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
-        } else if (!foundComment && (line.startsWith('Comentário:') || line.startsWith('comentario:'))) {
-            data.comment = line.replace(/Comentário:|comentario:/, '').trim();
+        } else if (!foundComment && line.startsWith('comentario:')) {
+            data.comment = line.replace('comentario:', '').trim();
             foundComment = true;
-        } else if (foundComment) {
-            // Se já encontrou o campo comentario, adiciona o resto como texto do usuário
+        } else if (foundComment && !line.startsWith('Comentário:')) {
+            // Se já encontrou o campo comentario, adiciona o resto como texto do usuário, ignorando 'Comentário:' duplicado
             data.comment += '\n' + line.trim();
         }
     });
