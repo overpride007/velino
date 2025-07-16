@@ -285,8 +285,11 @@ function displayComments(comments) {
 function parseCommentBody(body) {
     if (!body) return { name: '', age: '', rating: 0, comment: '' };
     let lines = body.split('\n');
+    // Remove todas as linhas que começam com 'Extensão:' exceto a primeira
     if (lines[0].startsWith('Extensão: ')) {
         lines = lines.slice(1);
+    } else {
+        lines = lines.filter(line => !line.startsWith('Extensão: '));
     }
     const data = {
         name: '',
@@ -294,21 +297,20 @@ function parseCommentBody(body) {
         rating: 0,
         comment: ''
     };
+    let foundComment = false;
     lines.forEach(line => {
-        if (line.startsWith('Nome:')) {
+        if (!data.name && line.startsWith('Nome:')) {
             data.name = line.replace('Nome:', '').trim();
-        } else if (line.startsWith('Idade:')) {
+        } else if (!data.age && line.startsWith('Idade:')) {
             data.age = line.replace('Idade:', '').trim();
-        } else if (line.startsWith('Avaliação:')) {
+        } else if (!data.rating && line.startsWith('Avaliação:')) {
             data.rating = parseInt(line.replace('Avaliação:', '').trim()) || 0;
-        } else if (line.startsWith('Comentário:') || line.startsWith('comentario:')) {
+        } else if (!foundComment && (line.startsWith('Comentário:') || line.startsWith('comentario:'))) {
             data.comment = line.replace(/Comentário:|comentario:/, '').trim();
-        } else if (!line.startsWith('Nome:') && !line.startsWith('Idade:') && !line.startsWith('Avaliação:') && !line.startsWith('Comentário:') && !line.startsWith('comentario:')) {
-            if (data.comment) {
-                data.comment += '\n' + line.trim();
-            } else {
-                data.comment = line.trim();
-            }
+            foundComment = true;
+        } else if (foundComment) {
+            // Se já encontrou o campo comentario, adiciona o resto como texto do usuário
+            data.comment += '\n' + line.trim();
         }
     });
     return data;
