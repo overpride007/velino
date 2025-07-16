@@ -1,5 +1,3 @@
-async function abrirModalComentarios(extensao) {
-// Lógica para abrir modal de comentários filtrando por extensão
 document.getElementById('view-comments-mangabr').addEventListener('click', function() {
     abrirModalComentarios('Manga BR');
 });
