@@ -10,7 +10,7 @@ function abrirModalComentarios(extensao) {
     document.body.style.overflow = 'hidden';
     document.getElementById('modal-title').textContent = `Comentários - ${extensao}`;
     showViewCommentsSection();
-    loadComments();
+    // A chamada de loadComments já está em showViewCommentsSection
 }
 
 
@@ -243,8 +243,8 @@ async function loadComments() {
         let filtered = issues;
         if (currentExtension) {
             filtered = issues.filter(comment => {
-                // Busca pelo prefixo no campo comment
-                return comment.comment && comment.comment.trim().startsWith(`Extensão: ${currentExtension}`);
+                // Busca por 'Extensão: <NOME>' em qualquer parte do campo comment
+                return comment.comment && comment.comment.includes(`Extensão: ${currentExtension}`);
             });
         }
         commentsCache = filtered;
