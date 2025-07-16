@@ -448,16 +448,7 @@ async function handleCommentSubmission(e) {
     const idade = document.getElementById('age').value.trim();
     const avaliacao = currentRating;
     let comentario = document.getElementById('comment-text').value.trim();
-    // Adiciona a extensão no topo do comentário
-    comentario = `Extensão: ${extensao}\n` + comentario;
-    // Remove todos os campos do sistema, mesmo se o usuário colar tudo misturado
-    comentario = comentario.replace(/Extensão:[^\n]*\n?/gi, '')
-                         .replace(/Nome:[^\n]*\n?/gi, '')
-                         .replace(/Idade:[^\n]*\n?/gi, '')
-                         .replace(/Avaliação:[^\n]*\n?/gi, '')
-                         .replace(/Comentário:[^\n]*\n?/gi, '')
-                         .replace(/\s+/g, ' ')
-                         .trim();
+   
     // Monta o comentário do zero, sempre no formato correto
     const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
