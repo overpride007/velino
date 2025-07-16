@@ -456,11 +456,13 @@ async function handleCommentSubmission(e) {
         .trim();
 
     // Monta o corpo do comentário com todos os campos, incluindo 'Extensão:'
-    // Monta o corpo do comentário com todos os campos, incluindo 'Extensão:'
     const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${currentRating}\nComentário: ${comentario}`;
 
-    // Envia apenas o campo 'comment' formatado para evitar duplicidade
     const commentData = {
+        extension: currentExtension,
+        name: nome,
+        age: idade,
+        rating: currentRating,
         comment: commentBody
     };
     try {
