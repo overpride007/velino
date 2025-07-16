@@ -256,8 +256,8 @@ async function loadComments() {
 function displayComments(comments) {
     if (comments.length === 0) {
         elements.commentsList.innerHTML = `
-            <div class=\"no-comments\">
-                <i class=\"fas fa-comment-slash\"></i>
+            <div class="no-comments">
+                <i class="fas fa-comment-slash"></i>
                 <p>Ainda não há comentários.</p>
                 <p>Seja o primeiro a comentar!</p>
             </div>
@@ -266,18 +266,22 @@ function displayComments(comments) {
     }
     elements.commentsList.innerHTML = '';
     comments.forEach((comment) => {
-        // Faz o parse do campo comment para extrair os dados
-        const data = parseCommentBody(comment.comment);
+        // Usa os campos do objeto diretamente
+        const ext = comment.extension || currentExtension || '';
+        const nome = comment.name || '';
+        const idade = comment.age || '';
+        const avaliacao = comment.rating || '';
+        const texto = comment.comment || '';
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment-item';
         commentDiv.innerHTML = `
-            <div class=\"extension-title\" style=\"font-weight:bold;color:#764ba2;margin-bottom:6px;\">
-                Extensão: ${data.extension}
+            <div class="extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">
+                Extensão: ${ext}
             </div>
-            <div><strong>Nome:</strong> ${data.name}</div>
-            <div><strong>Idade:</strong> ${data.age}</div>
-            <div><strong>Avaliação:</strong> ${data.rating}</div>
-            <div><strong>Comentário:</strong> ${data.comment}</div>
+            <div><strong>Nome:</strong> ${nome}</div>
+            <div><strong>Idade:</strong> ${idade}</div>
+            <div><strong>Avaliação:</strong> ${avaliacao}</div>
+            <div><strong>Comentário:</strong> ${texto}</div>
         `;
         elements.commentsList.appendChild(commentDiv);
     });
@@ -433,24 +437,13 @@ function generateStarRating(rating) {
 // Submissão de comentários
 async function handleCommentSubmission(e) {
     e.preventDefault();
+    if (currentRating === 0) {
+        showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
+        return;
+    }
     const nome = document.getElementById('username').value.trim();
     const idade = document.getElementById('age').value.trim();
     let comentario = document.getElementById('comment-text').value.trim();
-    const avaliacao = currentRating;
-
-    // Validação dos campos obrigatórios
-    if (!nome) {
-        showAlert('⚠️ O campo Nome é obrigatório!', 'warning');
-        return;
-    }
-    if (!avaliacao) {
-        showAlert('⚠️ O campo Avaliação é obrigatório!', 'warning');
-        return;
-    }
-    if (!comentario) {
-        showAlert('⚠️ O campo Comentário é obrigatório!', 'warning');
-        return;
-    }
 
     // Remove campos do sistema do texto do usuário
     comentario = comentario
@@ -460,17 +453,17 @@ async function handleCommentSubmission(e) {
             !/^Nome:/i.test(line) &&
             !/^Idade:/i.test(line) &&
             !/^Avaliação:/i.test(line) &&
-            !/^Comentário:/i.test(line)
+            !/^comentario:/i.test(line)
         )
-        .join(' ')
+        .join('\n')
         .trim();
 
-    // Monta o corpo do comentário para o GitHub Issue
-    const commentBody = `Extensão: ${currentExtension}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\nComentário: ${comentario}`;
-
-    // Envia apenas o corpo formatado para o campo comment
     const commentData = {
-        comment: commentBody
+        extension: currentExtension,
+        name: nome,
+        age: idade,
+        rating: currentRating,
+        comment: comentario
     };
     try {
         await submitComment(commentData);
