@@ -442,13 +442,17 @@ async function handleCommentSubmission(e) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
-    // Inclui o nome da extensão no início do comentário
-    const extensionText = `Extensão: ${currentExtension}`;
-    const commentText = `${extensionText}\n${document.getElementById('comment-text').value}`;
+    // Monta o comentário no formato solicitado
+    const nome = document.getElementById('username').value;
+    const idade = document.getElementById('age').value;
+    const avaliacao = currentRating;
+    const comentario = document.getElementById('comment-text').value;
+    const extensao = currentExtension;
+    const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
-        name: document.getElementById('username').value,
-        age: document.getElementById('age').value,
-        rating: currentRating,
+        name: nome,
+        age: idade,
+        rating: avaliacao,
         comment: commentText
     };
     try {
