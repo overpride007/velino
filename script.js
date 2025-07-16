@@ -271,9 +271,17 @@ function displayComments(comments) {
     }
     elements.commentsList.innerHTML = '';
     comments.forEach((comment, index) => {
-        // Usa o campo correto para parse
+        // Exibe o nome da extensão no topo do comentário
         const commentData = parseCommentBody(comment.comment);
         const commentElement = createCommentElement(commentData, comment);
+        // Adiciona título de extensão
+        const extTitle = document.createElement('div');
+        extTitle.className = 'comment-extension-title';
+        extTitle.style.fontWeight = 'bold';
+        extTitle.style.color = '#764ba2';
+        extTitle.style.marginBottom = '6px';
+        extTitle.textContent = `Extensão: ${currentExtension}`;
+        commentElement.prepend(extTitle);
         elements.commentsList.appendChild(commentElement);
     });
 }
