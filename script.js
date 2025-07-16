@@ -234,97 +234,27 @@ function showViewCommentsSection() {
 async function loadComments() {
     try {
         elements.commentsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando comentários...</div>';
-        
-        console.log('� Carregando comentários...');
-        console.log('📍 URL da API:', `${config.apiBaseUrl}/api/comments`);
-        
         const response = await fetch(`${config.apiBaseUrl}/api/comments`);
-        
-        console.log('📊 Resposta:', {
-            status: response.status,
-            ok: response.ok,
-            contentType: response.headers.get('content-type')
-        });
-        
-        // Verificar se a resposta é JSON antes de tentar fazer parse
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-            const htmlContent = await response.text();
-            console.error('❌ Resposta não é JSON:', htmlContent.substring(0, 500));
-            
-            if (htmlContent.includes('Application error') || htmlContent.includes('railway')) {
-                throw new Error('Aplicação não está funcionando no Railway. Verifique os logs do Railway.');
-            }
-            
             throw new Error('Servidor não está retornando dados JSON válidos.');
         }
-        
         if (!response.ok) {
-            let errorMessage;
-            try {
-                const errorData = await response.json();
-                errorMessage = errorData.error || errorData.message || `Erro ${response.status}`;
-                if (errorData.details) {
-                    errorMessage += ` - ${errorData.details}`;
-                }
-            } catch (parseError) {
-                const errorText = await response.text();
-                console.error('❌ Erro ao fazer parse da resposta de erro:', errorText);
-                errorMessage = `Erro ${response.status}: Resposta inválida do servidor`;
-            }
-            throw new Error(errorMessage);
+            throw new Error(`Erro ${response.status}`);
         }
-        
         const issues = await response.json();
-        console.log(`✅ ${issues.length} comentários carregados`);
-        
         // Filtrar comentários pela extensão selecionada
         let filtered = issues;
         if (currentExtension) {
             filtered = issues.filter(comment => {
-                // Busca pelo prefixo no body
-                return comment.body && comment.body.startsWith(`Extensão: ${currentExtension}`);
+                // Busca pelo prefixo no campo comment
+                return comment.comment && comment.comment.startsWith(`Extensão: ${currentExtension}`);
             });
         }
-        
         commentsCache = filtered;
         displayComments(filtered);
-        
     } catch (error) {
-        console.error('❌ Erro ao carregar comentários:', error);
-        
-        let userFriendlyMessage = error.message;
-        
-        // Melhorar mensagens de erro para o usuário
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            userFriendlyMessage = 'Não foi possível conectar ao servidor. Verifique se o Railway está online.';
-        } else if (error.message.includes('Unexpected token')) {
-            userFriendlyMessage = 'Servidor retornou dados inválidos. Possível problema na configuração do Railway.';
-        } else if (error.message.includes('SyntaxError')) {
-            userFriendlyMessage = 'Dados recebidos do servidor estão corrompidos.';
-        }
-        
-        const errorHtml = `
-            <div class="no-comments">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p><strong>Erro ao carregar comentários:</strong></p>
-                <p>${userFriendlyMessage}</p>
-                <br>
-                <button onclick="testServerConnection()" class="primary-btn">
-                    <i class="fas fa-stethoscope"></i> Testar Conexão
-                </button>
-                <button onclick="loadComments()" class="secondary-btn" style="margin-left: 10px;">
-                    <i class="fas fa-redo"></i> Tentar Novamente
-                </button>
-                <br><br>
-                <details style="text-align: left; font-size: 0.8rem; color: #666;">
-                    <summary>Detalhes técnicos (clique para expandir)</summary>
-                    <pre style="margin-top: 10px; white-space: pre-wrap;">${error.stack || error.message}</pre>
-                </details>
-            </div>
-        `;
-        
-        elements.commentsList.innerHTML = errorHtml;
+        elements.commentsList.innerHTML = `<div class='no-comments'><i class='fas fa-exclamation-triangle'></i> Erro ao carregar comentários: ${error.message}</div>`;
     }
 }
 
@@ -434,14 +364,16 @@ function displayComments(comments) {
 }
 
 function parseCommentBody(body) {
-    console.log('🔍 Parsing comment body:', body);
-    
-    const lines = body.split('\n');
+    // Se o comentário começa com 'Extensão: ...', remove essa linha do texto exibido
+    let lines = body.split('\n');
+    if (lines[0].startsWith('Extensão: ')) {
+        lines = lines.slice(1);
+    }
     const data = {
         name: 'Usuário',
         age: '',
         rating: 0,
-        comment: ''
+        comment: lines.join('\n').trim()
     };
     
     // Tentar extrair dados estruturados do comentário
@@ -541,11 +473,14 @@ async function handleCommentSubmission(e) {
         showAlert('⭐ Por favor, selecione uma avaliação!', 'warning');
         return;
     }
-    // Monta o corpo do comentário incluindo o nome da extensão no início
+    // Inclui o nome da extensão no início do comentário
     const extensionText = `Extensão: ${currentExtension}`;
-    const commentBody = `${extensionText}\nNome: ${document.getElementById('username').value}\nIdade: ${document.getElementById('age').value}\nAvaliação: ${currentRating}\nComentário: ${document.getElementById('comment-text').value}`;
+    const commentText = `${extensionText}\n${document.getElementById('comment-text').value}`;
     const commentData = {
-        body: commentBody
+        name: document.getElementById('username').value,
+        age: document.getElementById('age').value,
+        rating: currentRating,
+        comment: commentText
     };
     try {
         await submitComment(commentData);
