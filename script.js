@@ -449,8 +449,9 @@ async function handleCommentSubmission(e) {
     const idade = document.getElementById('age').value.trim();
     const avaliacao = currentRating;
     let comentario = document.getElementById('comment-text').value.trim();
-    // Remove qualquer ocorrência de campos extras do texto do comentário
-    comentario = comentario.replace(/Extensão:.*/gi, '').replace(/Nome:.*/gi, '').replace(/Idade:.*/gi, '').replace(/Avaliação:.*/gi, '').replace(/comentario:.*/gi, '').trim();
+    // Garante que só o texto do usuário vá no campo comentario
+    // Remove qualquer linha que comece com campo do sistema
+    comentario = comentario.split('\n').filter(l => !/^Extensão:|^Nome:|^Idade:|^Avaliação:|^comentario:|^Comentário:/i.test(l.trim())).join(' ').trim();
     const extensao = currentExtension;
     const commentText = `Extensão: ${extensao}\nNome: ${nome}\nIdade: ${idade}\nAvaliação: ${avaliacao}\ncomentario: ${comentario}`;
     const commentData = {
