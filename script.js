@@ -266,17 +266,22 @@ function displayComments(comments) {
     }
     elements.commentsList.innerHTML = '';
     comments.forEach((comment) => {
-        const data = parseCommentBody(comment.comment);
+        // Usa os campos do objeto diretamente
+        const ext = comment.extension || currentExtension || '';
+        const nome = comment.name || '';
+        const idade = comment.age || '';
+        const avaliacao = comment.rating || '';
+        const texto = comment.comment || '';
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment-item';
         commentDiv.innerHTML = `
             <div class="extension-title" style="font-weight:bold;color:#764ba2;margin-bottom:6px;">
-                Extensão: ${data.extension || currentExtension || ''}
+                Extensão: ${ext}
             </div>
-            <div><strong>Nome:</strong> ${data.name}</div>
-            <div><strong>Idade:</strong> ${data.age}</div>
-            <div><strong>Avaliação:</strong> ${data.rating}</div>
-            <div><strong>Comentário:</strong> ${data.comment}</div>
+            <div><strong>Nome:</strong> ${nome}</div>
+            <div><strong>Idade:</strong> ${idade}</div>
+            <div><strong>Avaliação:</strong> ${avaliacao}</div>
+            <div><strong>Comentário:</strong> ${texto}</div>
         `;
         elements.commentsList.appendChild(commentDiv);
     });
