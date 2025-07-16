@@ -6,7 +6,10 @@ document.getElementById('view-comments-mangaterra').addEventListener('click', fu
     abrirModalComentarios('Manga Terra');
 });
 
+let currentExtension = null;
+
 function abrirModalComentarios(extensao) {
+    currentExtension = extensao;
     const modal = document.getElementById('comments-modal');
     const overlay = document.getElementById('overlay');
     modal.classList.add('active');
@@ -14,7 +17,8 @@ function abrirModalComentarios(extensao) {
     document.body.style.overflow = 'hidden';
     document.getElementById('modal-title').textContent = `Comentários - ${extensao}`;
     showViewCommentsSection();
-    // Aqui você pode filtrar os comentários por extensão se desejar
+    loadComments();
+    // Agora, ao carregar, filtra por extensão
 }
 
 // Fechar modal de comentários
@@ -274,8 +278,24 @@ async function loadComments() {
         const issues = await response.json();
         console.log(`✅ ${issues.length} comentários carregados`);
         
-        commentsCache = issues;
-        displayComments(issues);
+        // Filtrar comentários pela extensão selecionada
+        let filtered = issues;
+        if (currentExtension) {
+            filtered = issues.filter(comment => {
+                // Se o campo "extension" existir, filtra por ele
+                if (comment.extension) {
+                    return comment.extension === currentExtension;
+                }
+                // Se não existir, tenta buscar no body
+                if (comment.body && comment.body.includes(`Extensão: ${currentExtension}`)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        
+        commentsCache = filtered;
+        displayComments(filtered);
         
     } catch (error) {
         console.error('❌ Erro ao carregar comentários:', error);
@@ -534,7 +554,8 @@ async function handleCommentSubmission(e) {
         name: document.getElementById('username').value,
         age: document.getElementById('age').value,
         rating: currentRating,
-        comment: document.getElementById('comment-text').value
+        comment: document.getElementById('comment-text').value,
+        extension: currentExtension // Adiciona a extensão ao comentário
     };
     
     try {
@@ -543,7 +564,6 @@ async function handleCommentSubmission(e) {
         showViewCommentsSection();
         loadComments();
     } catch (error) {
-        console.error('Erro ao enviar comentário:', error);
         showAlert(`❌ Erro ao enviar comentário: ${error.message}`, 'error');
     }
 }
