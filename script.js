@@ -23,14 +23,28 @@ const elements = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (elements.viewCommentsBtn) {
-        elements.viewCommentsBtn.addEventListener('click', openCommentsModal);
-    }
+    elements.viewCommentsBtn?.addEventListener('click', () => {
+        if (elements.commentsModal) {
+            elements.commentsModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            loadComments();
+        }
+    });
+    // Garante que o modal feche corretamente
     if (elements.closeModal) {
-        elements.closeModal.addEventListener('click', closeCommentsModal);
+        elements.closeModal.addEventListener('click', () => {
+            elements.commentsModal.style.display = 'none';
+            document.body.style.overflow = '';
+        });
     }
-    if (elements.overlay) {
-        elements.overlay.addEventListener('click', closeCommentsModal);
+    // Fecha modal ao clicar fora do conteúdo
+    if (elements.commentsModal) {
+        elements.commentsModal.addEventListener('click', (e) => {
+            if (e.target === elements.commentsModal) {
+                elements.commentsModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
     }
     if (elements.writeCommentBtn) {
         elements.writeCommentBtn.addEventListener('click', showWriteCommentSection);
