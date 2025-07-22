@@ -1,0 +1,278 @@
+/* ====================================
+   ESTILOS DE LAYOUT GERAL
+==================================== */
+
+/* Estilos gerais do corpo */
+body {
+    background-image: url('https://images.hdqwalls.com/wallpapers/abstract-bangles-4k-7c.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #1a202c;
+    color: #e2e8f0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Elementos fixos */
+.back-to-top { 
+    position: fixed; 
+    bottom: 1.5rem; 
+    right: 1.5rem; 
+    padding: 0.75rem 1.25rem; 
+    border-radius: 0.5rem; 
+}
+
+/* Notificações */
+.usage-notification {
+    position: fixed; 
+    top: 32px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    padding: 18px 28px 18px 28px; 
+    border-radius: 1.25rem;
+    z-index: 10000; 
+    max-width: 95vw; 
+    width: 420px;
+}
+
+.copy-notification {
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    padding: 10px 20px; 
+    border-radius: 4px;
+    z-index: 1000; 
+}
+
+/* Tela de bloqueio */
+#tela-bloqueio {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Botão PIX */
+#pixButton {
+    left: 14px !important;
+    bottom: 14px !important;
+}
+
+/* Estilos para a seção Top 15 */
+#top-15 .aspect-\[3\/4\] {
+    aspect-ratio: 3/4;
+    min-height: 220px;
+    max-height: 340px;
+}
+
+/* ====================================
+   MEDIA QUERIES - RESPONSIVIDADE
+==================================== */
+
+/* DESKTOP (min-width: 1024px) */
+@media (min-width: 1024px) {
+    /* Estilos específicos para desktop */
+    /* Pode incluir ajustes para layouts mais amplos */
+}
+
+/* TABLETS (max-width: 900px) */
+@media (max-width: 900px) {
+    /* Ajustes de grid para todas as seções */
+    #problemas .grid-cols-1, 
+    #problemas .md\:grid-cols-2,
+    #komikku .grid-cols-1, 
+    #komikku .md\:grid-cols-2,
+    #instalacao-config .grid-cols-1, 
+    #instalacao-config .md\:grid-cols-2,
+    #add-repo .grid-cols-1, 
+    #add-repo .md\:grid-cols-2,
+    #top-15 .grid-cols-1, 
+    #top-15 .md\:grid-cols-2, 
+    #top-15 .lg\:grid-cols-3, 
+    #top-15 .xl\:grid-cols-4 {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Ajustes específicos para elementos em tablets */
+    #top-15 .aspect-\[3\/4\] { 
+        min-height: 180px; 
+        max-height: 260px; 
+    }
+    
+    /* Ajustes para o tela-bloqueio */
+    #tela-bloqueio .grid-cols-1, 
+    #tela-bloqueio .md\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* TABLETS PEQUENOS (max-width: 700px) */
+@media (max-width: 700px) {
+    /* Ajustes para o background em dispositivos menores */
+    body {
+        background-attachment: scroll !important;
+    }
+    
+    /* Ajustes para o aviso-18 */
+    #aviso-18 { 
+        padding: 1.2rem !important; 
+        border-width: 2px !important; 
+    }
+    #aviso-18 h2 { 
+        font-size: 1.3rem !important; 
+    }
+    #aviso-18 .text-4xl, 
+    #aviso-18 .md\:text-5xl { 
+        font-size: 2rem !important; 
+    }
+}
+
+/* CELULARES (max-width: 600px) */
+@media (max-width: 600px) {
+    /* Ajustes comuns para todas as seções em celulares */
+    #problemas, 
+    #komikku, 
+    #instalacao-config, 
+    #add-repo, 
+    #top-15 { 
+        padding: 1.2rem !important; 
+    }
+    
+    /* Ajustes de tamanho de fonte para títulos */
+    #problemas h2, 
+    #komikku h2, 
+    #instalacao-config h2, 
+    #add-repo h2, 
+    #top-15 h2 { 
+        font-size: 1.5rem !important; 
+    }
+    
+    /* Ajustes de tamanho de fonte para textos */
+    #problemas .text-2xl, 
+    #komikku .text-2xl, 
+    #instalacao-config .text-2xl, 
+    #add-repo .text-2xl,
+    #top-15 .text-xl { 
+        font-size: 1.1rem !important; 
+    }
+    
+    /* Ajustes de padding para cards */
+    #problemas .p-6, 
+    #problemas .p-7, 
+    #problemas .p-5, 
+    #komikku .p-6, 
+    #instalacao-config .p-6, 
+    #add-repo .p-6, 
+    #top-15 .p-6 { 
+        padding: 1rem !important; 
+    }
+    
+    /* Ajustes para notificações */
+    .usage-notification {
+        width: 98vw;
+        padding: 10px 4vw;
+        font-size: 0.97rem;
+        left: 50%;
+        top: 10px;
+        border-width: 2px !important;
+    }
+    .usage-notification h3 { 
+        font-size: 1.1rem !important; 
+    }
+    
+    /* Ajustes para o modal de imagem */
+    #fullImageModal img { 
+        max-width: 98vw; 
+        max-height: 80vh; 
+    }
+    #fullImageModal button { 
+        top: 10px; 
+        right: 10px; 
+        width: 38px; 
+        height: 38px; 
+        font-size: 1.5rem; 
+    }
+    
+    /* Ajustes para o tela-bloqueio */
+    #tela-bloqueio { 
+        padding: 12px !important; 
+    }
+    
+    #tela-bloqueio h2 { 
+        font-size: 1.5rem !important; 
+    }
+    
+    #tela-bloqueio .text-2xl { 
+        font-size: 1.1rem !important; 
+    }
+    
+    #tela-bloqueio .p-7, 
+    #tela-bloqueio .p-10 { 
+        padding: 1rem !important; 
+    }
+    
+    #tela-bloqueio .max-w-5xl,
+    #tela-bloqueio .max-w-4xl,
+    #tela-bloqueio .max-w-3xl,
+    #tela-bloqueio .max-w-2xl {
+        max-width: 95vw !important;
+    }
+    
+    #tela-bloqueio .gap-10 {
+        gap: 1.5rem !important;
+    }
+    
+    /* Ajustes para o botão PIX */
+    #pixButtonIcon { width: 34px !important; height: 34px !important; }
+    #pixButtonText { font-size: 12px !important; }
+    #pixButton { left: 8px !important; bottom: 8px !important; }
+}
+
+/* CELULARES PEQUENOS (max-width: 480px) */
+@media (max-width: 480px) {
+    /* Ajustes adicionais para celulares muito pequenos */
+    /* Pode incluir reduções mais drásticas de padding e fontes */
+}
+
+/* AJUSTES ESPECÍFICOS PARA BOTÕES */
+@media (min-width: 640px) {
+    .btn-grid { 
+        padding: 0.75rem 1.5rem; 
+        min-width: 140px; 
+    }
+    .btn-emoji { 
+        display: inline-block; 
+    }
+    .btn-text { 
+        font-size: 1rem; 
+    }
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 640px) {
+    #pixButtonIcon {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    #pixButtonText {
+        font-size: 10px !important;
+    }
+    
+    .back-to-top {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
