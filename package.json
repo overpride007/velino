@@ -1,0 +1,19 @@
+{
+  "name": "mek-over-extensions",
+  "version": "1.0.0",
+  "description": "Sistema de extensões premium para Tachiyomi com comentários",
+  "main": "comentarios/api.js",
+  "scripts": {
+    "start": "node comentarios/api.js",
+    "dev": "nodemon comentarios/api.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.12",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
