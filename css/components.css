@@ -1,0 +1,138 @@
+/* Sistema de Avaliação por Estrelas */
+.rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.star {
+    color: #fbbf24; /* Cor dourada para estrelas preenchidas */
+    font-size: 16px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+.star.empty {
+    color: #374151; /* Cor mais escura para estrelas vazias */
+}
+
+.rating-stars:hover .star {
+    transform: scale(1.1);
+}
+
+.star-rating {
+    display: flex;
+    gap: 2px;
+}
+
+.star-rating .star {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.star-rating .star:hover,
+.star-rating .star.active {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.star-rating .star.active {
+    color: #fbbf24;
+}
+
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9rem;
+}
+
+.rating-display .star-filled {
+    color: #fbbf24;
+}
+
+.rating-display .star-empty {
+    color: #6b7280;
+}
+
+/* Estilos para botões */
+.btn-option, .btn-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    min-width: 140px;
+    margin: 0.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-option:hover, .btn-grid:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Ícones */
+.icon { 
+    width: 48px; 
+    height: 48px; 
+    object-fit: contain; 
+    border-radius: 0.375rem; 
+}
+
+.footer-icon { 
+    width: 32px; 
+    height: 32px; 
+    margin: 0 8px; 
+    transition: transform 0.3s ease; 
+}
+
+.footer-icon:hover { 
+    transform: scale(1.1); 
+}
+
+/* Botão PIX */
+#pixButtonIcon {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #21C25E;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(33,194,94,0.15);
+}
+
+#pixButtonText {
+    font-size: 12px !important;
+    margin-top: 2px !important;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botão Voltar ao Topo */
+.back-to-top {
+    background-color: #3B82F6;
+    color: white;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.15);
+    transition: all 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59,130,246,0.25);
+}
